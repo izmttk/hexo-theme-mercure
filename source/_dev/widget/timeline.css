@@ -1,0 +1,66 @@
+.timeline {
+    @apply my-3 text-sm;
+    .timestamp {
+        @apply ml-0.5 w-40 text-center;
+        a {
+            @apply inline-block bg-gray-500 rounded-full px-3 py-2 text-white no-underline;
+        }
+    }
+    .month-archive {
+        .archive-post {
+            @apply flex flex-row flex-nowrap items-center;
+            .date {
+                @apply flex-none w-20 text-center text-gray-500;
+            }
+            .log {
+                @apply relative px-4 py-3 border-l-4;
+                a {
+                    @apply relative inline-block p-2.5 bg-gray-400 rounded text-white no-underline transition transform hover:translate-x-4;
+                    &:before {
+                        content: "";
+                        @apply absolute w-3 h-3 bg-gray-400 left-0 top-1/2 transform rotate-45 -translate-y-1/2 -translate-x-1/2;
+                    }
+                }
+                &:before {
+                    content: "";
+                    @apply absolute w-2 h-2 rounded-full ring-6 ring-white bg-gray-400 left-0 top-1/2 transform -translate-x-1.5 -translate-y-1/2;
+                }
+            }
+        }
+    }
+    .timestamp:nth-child(7n+1) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #ff4e6a;
+        }
+    }
+    .timestamp:nth-child(7n+2) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #ff761e;
+        }
+    }
+    .timestamp:nth-child(7n+3) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #ffb900;
+        }
+    }
+    .timestamp:nth-child(7n+4) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #33d57a;
+        }
+    }
+    .timestamp:nth-child(7n+5) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #00dbff;
+        }
+    }
+    .timestamp:nth-child(7n+6) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #1a98ff;
+        }
+    }
+    .timestamp:nth-child(7n+7) {
+        a, &+.month-archive a, &+.month-archive a:before {
+            background-color: #9090ff;
+        }
+    }
+}

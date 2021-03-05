@@ -1,0 +1,10 @@
+#header {
+    @apply h-header overflow-hidden mb-8;
+    .cover {
+        @apply w-full h-full;
+        img{
+            @apply w-full h-full object-cover;
+        }
+    }
+    
+}

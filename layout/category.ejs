@@ -1,0 +1,9 @@
+<% if( is_page() && page.layout==='category' ) { %>
+<article class="page">
+<h1><i class="iconfont icon-inbox"></i> • 全部分类</h1>
+<%- partial('./_widget/category_list') %>
+</article>
+<% } else { %>
+<%-partial('./_partial/recent-posts')%>
+<%-partial('./_partial/paginator')%>
+<% } %>

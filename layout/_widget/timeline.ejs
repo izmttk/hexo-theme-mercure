@@ -1,0 +1,30 @@
+<div class="timeline">
+    <%  let archives = posts_orderby_date() %> 
+    <% archives.forEach((year_archive)=>{ %>
+        <% year_archive.archives.forEach((month_archive)=>{ %>
+            <div class="timestamp">
+                <% 
+                    let link = `${config.archive_dir}/${year_archive.year}/`;
+                    if(month_archive.month<10)
+                    link+='0';
+                    link+=`${month_archive.month}/`;
+                %>
+                <a href="<%- url_for(link) %>"><i class="iconfont icon-calendar"></i> <%= year_archive.year %>年<%= month_archive.month %>月</a>
+            </div>
+            <%# console.log(month_archive) %> 
+            <div class="month-archive">
+            <% month_archive.archives.forEach((post)=>{ %>
+                <div class="archive-post">
+                    <span class="date"><%= post.date.day() %>日</span>
+                    <span class="log">
+                        <a href="<%- url_for(post.path) %>"><%= post.title||'无标题' %></a>
+                    </span>
+                </div>
+            <% }) %>
+            </div>
+        <% }) %>
+    <% }) %>
+    <div class="timestamp">
+        <a href="javascript:void(0)">梦开始的地方</a>
+    </div>
+</div>

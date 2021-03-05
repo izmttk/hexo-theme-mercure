@@ -1,0 +1,15 @@
+<div class="tag-list">
+<% tags_orderby_pinyin(site.tags.toArray()).forEach((part)=>{ %>
+<% if(part.tags.length>0) { %> 
+    <h2 class="title"><%= part.key %></h2>
+    <div class="tags">
+    <% part.tags.forEach((tag)=>{ %> 
+        <a class="tag" href="<%= url_for(tag.path) %>">
+            <span class="tag-name"><i class="iconfont icon-tag"></i> <%= tag.name %></span>
+            <span class="tag-count"><%= tag.length %></span>
+        </a>
+    <% }) %>
+    </div>
+<% } %>
+<% }) %>
+</div>

@@ -1,0 +1,72 @@
+<%  let flatMenu = (menu) => { %>
+    <ul class="menu-list">
+    <% menu.forEach((item) => { %>
+        <%# 分割线 %> 
+        <% if(item === 'divider') { %> 
+            <li class="menu-divider"></li>
+        <% } else { %>
+            <% let cascade = item.submenu&&item.submenu.length>0 %> 
+            <li class="menu-item">
+                <% if(item.url) { %> 
+                    <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
+                <% } else { %>
+                    <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
+                <% } %>
+                <%# 递归展开子菜单 %> 
+                <% if(cascade) flatMenu(item.submenu) %>
+            </li>
+        <% } %>
+    <% }) %>
+    </ul>
+<% } %> 
+<div class="navigator">
+    <div class="content">
+        <div class="logo">
+            <a href="/">
+                <%- image_tag(url_for(theme.navigator.logo.image)) %> 
+                <span><%- theme.navigator.logo.text %></span>
+            </a>
+        </div>
+        <div class="menu">
+            <!-- <% theme.navigator.menu.forEach((item) => { %>
+                <v-menu offset-y rounded="lg" min-width="150" transition="slide-y-transition">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text tile height='100%' v-bind="attrs" v-on="on" <% if(item.url) { %>href="<%- item.url %>"<% } %>><%- item.name %></v-btn>
+                    </template>
+                    <% let cascade = item.submenu&&item.submenu.length>0 %> 
+                    <% if(cascade) { %> 
+                    <v-list dense>
+                        <% item.submenu.forEach((item)=> { %>
+                            <% if(item === 'divider') { %>
+                                <v-divider></v-divider>
+                            <% } else { %> 
+                                <v-list-item link>
+                                    <v-list-item-title><%- item.name %></v-list-item-title>
+                                </v-list-item>
+                            <% } %> 
+                        <% }) %> 
+                    </v-list>
+                    <% } %> 
+                </v-menu>
+            <% }) %>  -->
+
+
+            <ul class="nav-menu-list">
+                <% theme.navigator.menu.forEach((item) => { %>
+                    <% let cascade = item.submenu&&item.submenu.length>0 %> 
+                    <li class="nav-menu-item">
+                        <% if(item.url) { %> 
+                            <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
+                        <% } else { %>
+                            <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
+                        <% } %>
+                        <% if(cascade) flatMenu(item.submenu) %>
+                    </li>
+                <% }) %> 
+            </ul>
+        </div>
+        <div class="toolkit">
+            <button class="search"><i class="iconfont icon-search"></i></button>
+        </div>        
+    </div>
+</div>

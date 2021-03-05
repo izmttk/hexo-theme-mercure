@@ -1,0 +1,60 @@
+body,.v-application{
+    background: #f5f5fa!important;
+}
+button:focus {
+    outline: none;
+  }
+.page,.post {
+    @apply bg-white rounded-2xl shadow-lg p-8 prose max-w-none;
+}
+#sidebar {
+    .card {
+        @apply bg-white rounded-xl shadow-lg border border-gray-200;
+        .title {
+            @apply relative text-2xl font-bold p-3 border-b;
+            &::after {
+                content: " ";
+                display: block;
+                position: absolute;
+                width: 40px;
+                height: 11px;
+                background: #FA7298;
+                opacity: .25;
+                pointer-events: none;
+                border-radius: 15px;
+                left: 0.6rem;
+                bottom: 0.75rem;
+            }
+        }
+    }
+    .card-noframe {
+        @apply bg-none bg-transparent shadow-none border-none;
+        .title {
+            @apply border-none;
+        }
+    }
+}
+.highlight {
+    @apply overflow-hidden rounded-xl bg-gray-800;
+    table,tbody {
+        @apply block;
+    }
+    tr {
+        @apply flex flex-row flex-nowrap;
+    }
+    .gutter {
+        @apply flex-none p-0 select-none ;
+        pre {
+            @apply text-gray-400 text-right;
+        }
+    }
+    .code {
+        @apply flex-auto overflow-x-auto p-0;
+        pre {
+            @apply pl-0;
+        }
+    }
+    pre {
+        @apply m-0 rounded-none text-sm;
+    }
+}

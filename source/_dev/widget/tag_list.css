@@ -1,0 +1,19 @@
+.tag-list {
+    @apply my-3;
+    .title {
+        @apply mt-3 mb-2;
+    }
+    .tags {
+        @apply flex flex-wrap flex-row;
+        a {
+            @apply block mr-1.25 mb-1.25 bg-gray-200 rounded-full px-2.5 py-1;
+            @apply text-gray-600 no-underline transform hover:scale-90 transition;
+            .tag-name {
+                @apply text-sm font-bold;
+            }
+            .tag-count {
+                @apply text-xs text-gray-600;
+            }
+        }
+    }
+}

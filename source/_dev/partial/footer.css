@@ -1,0 +1,6 @@
+#footer {
+    @apply flex flex-col w-full h-32 justify-center items-center bg-gray-200 mt-8;
+    .copyright,.theme-info {
+        @apply w-full text-center text-sm;
+    }
+}

@@ -1,0 +1,41 @@
+.category-list {
+    .category-list-link {
+        @apply inline-block rounded-full px-3 py-1;
+        @apply text-current no-underline;
+        .iconfont {
+            @apply mr-1;
+        }
+        .count {
+            @apply text-xs;
+        }
+    }
+    .category-list-link {
+        background-color: #ffe0e5;
+        color: #ff4e6a;
+    }
+    .category-list-child .category-list-link {
+        background-color: #ffdac4;
+        color: #ff761e;
+    }
+    .category-list-child .category-list-child .category-list-link {
+        background-color: #ffecb8;
+        color: #ffb900;
+    }
+    .category-list-child .category-list-child .category-list-child .category-list-link {
+        background-color: #c4f3d8;
+        color: #33d57a;
+    }
+    .category-list-child .category-list-child .category-list-child .category-list-child .category-list-link {
+        background-color: #d1f9ff;
+        color: #00dbff;
+    }
+    .category-list-child .category-list-child .category-list-child .category-list-child .category-list-child .category-list-link {
+        background-color: #c2e3ff;
+        color: #1a98ff;
+    }
+    .category-list-child .category-list-child .category-list-child .category-list-child .category-list-child .category-list-child .category-list-link {
+        background-color: #d6d6ff;
+        color: #9090ff;
+    }
+    
+}

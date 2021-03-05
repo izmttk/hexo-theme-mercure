@@ -1,0 +1,32 @@
+.category-tree {
+    @apply overflow-hidden;
+    .collapse-item {
+        .collapse-item-title {
+            @apply flex flex-row flex-nowrap justify-center items-center h-9 pr-3 cursor-pointer hover:bg-gray-100;
+            .arrow {
+                @apply flex-none inline-block;
+                @apply text-center text-gray-500 w-7 h-7 leading-7;
+
+            }
+            .name {
+                @apply flex-1 text-sm pl-1.5 truncate;
+                .link {
+                    @apply hover:text-blue-500;
+                }
+            }
+            .count {
+                @apply inline-block px-1.5 h-5 rounded-full bg-blue-500;
+                @apply leading-5 text-center text-white text-xs;
+            }
+            .blank {
+                @apply w-4;
+            }
+        }
+    }
+    .collapse-item .arrow {
+        @apply transition transform -rotate-90;
+    }
+    .collapse-item.collapse-item-open>.collapse-item-title>.arrow {
+        @apply transform rotate-0;
+    }
+}

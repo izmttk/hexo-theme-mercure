@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html <% if(config.language){ %>lang="<%- config.language %>"<% } %>>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<% config.description %>">
+  <% 
+  /* 判断页面标题
+   * /tag/xxx -> is_tag
+   * /category/xxx --> is_category
+   * /archive --> is_archive
+   * /archive/xxxx --> is_year
+   * /archive/xxxx/xx --> is_month
+   */
+  var title = page.title;
+  if(is_archive())title = '存档';
+  if(is_category())title = '分类: '+page.category;
+  if(is_tag())title = '标签: '+page.tag;
+
+  if(is_year())
+    title += ': '+page.year;
+  else if(is_month())
+    title += ': '+page.year+'/'+page.month;
+  %>
+  <%#  输出标题格式：xxxx - 网站标题 %>
+  <title><% if(title){ %> <%= title %> - <% } %><%= config.title %></title>
+  <%- favicon_tag(theme.favicon) %>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"> -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/lib/theme-chalk/index.css"> -->
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <%- css('/css/style.css') %>
+  <%- css('/css/iconfont.css') %>
+  <% if(config.highlight.enable) { %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css">
+  <% } %> 
+  <% if(theme.plugins.katex) { %> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+  <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script> -->
+  <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '\\[', right: '\\]', display: true}
+    ]
+  });"></script> -->
+  <style>.katex *{color:black;border-color:black}.katex{overflow-x:auto;overflow-y:hidden}</style>
+  <% } %>
+</head>
+
+<body>
+  <div id="app">
+      <div id="header">
+        <%- partial('./_partial/header') %>
+      </div>
+      <div id="main" class="flex flex-row flex-nowrap w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 mx-auto space-x-6">
+        <div id="content" class="flex-1 min-w-0">
+          <%- body %>
+        </div>
+        <div id="sidebar" class="w-64 flex-none space-y-6">
+          <%- partial('./_partial/sidebar') %>
+        </div>
+      </div>
+      <div id="footer">
+        <%- partial('./_partial/footer') %>
+      </div>
+  </div>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/element-plus/lib/index.full.js"></script> -->
+
+
+  <%- js('/js/index.js') %>
+</body>
+
+</html>

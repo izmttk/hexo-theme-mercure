@@ -1,0 +1,64 @@
+.navigator {
+    @apply fixed w-full h-16 z-max top-0 shadow-sm;
+    @supports (backdrop-filter: none){
+        background-color: rgba(255,255,255,0.7);
+        backdrop-filter: blur(1.5rem);
+    }
+    @supports not (backdrop-filter: none){
+        background-color: rgba(255,255,255,0.9);
+    }
+    .content {
+        @apply max-w-5xl m-auto h-16 flex flex-nowrap items-center;
+        .logo{
+            @apply px-5 -ml-8;
+            a {
+                @apply flex flex-nowrap h-16 leading-16 items-center;
+                img {
+                    @apply h-10;
+                }
+                span {
+                    @apply text-lg ml-2;
+                }
+            }
+        }
+        .menu {
+            @apply h-16 flex-1;
+            .nav-menu-list {
+                @apply flex flex-nowrap items-center;
+                .nav-menu-item>.link {
+                    @apply block px-4 h-16 leading-16;
+                    &:hover {
+                        background-color: rgba(255,255,255,0.8);
+                    }
+                }
+                .tippy-content {
+                    @apply p-0;
+                }
+                /* &>.nav-menu-item>.menu-list {
+                    @apply left-0 top-full;
+                } */
+            }
+        }
+        .toolkit {
+            @apply px-5 -mr-8 ;
+            .search {
+                @apply w-10 h-10 rounded-full bg-blue-400 outline-none text-white;
+            }
+        }
+    }
+}
+
+.menu-list {
+    /* @apply absolute border left-full top-0 py-2 bg-white rounded-lg shadow-xl; */
+    @apply  py-2;
+    min-width: 9rem;
+}
+.menu-item a {
+    @apply inline-block w-full h-full px-4 py-1.5 hover:bg-gray-100;
+}
+.menu-divider {
+    @apply border-b my-1;
+}
+.menu-item {
+    @apply relative;
+}

@@ -1,0 +1,32 @@
+<div class="profile">
+    <div class="head">
+        <img class="head-img" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
+    </div>
+    <div class="body">
+        <div class="body-shadow-wrap"><div class="body-shadow"></div></div>
+        <div class="author-info">
+            <div class="avatar">
+                <%# 凹角效果，使用透明背景和白色阴影实现，外层包裹用来裁剪凹角 %>
+                <div class="left-corner-wrap"><div class="left-corner"></div></div>
+                <div class="right-corner-wrap"><div class="right-corner"></div></div>
+                <img class="avatar-img" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
+            </div>
+            <div class="name">
+                <span><%= theme.author.name %></span>
+            </div>
+            <div class="signature">
+                <span><%= theme.author.signature %></span>
+            </div>                
+
+        </div>
+        <div class="social-panel">
+            <%# const { color } = require('hexo-util'); %>
+            <% theme.author.social.forEach((item) =>{ %>
+                <% let bg_color=color(item.color).alpha(0.15); %> 
+                <a href="<%= item.link %>" title="<%= item.name %>" target="_blank" style="background-color: <%- bg_color %>;color:<%- item.color %>">
+                    <i class="<%= item.icon %>"></i>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+</div>

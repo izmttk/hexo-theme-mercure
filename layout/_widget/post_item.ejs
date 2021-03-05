@@ -1,0 +1,92 @@
+<%# 引入变量：post对象%> 
+<% 
+/* 
+ * cover.path 特色图片的路径
+ * cover.type 特色图片展示类型
+ *  - 'nocover' 无特色图片
+ *  - 'left' 左侧显示
+ *  - 'right' 右侧显示
+ *  - 'fill' 填充卡片背景
+ */
+let cover_path='',cover_type='nocover';
+// 如果cover属性直接填链接
+// cover:String
+if((typeof post.cover)=='string') {
+  cover_path=post.cover;
+  cover_type=index%2==0?'left':'right';
+}
+// 如果cover填了链接和类型
+// cover:{
+//   path: String,  图片路径
+//   type: String   图片位置
+// }
+if((typeof post.cover)=='object'){
+  if(post.cover.path) cover_path=post.cover.path;
+  if(post.cover.type) cover_type=post.cover.type;
+}
+%> 
+<div class="post-item
+<% if(cover_type=='nocover'){ %> no-cover
+<% } else if(cover_type=='left'){ %> left-cover
+<% } else if(cover_type=='right'){ %> right-cover
+<% } else if(cover_type=='fill'){ %> fill-cover"
+<% } %>">
+  <% if(cover_type=='left'||cover_type=='right') {%> 
+  <div class="post-cover">
+    <a href="<%= url_for(post.path) %>">
+        <%- image_tag(url_for(cover_path),{
+            alt: post.title,
+            class: 'cover-img'
+        }) %>
+    </a>
+  </div>
+  <% } %>
+  <div class="post-info">
+      <%# 文章信息 %>
+      <div class="post-meta">
+          <%# 发布日期 %>
+          <span class="post-date">
+            <i class="iconfont icon-calendar"></i>
+            <%= date(post.date, 'YYYY年MM月DD日') %>
+          </span>
+          <%# 文章分类 %>
+          <span class="post-category">
+            <% if(post.categories.length>0) { %>
+            <i class="iconfont icon-inbox"></i>
+            <% let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; %>
+              <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+              <% if(cat_cnt!=post.categories.length) { %>
+              <span>•</span>
+              <% }
+              })
+            } %>
+          </span>
+          <%# 文章标签 %>
+          <span class="post-tag">
+            <% if(post.tags.length>0) { %>
+            <i class="iconfont icon-tag"></i>
+            <% let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; %>
+              <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+              <% if(tag_cnt!=post.tags.length) { %>
+              <span>•</span>
+              <% }
+              })
+            } %>
+          </span>
+      </div>
+      <%# 文章标题 %>
+      <div class="post-title">
+        <a href="<%= url_for(post.path) %>"><%= post.title %></a>
+      </div>
+      <%# 文章摘要 %>
+      <div class="post-excerpt"><%= post.excerpt %></div>
+  </div>
+  <div class="background">
+    <% if(cover_type!='nocover') {%>
+      <%- image_tag(url_for(cover_path),{
+          alt: post.title,
+          class: 'background-img'
+      }) %>
+      <% } %>
+  </div>
+</div>

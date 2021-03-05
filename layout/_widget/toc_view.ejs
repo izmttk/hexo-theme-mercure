@@ -1,0 +1,13 @@
+<% let realcontent = (page.encrypt == true) ? page.origin : page.content; %>
+<% if (realcontent && page.toc != false && toc(realcontent).length > 0) { %>
+<div class="toc-view card">
+    <div class="title"><span>文章目录</span></div>
+    <section class="content" <% if (page.encrypt == true) { %>style="display:none"<% } %>>
+        <%- toc(realcontent, {
+            list_number: true,
+            min_depth: 2,
+            max_depth: 6
+        }) %>
+    </section>
+</div>
+<% } %>
