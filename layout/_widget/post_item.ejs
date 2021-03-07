@@ -47,7 +47,7 @@ if((typeof post.cover)=='object'){
           <%# 发布日期 %>
           <span class="post-date">
             <i class="iconfont icon-calendar"></i>
-            <%= date(post.date, 'YYYY年MM月DD日') %>
+            <%= post.date.locale(config.language).format('ll') %>
           </span>
           <%# 文章分类 %>
           <span class="post-category">

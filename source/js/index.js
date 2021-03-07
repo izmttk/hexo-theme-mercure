@@ -185,27 +185,31 @@ function initSidebarToc() {
                 },400);
             });
             $(window).on('scroll', $.throttle(function(event) {
-                var scrollTop = $(window,document).scrollTop();
-                for(var i = 0; i < that.items.length; i++) {
-                    var $curItem = that.items.eq(i);
-                    var $curHeader = that.getHeader($curItem);
-                    var curOffsetTop = $curHeader.offset().top;
-                    //检测最后一个标题
-                    if(i==that.items.length-1) {
-                        if(curOffsetTop - scrollTop <= 80)
-                        that.activateTocItem($curItem);
-                        break;
-                    }
-                    var $nextItem = that.items.eq(i+1);
-                    var $nextHeader = that.getHeader($nextItem);
-                    var nextOffsetTop = $nextHeader.offset().top;
-                    //检测是否处于当前标题下内容里
-                    if(curOffsetTop - scrollTop <= 80 && nextOffsetTop - scrollTop > 80) {
-                        that.activateTocItem($curItem);
-                        break;
-                    }
+                that.updateView();
+            },200));
+            this.updateView();
+        }
+        Toc.prototype.updateView = function () {
+            var scrollTop = $(window,document).scrollTop();
+            for(var i = 0; i < this.items.length; i++) {
+                var $curItem = this.items.eq(i);
+                var $curHeader = this.getHeader($curItem);
+                var curOffsetTop = $curHeader.offset().top;
+                //检测最后一个标题
+                if(i==this.items.length-1) {
+                    if(curOffsetTop - scrollTop <= 80)
+                    this.activateTocItem($curItem);
+                    break;
                 }
-            },200)).scroll();
+                var $nextItem = this.items.eq(i+1);
+                var $nextHeader = this.getHeader($nextItem);
+                var nextOffsetTop = $nextHeader.offset().top;
+                //检测是否处于当前标题下内容里
+                if(curOffsetTop - scrollTop <= 80 && nextOffsetTop - scrollTop > 80) {
+                    this.activateTocItem($curItem);
+                    break;
+                }
+            }
         }
         Toc.prototype.getHeader = function (item) {
             var id = decodeURI(item.children('.toc-link').attr('href'));
@@ -230,34 +234,64 @@ function initSidebarToc() {
 }
 function initNavBar() {
     var $navbar = $('.navigator');
-    function showNavBar() {
+    function showNavBar(callback, duration=300) {
         if(!$navbar.hasClass('nav-hide')) return;
         $navbar.removeClass('nav-hide');
         $navbar.stop().show().animate({
             top: 0
-        },400);
+        },duration,function() {
+            if(typeof callback == 'function') callback();
+        });
     }
-    function hideNavBar() {
+    function hideNavBar(callback, duration=300) {
         if($navbar.hasClass('nav-hide')) return;
         $navbar.addClass('nav-hide');
         $navbar.stop().animate({
             top: - $navbar.height()
-        },400,function () {
+        },duration,function () {
             $navbar.hide();
+            if(typeof callback == 'function') callback();
         });
     }
+    function fixNavBar() {
+        if($navbar.hasClass('nav-fixed')) return;
+        hideNavBar(function() {
+            $navbar.css('position', 'fixed');
+            $navbar.addClass('nav-fixed');
+            // showNavBar();
+        });
+    }
+    function topNavBar() {
+        if(!$navbar.hasClass('nav-fixed')) return;
+        hideNavBar(function() {
+            $navbar.css('position', 'absolute');
+            $navbar.removeClass('nav-fixed');
+            showNavBar();
+        });
+    }
+    var effectiveHeight = $('#header').height();//导航条保持置顶的最大高度
     var preScrollTop = $(window).scrollTop();
     $(window).on('scroll',$.throttle(function (event) {
         var scrollTop = $(window).scrollTop();
-        if(scrollTop - preScrollTop > 0) {
-            hideNavBar();
+        if(scrollTop > effectiveHeight ) {
+            fixNavBar();
+            if(scrollTop - preScrollTop > 0) {
+                hideNavBar();
+            }
+            else {
+                showNavBar();
+            }   
         }
         else {
-            showNavBar();
+            topNavBar();
         }
         preScrollTop = scrollTop;
-
-    },200));
+    },100));
+    //初始化定位
+    if($(window).scrollTop() > effectiveHeight)
+    $navbar.css('position', 'fixed');
+    else
+    $navbar.css('position', 'absolute');
 }
 initNavMenu();
 initCategoryTree();

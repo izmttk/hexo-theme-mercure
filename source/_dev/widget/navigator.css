@@ -1,11 +1,8 @@
 .navigator {
-    @apply fixed w-full h-16 z-max top-0 shadow-sm;
+    @apply absolute w-full h-16 z-max top-0 shadow-none text-gray-100;
+    background-color: transparent;
     @supports (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.7);
-        backdrop-filter: blur(1.5rem);
-    }
-    @supports not (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.9);
+        backdrop-filter: blur(0);
     }
     .content {
         @apply max-w-5xl m-auto h-16 flex flex-nowrap items-center;
@@ -28,7 +25,7 @@
                 .nav-menu-item>.link {
                     @apply block px-4 h-16 leading-16;
                     &:hover {
-                        background-color: rgba(255,255,255,0.8);
+                        background-color: rgba(255,255,255,0.2);
                     }
                 }
                 .tippy-content {
@@ -44,6 +41,22 @@
             .search {
                 @apply w-10 h-10 rounded-full bg-blue-400 outline-none text-white;
             }
+        }
+    }
+}
+.navigator.nav-fixed {
+    @apply shadow-sm text-gray-700;
+    @supports (backdrop-filter: none){
+        background-color: rgba(255,255,255,0.7);
+        backdrop-filter: blur(1.5rem);
+    }
+    @supports not (backdrop-filter: none){
+        background-color: rgba(255,255,255,0.9);
+    }
+    .nav-menu-item>.link {
+        @apply block px-4 h-16 leading-16;
+        &:hover {
+            background-color: rgba(255,255,255,0.8) !important;
         }
     }
 }

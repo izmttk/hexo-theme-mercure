@@ -5,10 +5,10 @@
         @apply flex-none;
     }
     .content {
-        @apply p-3 text-sm overflow-y-auto;
+        @apply p-3 text-sm overflow-x-hidden overflow-y-auto break-words;
     }
     .toc-link {
-        @apply inline-block py-0.5 text-gray-700;
+        @apply block py-0.5 text-gray-700;
     }
     .toc-activated>.toc-link{
         @apply text-base font-bold text-blue-500;

@@ -1,10 +1,19 @@
 #header {
-    @apply h-header overflow-hidden mb-8;
+    @apply mb-8;
     .cover {
-        @apply w-full h-full;
-        img{
-            @apply w-full h-full object-cover;
+        @apply py-32 text-white bg-cover bg-no-repeat bg-center flex flex-col flex-nowrap justify-center items-center;
+        .title {
+            @apply text-5xl font-bold py-4;
         }
+        .meta {
+            @apply py-4 text-sm;
+        }
+        i {
+            @apply align-middle;
+        }
+    }
+    .cover.cover-full-screen {
+        @apply h-screen;
     }
     
 }

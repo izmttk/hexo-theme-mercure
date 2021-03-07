@@ -1,4 +1,57 @@
-<%- partial('../_partial/navigator') %> 
-<div class="cover">
-    <%- image_tag(theme.header.cover) %>
-</div>
+<%- partial('../_partial/navigator') %>
+<%
+let cover = theme.header.cover;
+if(page.cover)
+cover = page.cover;
+console.log(site.categories)
+%>
+<% if(is_home()) { %>
+    <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover) %>')">
+        <%#- image_tag(theme.header.cover) %>
+        <div class="title"><%= config.title %></div>
+        <div class="hitoko"><%= config.description %></div>
+    </div>
+<% } else { %> 
+    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+        <%#- image_tag(theme.header.cover) %>
+        <div class="title"><%= page.title %></div>
+        <% if(is_post()) { %>
+        <div class="meta">
+            <div class="publish-date">
+                <i class="ri-calendar-line"></i>
+                <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
+            </div>
+            <div class="update-date">
+                <i class="ri-refresh-line"></i>
+                <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
+            </div>
+            <% if(page.categories.length>0) { %> 
+            <div class="category">
+                <i class="ri-inbox-line"></i>
+                <span>分类：</span>
+                <% let cat_cnt = 0; %> 
+                <% page.categories.each((category)=>{ %> 
+                <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                <%  cat_cnt++; if(cat_cnt!=page.categories.length) { %>
+                <span>/</span>
+                <% } %> 
+                <% }) %>
+            </div>
+            <% } %>
+            <% if(page.tags.length>0) { %> 
+            <div class="tag">
+                <i class="ri-price-tag-3-line"></i>
+                <span>标签：</span>
+                <% let tag_cnt = 0; %> 
+                <% page.tags.each((tag)=>{ %> 
+                <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+                <%  tag_cnt++; if(tag_cnt!=page.tags.length) { %>
+                <span>•</span>
+                <% } %> 
+                <% }) %>
+            </div>
+            <% } %> 
+        </div>
+        <% } %>  
+    </div>
+<% } %>
