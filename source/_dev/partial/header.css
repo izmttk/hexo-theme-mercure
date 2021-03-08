@@ -4,12 +4,12 @@
         @apply py-32 text-white bg-cover bg-no-repeat bg-center flex flex-col flex-nowrap justify-center items-center;
         .title {
             @apply text-5xl font-bold py-4;
+            * {
+                @apply align-middle;
+            }
         }
         .meta {
             @apply py-4 text-sm;
-        }
-        i {
-            @apply align-middle;
         }
     }
     .cover.cover-full-screen {

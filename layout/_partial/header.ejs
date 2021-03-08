@@ -3,7 +3,7 @@
 let cover = theme.header.cover;
 if(page.cover)
 cover = page.cover;
-console.log(site.categories)
+console.log(page)
 %>
 <% if(is_home()) { %>
     <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover) %>')">
@@ -11,11 +11,28 @@ console.log(site.categories)
         <div class="title"><%= config.title %></div>
         <div class="hitoko"><%= config.description %></div>
     </div>
-<% } else { %> 
+<% } else if(is_category()) { %>
     <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
-        <%#- image_tag(theme.header.cover) %>
+        <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
+    </div>
+<% } else if(is_tag()) { %>
+    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+        <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
+    </div>
+<% } else if(is_archive()) { %>
+    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+        <div class="title">
+            <i class="ri-archive-line"></i>
+            <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
+        </div>
+    </div>
+<% } else if(is_page()) { %>
+    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
         <div class="title"><%= page.title %></div>
-        <% if(is_post()) { %>
+    </div>
+<% } else if(is_post()) { %>
+    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+        <div class="title"><%= page.title %></div>
         <div class="meta">
             <div class="publish-date">
                 <i class="ri-calendar-line"></i>
@@ -52,6 +69,5 @@ console.log(site.categories)
             </div>
             <% } %> 
         </div>
-        <% } %>  
     </div>
-<% } %>
+<% } %> 
