@@ -1,9 +1,11 @@
 <%- partial('../_partial/navigator') %>
 <%
 let cover = theme.header.cover;
-if(page.cover)
+if(typeof page.cover == 'string')
 cover = page.cover;
-console.log(page)
+else if(typeof page.cover == 'object' && page.cover.path)
+cover = page.cover.path;
+// console.log(page)
 %>
 <% if(is_home()) { %>
     <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover) %>')">

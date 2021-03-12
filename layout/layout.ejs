@@ -61,6 +61,8 @@
   });"></script> -->
   <style>.katex *{color:black;border-color:black}.katex{overflow-x:auto;overflow-y:hidden}</style>
   <% } %>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 
 <body>
@@ -68,11 +70,11 @@
       <div id="header">
         <%- partial('./_partial/header') %>
       </div>
-      <div id="main" class="flex flex-row flex-nowrap w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 mx-auto space-x-6">
-        <div id="content" class="flex-1 min-w-0">
+      <div id="main" class="flex flex-row flex-nowrap w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 mx-auto">
+        <div id="content" class="flex-1 min-w-0 my-4 ml-4 mr-0">
           <%- body %>
         </div>
-        <div id="sidebar" class="w-64 flex-none space-y-6">
+        <div id="sidebar">
           <%- partial('./_partial/sidebar') %>
         </div>
       </div>

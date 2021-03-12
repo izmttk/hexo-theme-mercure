@@ -1,6 +1,6 @@
 .post-item {
     @apply relative h-56;
-    @apply shadow-xl rounded-lg;
+    @apply shadow-lg rounded-lg;
     @apply flex flex-row flex-nowrap;
     @apply text-white overflow-hidden overflow-ellipsis;
     transform: scale(1); /*解决background层叠上下文的问题*/
@@ -18,8 +18,7 @@
         @apply z-50;
         text-shadow: 0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3);
         .post-meta {
-            @apply flex flex-nowrap justify-between;
-            @apply text-sm;
+            @apply flex flex-nowrap justify-between text-sm;
             .iconfont {
                 @apply mr-1;
             }
@@ -40,7 +39,7 @@
             @apply truncate text-2xl font-bold;
         }
         .post-excerpt {
-            @apply break-all leading-6 h-12 overflow-ellipsis overflow-hidden;
+            @apply break-all leading-6 h-12 overflow-ellipsis overflow-hidden text-sm;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;

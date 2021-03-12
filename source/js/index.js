@@ -232,7 +232,7 @@ function initSidebarToc() {
     if($('.toc').length>0)
     var toc = new Toc('.toc');
 }
-function initNavBar() {
+function initNavbar() {
     var $navbar = $('.navigator');
     function showNavBar(callback, duration=300) {
         if(!$navbar.hasClass('nav-hide')) return;
@@ -293,10 +293,106 @@ function initNavBar() {
     else
     $navbar.css('position', 'absolute');
 }
+function initSidebarTabs() {
+    var Tabs = (function () {
+        function Tabs(selector, options) {
+            this.element = $(selector).first();
+            this.tabs = this.element.children('.tabs-header').children('.tab');
+            this.panels = this.element.children('.tabs-content').children('.tab-panel');
+            this.panels.hide();
+            //默认标签
+            var $activeTab = this.getActiveTab();
+            this.getPanel($activeTab).show();
+            //初始化滑块位置
+            var $glider = this.element.find('.glider');
+            $glider.height(this.tabs.outerHeight());
+            $glider.width($activeTab.outerWidth());
+            var tabOffsetLeft = $($activeTab).offset().left - this.tabs.offset().left;
+            $glider.css('transform', 'translateX('+tabOffsetLeft+'px)');
+            this.bindEvents();
+        }
+        Tabs.prototype.bindEvents = function () {
+            var that = this;
+            this.tabs.on('click', function(event) {
+                event.preventDefault();
+                that.switch(this);
+
+                var $glider = that.element.find('.glider');
+                var tabOffsetLeft = $(this).offset().left - that.tabs.offset().left;
+                var tabWidth = $(this).outerWidth();
+                anime({
+                    targets: $glider.get(0),
+                    translateX: tabOffsetLeft,
+                    width: tabWidth
+                });
+            });
+        }
+        Tabs.prototype.switch = function (tab) {
+            var $tab = this.getTab(tab);
+            var $panel = this.getPanel(tab);
+            var $activePanel = this.getPanel(this.getActiveTab());
+
+            if($activePanel.is($panel)) return;
+
+            //判断面板滑动方向
+            var slideLeft = false;
+            if($activePanel.prevAll().filter($panel).length) slideLeft = false;
+            else slideLeft = true;
+
+            //旧面板消失
+            anime.remove($activePanel.get(0));
+            anime({
+                targets: $activePanel.get(0),
+                translateX: slideLeft ? [0,'-100%'] : [0,'100%'],
+                opacity: [1,0],
+            }).finished.then(function(){
+                $activePanel.hide();
+            });
+
+            //新面板出现
+            $panel.show();
+            anime.remove($panel.get(0));
+            anime({
+                targets: $panel.get(0),
+                translateX: slideLeft ? ['100%',0] : ['-100%',0],
+                opacity: [0,1],
+            });
+
+            this.tabs.removeClass('tab-activated');
+            this.panels.removeClass('tab-activated');
+            $tab.addClass('tab-activated');
+            $panel.addClass('tab-activated');
+        }
+        Tabs.prototype.getTab = function (tab) {
+            var $tab = $(tab).first();
+            if(this.tabs.filter($tab).length==0) {
+                throw new Error('Tab is not found');
+            }
+            return $tab;
+        }
+        Tabs.prototype.getPanel = function (tab) {
+            var $tab = this.getTab(tab);
+            var id = $tab.attr('href');
+            var $panel = this.panels.filter(id);
+            if(this.panels.filter($panel).length==0) {
+                throw new Error('Tab Panel is not found');
+            }
+            return $panel;
+        }
+        Tabs.prototype.getActiveTab = function () {
+            return this.tabs.filter(function () {
+                return $(this).hasClass('tab-activated');
+            });
+        }
+        return Tabs;
+    })();
+    var tabs = new Tabs('.tabs');
+}
 initNavMenu();
 initCategoryTree();
 initSidebarToc();
-initNavBar();
+initNavbar();
+initSidebarTabs();
 // var $ = JQ;
 // $.fn.transitionEnd = function (callback) {
 //     // eslint-disable-next-line @typescript-eslint/no-this-alias

@@ -10,6 +10,9 @@
         }
         .meta {
             @apply py-4 text-sm;
+            * {
+                @apply align-middle;
+            }
         }
     }
     .cover.cover-full-screen {

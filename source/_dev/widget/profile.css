@@ -6,28 +6,19 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
     /* transform: scale(1); */
     .head {
-        @apply relative bg-white bg-cover bg-center bg-no-repeat h-24;
+        @apply relative bg-white bg-cover bg-center bg-no-repeat h-24 overflow-hidden;
         .head-img {
             @apply object-cover h-full w-full z-0;
+            filter: blur(0.75em) contrast(1.15);
+            transform: scale(1.25);
         }
-        @supports (backdrop-filter: none) {
-            &::after {
-                content: " ";
-                @apply absolute inset-0 h-full w-full;
-                border-radius: 1rem 1rem 0 0;
-                backdrop-filter: blur(1rem);
-                border-width: 2px 2px 0 2px;
-                border-style: solid;
-                border-color: rgb(0 0 0 / 0.1);
-            }
-        }
-        @supports not (backdrop-filter: none) {
-            width: calc(100% + 3rem);
-            height: calc(100% + 3rem);
-            margin: -1.5rem;
-            .head-img {
-                filter: blur(1em);
-            }
+        &::after {
+            content: " ";
+            @apply absolute inset-0 h-full w-full;
+            border-radius: 1rem 1rem 0 0;
+            border-width: 2px 2px 0 2px;
+            border-style: solid;
+            border-color: rgb(0 0 0 / 0.1);
         }
     }
     .body {
