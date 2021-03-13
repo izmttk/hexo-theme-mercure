@@ -67,20 +67,20 @@
 
 <body>
   <div id="app">
-      <div id="header">
-        <%- partial('./_partial/header') %>
+    <div id="header">
+      <%- partial('./_partial/header') %>
+    </div>
+    <div id="main" class="flex flex-row flex-nowrap w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 mx-auto">
+      <div id="content" class="flex-1 min-w-0 my-4 ml-4 mr-0">
+        <%- body %>
       </div>
-      <div id="main" class="flex flex-row flex-nowrap w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 mx-auto">
-        <div id="content" class="flex-1 min-w-0 my-4 ml-4 mr-0">
-          <%- body %>
-        </div>
-        <div id="sidebar">
-          <%- partial('./_partial/sidebar') %>
-        </div>
+      <div id="sidebar">
+        <%- partial('./_partial/sidebar') %>
       </div>
-      <div id="footer">
-        <%- partial('./_partial/footer') %>
-      </div>
+    </div>
+    <div id="footer">
+      <%- partial('./_partial/footer') %>
+    </div>
   </div>
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/element-plus/lib/index.full.js"></script> -->

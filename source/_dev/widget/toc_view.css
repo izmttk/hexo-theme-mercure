@@ -1,6 +1,6 @@
 .toc-view {
     @apply overflow-hidden flex flex-col flex-nowrap;
-    height: calc(100% - 2rem);
+    max-height: calc(100% - 1rem);
     .title {
         @apply flex-none;
     }

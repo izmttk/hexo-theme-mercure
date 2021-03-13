@@ -1,6 +1,6 @@
 #sidebar {
     @apply sticky top-0 h-screen w-68 flex-none overflow-hidden;
-    .panel-content{
+    .sidebar-content {
         @apply w-full h-full overflow-auto;
         &>*{
             @apply m-4;
@@ -26,6 +26,16 @@
             @apply flex-auto relative;
             .tab-panel {
                 @apply h-full absolute top-0 w-full overflow-x-visible;
+                will-change: transform;
+                .tab-panel-content{
+                    @apply w-full h-full overflow-auto;
+                    &>*{
+                        @apply m-4;
+                    }
+                    &>*:first-child {
+                        @apply mt-0;
+                    }
+                }
             }
         }
         .panel-slide-left {

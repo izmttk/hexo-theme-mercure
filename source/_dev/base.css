@@ -1,11 +1,32 @@
-body,.v-application{
+body {
     background: #f5f5fa!important;
 }
 button:focus {
     outline: none;
-  }
+}
 .page,.post {
     @apply bg-white rounded-2xl shadow-lg p-8 prose max-w-none;
+}
+.prev-next {
+    @apply flex flex-nowrap space-x-6 my-4;
+    .prev,.next{
+        @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition transform hover:scale-105;
+        .deixis {
+            @apply block text-sm;
+        }
+        .title{
+            @apply block text-xl font-bold;
+        }
+    }
+    .prev {
+        @apply text-left;
+    }
+    .next {
+        @apply text-right;
+    }
+    .no-cover {
+        @apply text-gray-700 bg-white;
+    }
 }
 .highlight {
     @apply overflow-hidden rounded-xl bg-gray-800;
