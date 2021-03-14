@@ -1,5 +1,8 @@
 #sidebar {
     @apply sticky top-0 h-screen w-68 flex-none overflow-hidden;
+    transition-property: padding;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 700ms;
     .sidebar-content {
         @apply w-full h-full overflow-auto;
         &>*{
@@ -73,4 +76,7 @@
             @apply border-none;
         }
     }
+}
+#sidebar.sidebar-headblank {
+    @apply pt-16;
 }

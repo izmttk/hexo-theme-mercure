@@ -234,64 +234,45 @@ function initSidebarToc() {
 }
 function initNavbar() {
     var $navbar = $('.navigator');
-    function showNavBar(callback, duration=300) {
-        if(!$navbar.hasClass('nav-hide')) return;
-        $navbar.removeClass('nav-hide');
-        $navbar.stop().show().animate({
-            top: 0
-        },duration,function() {
-            if(typeof callback == 'function') callback();
-        });
-    }
-    function hideNavBar(callback, duration=300) {
-        if($navbar.hasClass('nav-hide')) return;
-        $navbar.addClass('nav-hide');
-        $navbar.stop().animate({
-            top: - $navbar.height()
-        },duration,function () {
-            $navbar.hide();
-            if(typeof callback == 'function') callback();
-        });
-    }
-    function fixNavBar() {
-        if($navbar.hasClass('nav-fixed')) return;
-        hideNavBar(function() {
-            $navbar.css('position', 'fixed');
-            $navbar.addClass('nav-fixed');
-            // showNavBar();
-        });
-    }
-    function topNavBar() {
-        if(!$navbar.hasClass('nav-fixed')) return;
-        hideNavBar(function() {
-            $navbar.css('position', 'absolute');
-            $navbar.removeClass('nav-fixed');
-            showNavBar();
-        });
-    }
-    var effectiveHeight = $('#header').height();//导航条保持置顶的最大高度
+    var $sidebar = $('#sidebar');
     var preScrollTop = $(window).scrollTop();
     $(window).on('scroll',$.throttle(function (event) {
         var scrollTop = $(window).scrollTop();
-        if(scrollTop > effectiveHeight ) {
-            fixNavBar();
-            if(scrollTop - preScrollTop > 0) {
-                hideNavBar();
-            }
-            else {
-                showNavBar();
-            }   
+        if(scrollTop <= 10) {
+            $navbar.addClass('nav-top');
+            anime({
+                targets: $navbar.get(0),
+                backdropFilter: 'blur(0px)',
+                easing: 'linear',
+                duration: 500
+            });
         }
         else {
-            topNavBar();
+            $navbar.removeClass('nav-top');
+            anime({
+                targets: $navbar.get(0),
+                backdropFilter: 'blur(16px)',
+                easing: 'linear',
+                duration: 500
+            });
         }
+        if(scrollTop - preScrollTop > 0) {
+            $navbar.addClass('nav-hide');
+            //向上滚动取消侧边栏头部留空
+            $sidebar.removeClass('sidebar-headblank');
+        }
+        else {
+            $navbar.removeClass('nav-hide');
+            //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
+            if($sidebar.offset().top - $navbar.offset().top - $navbar.height()<0) {
+                $sidebar.addClass('sidebar-headblank');
+            }
+            else {
+                $sidebar.removeClass('sidebar-headblank');
+            }
+        } 
         preScrollTop = scrollTop;
-    },100));
-    //初始化定位
-    if($(window).scrollTop() > effectiveHeight)
-    $navbar.css('position', 'fixed');
-    else
-    $navbar.css('position', 'absolute');
+    },200)).scroll();
 }
 function initSidebarTabs() {
     var Tabs = (function () {

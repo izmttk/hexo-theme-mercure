@@ -1,8 +1,17 @@
 .navigator {
-    @apply absolute w-full h-16 z-max top-0 shadow-none text-gray-100;
-    background-color: transparent;
+    @apply fixed w-full h-16 z-max top-0 shadow-sm text-gray-700;
+    transition-property: top, background-color, color, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 700ms;
+    will-change: backdrop-filter;
     @supports (backdrop-filter: none){
-        backdrop-filter: blur(0);
+        background-color: rgba(255,255,255,0.7);
+    }
+    @supports not (backdrop-filter: none){
+        background-color: rgba(255,255,255,0.9);
+    }
+    .nav-menu-item>.link:hover {
+        background-color: rgba(255,255,255,0.8);
     }
     .content {
         @apply max-w-5xl m-auto h-16 flex flex-nowrap items-center;
@@ -24,9 +33,6 @@
                 @apply flex flex-nowrap items-center;
                 .nav-menu-item>.link {
                     @apply block px-4 h-16 leading-16;
-                    &:hover {
-                        background-color: rgba(255,255,255,0.2);
-                    }
                 }
                 .tippy-content {
                     @apply p-0;
@@ -44,20 +50,14 @@
         }
     }
 }
-.navigator.nav-fixed {
-    @apply shadow-sm text-gray-700;
-    @supports (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.7);
-        backdrop-filter: blur(1.5rem);
-    }
-    @supports not (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.9);
-    }
-    .nav-menu-item>.link {
-        @apply block px-4 h-16 leading-16;
-        &:hover {
-            background-color: rgba(255,255,255,0.8) !important;
-        }
+.navigator.nav-hide {
+    @apply -top-16;
+}
+.navigator.nav-top {
+    @apply shadow-none text-gray-100;
+    background-color: transparent;
+    .nav-menu-item>.link:hover {
+        background-color: rgba(255,255,255,0.2)!important;
     }
 }
 
