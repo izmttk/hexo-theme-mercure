@@ -367,13 +367,115 @@ function initSidebarTabs() {
         }
         return Tabs;
     })();
+    if($('.tabs').length>0)
     var tabs = new Tabs('.tabs');
+}
+function initSearch() {
+    var Modal = (function () {
+        function Modal(context) {
+            if(typeof context !== 'string') context = $(context);
+            else context = $('<span>'+context+'</span>');
+            this.overlay = $('<div class="modal-layout"></div>');
+            this.isOpen = false;
+            this.overlay.css({
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 50,
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                backdropFilter: 'blur(0px)',
+            });
+            this.context = $('<div class="content"></div>').append(context);
+            anime.set(this.context.get(0),{
+                opacity: 0,
+                translateY: 100
+            });
+            this.overlay.append(this.context);
+            this.bindEvents();
+        }
+        Modal.prototype.bindEvents = function () {
+            var that = this;
+            this.overlay.on('click', function(event) {
+                if(event.target!==event.currentTarget) return;
+                that.close();
+            });
+        }
+        Modal.prototype.open = function() {
+            this.isOpen = true;
+            $('body').css('overflow', 'hidden');
+            $('body').append(this.overlay);
+            // this.context.addClass('animate__animated animate__fadeInUp');
+            anime({
+                targets: this.context.get(0),
+                opacity: 1,
+                translateY: 0,
+                easing: 'easeOutCubic',
+                duration: 800
+            });
+            anime({
+                targets: this.overlay.get(0),
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                backdropFilter: 'blur(16px)',
+                easing: 'easeOutCubic',
+                duration: 500
+            });
+
+        }
+        Modal.prototype.close = function() {
+            this.isOpen = false;
+            var that = this;
+            $('body').css('overflow', 'auto');
+            // this.context.addClass('animate__animated animate__fadeOutDown');
+            anime({
+                targets: this.context.get(0),
+                opacity: 0,
+                translateY: 100,
+                easing: 'easeOutCubic',
+                duration: 800
+            });
+            anime({
+                targets: this.overlay.get(0),
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                backdropFilter: 'blur(0px)',
+                easing: 'easeOutCubic',
+                duration: 500
+            }).finished.then(function(){
+                that.overlay.detach();
+                delete that;
+            });
+        }
+        Modal.prototype.toggle = function() {
+            if(this.isShown) this.close();
+            else this.open();
+        }
+        return Modal;
+    })();
+    var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
+
+    $('.toolkit .search').on('click', function() {
+        var context = template.clone();
+        var modal = new Modal(context);
+        modal.open();
+        var Search = new LocalSearch('search-input','search-result-wrap');
+        context.find('#search-btn').on('click',function(){
+            anime({
+                targets: '#site_search',
+                marginTop: ['12rem','4rem'],
+                easing: 'easeOutCubic',
+                duration: 500
+            });
+            Search.query();
+        });
+    });
 }
 initNavMenu();
 initCategoryTree();
 initSidebarToc();
 initNavbar();
 initSidebarTabs();
+initSearch();
 // var $ = JQ;
 // $.fn.transitionEnd = function (callback) {
 //     // eslint-disable-next-line @typescript-eslint/no-this-alias

@@ -1,5 +1,5 @@
 .navigator {
-    @apply fixed w-full h-16 z-max top-0 shadow-sm text-gray-700;
+    @apply fixed w-full h-16 z-40 top-0 shadow-sm text-gray-700;
     transition-property: top, background-color, color, box-shadow;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 700ms;
@@ -15,6 +15,7 @@
     }
     .content {
         @apply max-w-5xl m-auto h-16 flex flex-nowrap items-center;
+        transition: max-width .5s;
         .logo{
             @apply px-5 -ml-8;
             a {
@@ -58,6 +59,9 @@
     background-color: transparent;
     .nav-menu-item>.link:hover {
         background-color: rgba(255,255,255,0.2)!important;
+    }
+    .content {
+        max-width:calc(100% - 16rem);
     }
 }
 

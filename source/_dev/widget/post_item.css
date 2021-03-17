@@ -7,7 +7,7 @@
     .post-cover {
         @apply flex-none;
         @apply w-72;
-        @apply z-50;
+        @apply z-10;
         .cover-img {
             @apply object-cover h-full w-full;
         }
@@ -15,7 +15,7 @@
     .post-info {
         @apply flex-auto flex flex-col flex-nowrap justify-between;
         @apply py-12 px-9 w-0;
-        @apply z-50;
+        @apply z-10;
         text-shadow: 0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3);
         .post-meta {
             @apply flex flex-nowrap justify-between text-sm;

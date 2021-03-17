@@ -1,0 +1,17 @@
+<% if (config.search) { %>
+<% 
+    let search_path = config.search.path;
+    if (search_path.length == 0) {
+        search_path = 'search.xml';
+    }
+    let path = config.root + search_path;
+%> 
+<div id="site_search">
+    <div class="form-group">
+        <input type="search" id="search-input" name="q" placeholder="" autocomplete="on" class="">
+        <button onclick="">搜索</button>
+    </div>  
+    <div id="search-result"></div>
+    <script type="text/javascript">searchFunc('<%= path %>','search-input','search-result')</script>
+</div>
+<% } %>

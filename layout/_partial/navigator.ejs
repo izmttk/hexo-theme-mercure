@@ -28,29 +28,6 @@
             </a>
         </div>
         <div class="menu">
-            <!-- <% theme.navigator.menu.forEach((item) => { %>
-                <v-menu offset-y rounded="lg" min-width="150" transition="slide-y-transition">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn text tile height='100%' v-bind="attrs" v-on="on" <% if(item.url) { %>href="<%- item.url %>"<% } %>><%- item.name %></v-btn>
-                    </template>
-                    <% let cascade = item.submenu&&item.submenu.length>0 %> 
-                    <% if(cascade) { %> 
-                    <v-list dense>
-                        <% item.submenu.forEach((item)=> { %>
-                            <% if(item === 'divider') { %>
-                                <v-divider></v-divider>
-                            <% } else { %> 
-                                <v-list-item link>
-                                    <v-list-item-title><%- item.name %></v-list-item-title>
-                                </v-list-item>
-                            <% } %> 
-                        <% }) %> 
-                    </v-list>
-                    <% } %> 
-                </v-menu>
-            <% }) %>  -->
-
-
             <ul class="nav-menu-list">
                 <% theme.navigator.menu.forEach((item) => { %>
                     <% let cascade = item.submenu&&item.submenu.length>0 %> 

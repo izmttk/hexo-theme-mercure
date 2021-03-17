@@ -13,6 +13,7 @@
 @import "./widget/tag_cloud";
 @import "./widget/category_tree";
 @import "./widget/toc_view";
+@import "./widget/search";
 
 @import "./widget/navigator";
 @import "./partial/paginator";

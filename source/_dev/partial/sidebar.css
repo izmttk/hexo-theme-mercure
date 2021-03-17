@@ -16,13 +16,13 @@
             box-shadow: 0 1px rgba(255,255,255,.5), 0 8px 13px rgba(0,0,0,.15) inset;
             background-color: rgba(0,0,0,.025);
             .tab {
-                @apply flex-auto text-center text-sm font-bold p-1 z-20;
+                @apply flex-auto text-center text-sm font-bold p-1 z-10;
             }
             /* .tab.tab-activated {
                 @apply bg-white rounded shadow;
             } */
             .glider {
-                @apply absolute bg-white rounded shadow z-10;
+                @apply absolute bg-white rounded shadow z-0;
             }
         }
         .tabs-content {

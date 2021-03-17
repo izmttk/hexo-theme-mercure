@@ -47,7 +47,7 @@
             @apply relative;
             @apply flex flex-col flex-nowrap;
             .avatar {
-                @apply w-28 h-28 rounded-full mx-auto relative z-50 -mt-14;
+                @apply w-28 h-28 rounded-full mx-auto relative -mt-14;
                 @apply ring-white ring-8;
                 .avatar-img {
                     @apply object-cover h-full w-full rounded-full;
@@ -89,16 +89,16 @@
                 }
             }
             .name {
-                @apply text-black text-2xl text-center mt-2 relative z-50;
+                @apply text-black text-2xl text-center mt-2 relative;
                 /* text-shadow: 0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3); */
             }
             .signature {
-                @apply text-gray-500 text-center text-sm relative z-50;
+                @apply text-gray-500 text-center text-sm relative;
             }
         }
         .social-panel {
             @apply flex flex-wrap justify-center;
-            @apply relative z-10 mt-2;
+            @apply relative mt-2;
             a {
                 @apply w-10 h-10 m-1.5 rounded-full text-center;
                 .iconfont {
