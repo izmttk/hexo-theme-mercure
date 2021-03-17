@@ -1,29 +1,31 @@
 <% if(is_post() && page.toc != false) { %>
-<div class="tabs">
-    <div class="tabs-header">
-        <a class="tab" href="#tab-panel-overview">概览</a>
-        <a class="tab tab-activated" href="#tab-panel-toc">目录</a>
-        <span class="glider"></span>
-    </div>
-    <div class="tabs-content">
-        <div class="tab-panel" id="tab-panel-overview">
-            <div class="tab-panel-content">
-            <%- partial('../_widget/profile') %>
-            <%- partial('../_widget/tag_cloud',{maxCount: 30}) %> 
-            <%- partial('../_widget/category_tree',{maxDepth: Infinity}) %>
-            </div>
+<div class="sidebar-content sticky">
+    <div class="tabs">
+        <div class="tabs-header">
+            <a class="tab" href="#tab-panel-overview">概览</a>
+            <a class="tab tab-activated" href="#tab-panel-toc">目录</a>
+            <span class="glider"></span>
         </div>
-        <div class="tab-panel" id="tab-panel-toc">
-            <div class="tab-panel-content">
-            <%- partial('../_widget/toc_view') %>
+        <div class="tabs-content">
+            <div class="tab-panel" id="tab-panel-overview">
+                <div class="tab-panel-content">
+                    <div class="widget"><%- partial('../_widget/profile') %></div>
+                    <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+                    <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+                </div>
+            </div>
+            <div class="tab-panel" id="tab-panel-toc">
+                <div class="tab-panel-content">
+                    <div class="widget"><%- partial('../_widget/toc_view') %></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <% } else { %>
 <div class="sidebar-content">
-    <%- partial('../_widget/profile') %>
-    <%- partial('../_widget/tag_cloud',{maxCount: 30}) %> 
-    <%- partial('../_widget/category_tree',{maxDepth: Infinity}) %>
+    <div class="widget"><%- partial('../_widget/profile') %></div>
+    <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+    <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
 </div>
 <% } %> 

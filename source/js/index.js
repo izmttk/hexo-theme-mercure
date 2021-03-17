@@ -259,16 +259,16 @@ function initNavbar() {
         if(scrollTop - preScrollTop > 0) {
             $navbar.addClass('nav-hide');
             //向上滚动取消侧边栏头部留空
-            $sidebar.removeClass('sidebar-headblank');
+            $sidebar.find('.tabs').removeClass('headblank');
         }
         else {
             $navbar.removeClass('nav-hide');
             //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
             if($sidebar.offset().top - $navbar.offset().top - $navbar.height()<0) {
-                $sidebar.addClass('sidebar-headblank');
+                $sidebar.find('.tabs').addClass('headblank');
             }
             else {
-                $sidebar.removeClass('sidebar-headblank');
+                $sidebar.find('.tabs').removeClass('headblank');
             }
         } 
         preScrollTop = scrollTop;
@@ -452,7 +452,7 @@ function initSearch() {
         }
         return Modal;
     })();
-    var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
+    var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="输入点什么吧~" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
 
     $('.toolkit .search').on('click', function() {
         var context = template.clone();
@@ -462,7 +462,7 @@ function initSearch() {
         context.find('#search-btn').on('click',function(){
             anime({
                 targets: '#site_search',
-                marginTop: ['12rem','4rem'],
+                marginTop: '4rem',
                 easing: 'easeOutCubic',
                 duration: 500
             });

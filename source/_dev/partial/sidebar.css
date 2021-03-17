@@ -1,16 +1,16 @@
 #sidebar {
-    @apply sticky top-0 h-screen w-68 flex-none overflow-hidden;
-    transition-property: padding;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 700ms;
+    @apply w-68 flex-none;
     .sidebar-content {
-        @apply w-full h-full overflow-auto;
-        &>*{
+        @apply top-0;
+        &>.widget {
             @apply m-4;
         }
     }
     .tabs {
-        @apply h-full w-full flex flex-col;
+        @apply h-screen flex flex-col;
+        transition-property: padding;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 700ms;
         .tabs-header {
             @apply m-4 flex-none mb-2 p-1.5 flex rounded-lg relative overflow-hidden;
             box-shadow: 0 1px rgba(255,255,255,.5), 0 8px 13px rgba(0,0,0,.15) inset;
@@ -18,37 +18,39 @@
             .tab {
                 @apply flex-auto text-center text-sm font-bold p-1 z-10;
             }
-            /* .tab.tab-activated {
-                @apply bg-white rounded shadow;
-            } */
             .glider {
                 @apply absolute bg-white rounded shadow z-0;
             }
         }
         .tabs-content {
-            @apply flex-auto relative;
+            @apply flex-auto relative overflow-hidden;
             .tab-panel {
-                @apply h-full absolute top-0 w-full overflow-x-visible;
+                @apply absolute top-0 bottom-0 w-full overflow-x-visible;
                 will-change: transform;
                 .tab-panel-content{
-                    @apply w-full h-full overflow-auto;
-                    &>*{
-                        @apply m-4;
-                    }
-                    &>*:first-child {
-                        @apply mt-0;
-                    }
                 }
             }
         }
-        .panel-slide-left {
-            /* @apply transform -translate-x-full; */
-            transform: translateX(-150%);
+    }
+    .headblank {
+        @apply pt-16;
+    }
+    #tab-panel-overview .tab-panel-content {
+        @apply h-full overflow-auto;
+        .widget {
+            @apply m-4;
+            &:first-child {
+                @apply mt-0;
+            }
         }
-        .panel-slide-right {
-            /* @apply transform translate-x-full; */
-            transform: translateX(150%);
-
+    }
+    #tab-panel-toc .tab-panel-content {
+        @apply h-full overflow-hidden;
+        .widget {
+            @apply h-full m-4;
+            &:first-child {
+                @apply mt-0;
+            }
         }
     }
     .card {
@@ -76,7 +78,5 @@
             @apply border-none;
         }
     }
-}
-#sidebar.sidebar-headblank {
-    @apply pt-16;
+    
 }

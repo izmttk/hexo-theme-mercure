@@ -50,7 +50,7 @@ var LocalSearch = (function () {
                         var match_content = post_content.substring(start, end);
                         keywords.forEach(function(keyword) {
                             var regS = new RegExp(keyword, 'gi');
-                            match_content = match_content.replace(regS, '<b mark>' + keyword + '</b>');
+                            match_content = match_content.replace(regS, '<mark>' + keyword + '</mark>');
                             // post.title = post_title.replace(regS, '<b mark>' + keyword + '</b>');
                         });
                         post.digest = match_content + '......';

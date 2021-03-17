@@ -9,7 +9,7 @@ button:focus {
 }
 .prev-next {
     @apply flex flex-nowrap space-x-6 my-4;
-    .prev,.next{
+    .prev,.next,.blank{
         @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition transform hover:scale-105;
         .deixis {
             @apply block text-sm;
@@ -23,6 +23,9 @@ button:focus {
     }
     .next {
         @apply text-right;
+    }
+    .blank {
+        @apply shadow-none;
     }
     .no-cover {
         @apply text-gray-700 bg-white;

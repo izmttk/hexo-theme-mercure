@@ -13,7 +13,9 @@
     <span class="deixis">上一篇</span>
     <span class="title"><%= page.prev.title %></span>
   </a>
-  <% } %>
+  <% } else { %>
+  <span class="blank"></span>
+  <% } %> 
   <% if(page.next) { %>
   <a 
     class="next <%= page.next.cover?'':'no-cover' %>" 
@@ -25,5 +27,7 @@
     <span class="deixis">下一篇</span>
     <span class="title"><%= page.next.title %></span>
   </a>
-  <% } %>
+  <% } else { %>
+  <span class="blank"></span>
+  <% } %> 
 </div>
