@@ -1,4 +1,4 @@
-<% if(is_post() && page.toc != false) { %>
+<% if(theme.sidebar.show_toc && is_post() && page.toc != false) { %>
 <div class="sidebar-content sticky">
     <div class="tabs">
         <div class="tabs-header">
@@ -9,9 +9,9 @@
         <div class="tabs-content">
             <div class="tab-panel" id="tab-panel-overview">
                 <div class="tab-panel-content">
-                    <div class="widget"><%- partial('../_widget/profile') %></div>
-                    <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
-                    <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+                    <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
+                    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
+                    <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
                 </div>
             </div>
             <div class="tab-panel" id="tab-panel-toc">
@@ -24,8 +24,8 @@
 </div>
 <% } else { %>
 <div class="sidebar-content">
-    <div class="widget"><%- partial('../_widget/profile') %></div>
-    <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
-    <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+    <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
+    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
+    <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
 </div>
 <% } %> 

@@ -1,5 +1,5 @@
 <div class="timeline">
-    <%  let archives = posts_orderby_date() %> 
+    <%  let archives = getArchives() %> 
     <% archives.forEach((year_archive)=>{ %>
         <% year_archive.archives.forEach((month_archive)=>{ %>
             <div class="timestamp">

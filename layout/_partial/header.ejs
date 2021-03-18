@@ -1,39 +1,37 @@
 <%- partial('../_partial/navigator') %>
 <%
-let cover = theme.header.cover;
-if(typeof page.cover == 'string')
-cover = page.cover;
-else if(typeof page.cover == 'object' && page.cover.path)
-cover = page.cover.path;
+let cover = getCover(page);
+if(cover.type=='none') {
+    cover.path = theme.header.cover;
+}
 // console.log(page)
 %>
 <% if(is_home()) { %>
-    <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover) %>')">
-        <%#- image_tag(theme.header.cover) %>
+    <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title"><%= config.title %></div>
         <div class="hitoko"><%= config.description %></div>
     </div>
 <% } else if(is_category()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
     </div>
 <% } else if(is_tag()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
     </div>
 <% } else if(is_archive()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title">
             <i class="ri-archive-line"></i>
             <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
         </div>
     </div>
 <% } else if(is_page()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title"><%= page.title %></div>
     </div>
 <% } else if(is_post()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover) %>')">
+    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
         <div class="title"><%= page.title %></div>
         <div class="meta">
             <div class="publish-date">

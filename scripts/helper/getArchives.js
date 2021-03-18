@@ -29,7 +29,7 @@ function has_month(array, month) {
     ...
 ]
 */
-function posts_orderby_date() {
+function getArchives() {
     let res=[];
     let sorted_posts=this.site.posts.sort('date', -1);
     sorted_posts.each((post)=>{
@@ -63,4 +63,4 @@ function posts_orderby_date() {
     });
     return res;
 }
-hexo.extend.helper.register('posts_orderby_date', posts_orderby_date);
+hexo.extend.helper.register('getArchives', getArchives);

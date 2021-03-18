@@ -1,40 +1,18 @@
 <%# 引入变量：post对象%> 
 <% 
-/* 
- * cover.path 特色图片的路径
- * cover.type 特色图片展示类型
- *  - 'nocover' 无特色图片
- *  - 'left' 左侧显示
- *  - 'right' 右侧显示
- *  - 'fill' 填充卡片背景
- */
-let cover_path='',cover_type='nocover';
-// 如果cover属性直接填链接
-// cover:String
-if((typeof post.cover)=='string') {
-  cover_path=post.cover;
-  cover_type=index%2==0?'left':'right';
-}
-// 如果cover填了链接和类型
-// cover:{
-//   path: String,  图片路径
-//   type: String   图片位置
-// }
-if((typeof post.cover)=='object'){
-  if(post.cover.path) cover_path=post.cover.path;
-  if(post.cover.type) cover_type=post.cover.type;
-}
+let cover = getCover(post);
+cover.type=index%2==0?'left':'right';
 %> 
 <div class="post-item
-<% if(cover_type=='nocover'){ %> no-cover
-<% } else if(cover_type=='left'){ %> left-cover
-<% } else if(cover_type=='right'){ %> right-cover
-<% } else if(cover_type=='fill'){ %> fill-cover"
+<% if(cover.type=='none'){ %> no-cover
+<% } else if(cover.type=='left'){ %> left-cover
+<% } else if(cover.type=='right'){ %> right-cover
+<% } else if(cover.type=='fill'){ %> fill-cover"
 <% } %>">
-  <% if(cover_type=='left'||cover_type=='right') {%> 
+  <% if(cover.type=='left'||cover.type=='right') {%> 
   <div class="post-cover">
     <a href="<%= url_for(post.path) %>">
-        <%- image_tag(url_for(cover_path),{
+        <%- image_tag(url_for(cover.path),{
             alt: post.title,
             class: 'cover-img'
         }) %>
@@ -82,8 +60,8 @@ if((typeof post.cover)=='object'){
       <div class="post-excerpt"><%= post.excerpt %></div>
   </div>
   <div class="background">
-    <% if(cover_type!='nocover') {%>
-      <%- image_tag(url_for(cover_path),{
+    <% if(cover.type!='none') {%>
+      <%- image_tag(url_for(cover.path),{
           alt: post.title,
           class: 'background-img'
       }) %>

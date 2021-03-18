@@ -4,16 +4,10 @@ var LocalSearch = (function () {
         this.inputElement = $('#'+search_id);
         this.resultElement = $('#'+content_id);
         this.cache = undefined;
-        this.bindEvents();
     }
     LocalSearch.setPath = function(path) {
         ajax_path = path;
     };
-    LocalSearch.prototype.bindEvents = function () {
-        // this.inputElement.on('input', function(event) {
-
-        // })
-    }
     LocalSearch.prototype.getInputText = function () {
         return this.inputElement.val();
     }

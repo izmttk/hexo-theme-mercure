@@ -453,12 +453,22 @@ function initSearch() {
         return Modal;
     })();
     var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="输入点什么吧~" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
-
     $('.toolkit .search').on('click', function() {
         var context = template.clone();
         var modal = new Modal(context);
         modal.open();
         var Search = new LocalSearch('search-input','search-result-wrap');
+        context.find('#search-input').on('keydown', function(event) {
+            if(event.key === 'Enter'){
+                anime({
+                    targets: '#site_search',
+                    marginTop: '4rem',
+                    easing: 'easeOutCubic',
+                    duration: 500
+                });
+                Search.query();
+            }
+        });
         context.find('#search-btn').on('click',function(){
             anime({
                 targets: '#site_search',

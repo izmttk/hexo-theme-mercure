@@ -26,7 +26,7 @@ function pinyin_filter(array,key,toString) {
     ...
 ]
 */
-function tags_orderby_pinyin(tags) {
+function orderTags(tags) {
     let res=[],normal_tags=[],other_tags = [];
     //normal_tags: 以字母或汉字开头的标签
     //other_tags: 以数字或特殊符号开头的标签
@@ -52,4 +52,4 @@ function tags_orderby_pinyin(tags) {
 }
 // hexo.extend.helper.register('pinyin', fnPinyin);
 // hexo.extend.helper.register('pinyin_filter', pinyin_filter);
-hexo.extend.helper.register('tags_orderby_pinyin', tags_orderby_pinyin);
+hexo.extend.helper.register('orderTags', orderTags);

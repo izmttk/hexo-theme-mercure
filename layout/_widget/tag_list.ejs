@@ -1,5 +1,5 @@
 <div class="tag-list">
-<% tags_orderby_pinyin(site.tags.toArray()).forEach((part)=>{ %>
+<% orderTags(site.tags.toArray()).forEach((part)=>{ %>
 <% if(part.tags.length>0) { %> 
     <h2 class="title"><%= part.key %></h2>
     <div class="tags">

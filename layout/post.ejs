@@ -3,11 +3,12 @@
 </article>
 <div class="prev-next">
   <% if(page.prev) { %>
+  <% let prev_cover = getCover(page.prev) %>
   <a 
-    class="prev <%= page.prev.cover?'':'no-cover' %>" 
+    class="prev <%= prev_cover.type=='none'?'no-cover':'' %>" 
     href="<%= url_for(page.prev.path) %>"
-    <% if(page.prev.cover) { %> 
-    style="background-image:url('<%- url_for(page.prev.cover) %>')"
+    <% if(prev_cover.type!=='none') { %> 
+    style="background-image:url('<%- url_for(prev_cover.path) %>')"
     <% } %>
   >
     <span class="deixis">上一篇</span>
@@ -17,11 +18,12 @@
   <span class="blank"></span>
   <% } %> 
   <% if(page.next) { %>
+  <% let next_cover = getCover(page.next) %>
   <a 
-    class="next <%= page.next.cover?'':'no-cover' %>" 
+    class="next <%= next_cover.type=='none'?'no-cover':'' %>" 
     href="<%= url_for(page.next.path) %>" 
-    <% if(page.next.cover) { %> 
-    style="background-image:url('<%- url_for(page.next.cover) %>')"
+    <% if(next_cover.type!=='none') { %>
+    style="background-image:url('<%- url_for(next_cover.path) %>')"
     <% } %>
   >
     <span class="deixis">下一篇</span>
