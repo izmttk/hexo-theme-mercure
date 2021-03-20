@@ -6,9 +6,9 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
     /* transform: scale(1); */
     .head {
-        @apply relative bg-white bg-cover bg-center bg-no-repeat h-24 overflow-hidden;
-        .head-img {
-            @apply object-cover h-full w-full z-0;
+        @apply relative h-24 overflow-hidden;
+        .background {
+            @apply bg-cover bg-center bg-no-repeat h-full w-full;
         }
         &::after {
             content: " ";
@@ -16,17 +16,19 @@
             border-radius: 1rem 1rem 0 0;
             border-width: 2px 2px 0 2px;
             border-style: solid;
-            border-color: rgb(0 0 0 / 0.1);
+            border-color: rgba(0, 0, 0, 0.1);
         }
         @supports (backdrop-filter: none) {
-            &::after {
+            .background::before {
+                content: " ";
+                @apply absolute inset-0 h-full w-full;
                 backdrop-filter: blur(0.75em) contrast(1.15);
             }
         }
         @supports not (backdrop-filter: none) {
-            .head-img {
+            .background {
                 filter: blur(0.75em) contrast(1.15);
-                transform: scale(1.25);
+                transform: scale(1.2);
             }
         }
     }

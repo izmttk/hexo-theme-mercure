@@ -4,6 +4,7 @@
     @apply flex flex-row flex-nowrap;
     @apply text-white overflow-hidden overflow-ellipsis;
     transform: scale(1); /*解决background层叠上下文的问题*/
+    content-visibility: auto;
     .post-cover {
         @apply flex-none;
         @apply w-72;

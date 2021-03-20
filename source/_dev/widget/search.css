@@ -16,9 +16,9 @@
         @apply bg-blue-500 rounded-full text-white h-10 w-10 mr-1 leading-10 shadow flex-none;
     }
     #search-result-wrap {
-        @apply overflow-y-auto flex-auto rounded-lg;
+        @apply flex-auto rounded-lg overflow-hidden;
         #search-result {
-            @apply bg-white p-3 rounded-lg;
+            @apply bg-white p-3 rounded-lg overflow-y-auto h-full;
             animation: fadeInUp100px .5s;
             .search-result-list {
                 @apply space-y-3;
@@ -44,4 +44,13 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.modal-layout {
+    transition: backdrop-filter .5s;
+    backdrop-filter: blur(0px);
+}
+
+.modal-layout.modal-open {
+    backdrop-filter: blur(10px);
 }

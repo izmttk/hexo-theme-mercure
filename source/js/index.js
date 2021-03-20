@@ -175,15 +175,15 @@ function initSidebarToc() {
         }
         Toc.prototype.bindEvents = function () {
             var that = this;
-            this.items.children('.toc-link').on('click', function (event) {
-                event.preventDefault();
-                var $item = $(this).parent();
-                // that.activateTocItem($item);
-                var $header = that.getHeader($item);
-                $('html,body').animate({
-                    scrollTop: $header.offset().top - 76
-                },400);
-            });
+            // this.items.children('.toc-link').on('click', function (event) {
+            //     event.preventDefault();
+            //     var $item = $(this).parent();
+            //     // that.activateTocItem($item);
+            //     var $header = that.getHeader($item);
+            //     $('html,body').animate({
+            //         scrollTop: $header.offset().top - 76
+            //     },400);
+            // });
             $(window).on('scroll', $.throttle(function(event) {
                 that.updateView();
             },200));
@@ -240,37 +240,40 @@ function initNavbar() {
         var scrollTop = $(window).scrollTop();
         if(scrollTop <= 10) {
             $navbar.addClass('nav-top');
-            anime({
-                targets: $navbar.get(0),
-                backdropFilter: 'blur(0px)',
-                easing: 'linear',
-                duration: 500
-            });
+            // anime({
+            //     targets: $navbar.get(0),
+            //     backdropFilter: 'blur(0px)',
+            //     '-webkit-backdrop-filter': 'blur(0px)',
+            //     easing: 'linear',
+            //     duration: 500
+            // });
         }
         else {
             $navbar.removeClass('nav-top');
-            anime({
-                targets: $navbar.get(0),
-                backdropFilter: 'blur(16px)',
-                easing: 'linear',
-                duration: 500
-            });
-        }
-        if(scrollTop - preScrollTop > 0) {
-            $navbar.addClass('nav-hide');
-            //向上滚动取消侧边栏头部留空
-            $sidebar.find('.tabs').removeClass('headblank');
-        }
-        else {
-            $navbar.removeClass('nav-hide');
-            //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
-            if($sidebar.offset().top - $navbar.offset().top - $navbar.height()<0) {
-                $sidebar.find('.tabs').addClass('headblank');
-            }
-            else {
+            // anime({
+            //     targets: $navbar.get(0),
+            //     backdropFilter: 'blur(16px)',
+            //     '-webkit-backdrop-filter': 'blur(16px)',
+            //     easing: 'linear',
+            //     duration: 500
+            // });
+
+            if(scrollTop - preScrollTop > 0) {
+                $navbar.addClass('nav-hide');
+                //向上滚动取消侧边栏头部留空
                 $sidebar.find('.tabs').removeClass('headblank');
             }
-        } 
+            else {
+                $navbar.removeClass('nav-hide');
+                //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
+                if($sidebar.offset().top - $navbar.offset().top - $navbar.height()<0) {
+                    $sidebar.find('.tabs').addClass('headblank');
+                }
+                else {
+                    $sidebar.find('.tabs').removeClass('headblank');
+                }
+            }
+        }
         preScrollTop = scrollTop;
     },200)).scroll();
 }
@@ -376,7 +379,6 @@ function initSearch() {
             if(typeof context !== 'string') context = $(context);
             else context = $('<span>'+context+'</span>');
             this.overlay = $('<div class="modal-layout"></div>');
-            this.isOpen = false;
             this.overlay.css({
                 position: 'fixed',
                 top: 0,
@@ -384,8 +386,8 @@ function initSearch() {
                 width: '100%',
                 height: '100%',
                 zIndex: 50,
-                backgroundColor: 'rgba(0, 0, 0, 0)',
-                backdropFilter: 'blur(0px)',
+                // backgroundColor: 'rgba(0, 0, 0, 0)',
+                // backdropFilter: 'blur(0px)',
             });
             this.context = $('<div class="content"></div>').append(context);
             anime.set(this.context.get(0),{
@@ -393,6 +395,8 @@ function initSearch() {
                 translateY: 100
             });
             this.overlay.append(this.context);
+            $('body').append(this.overlay);
+            this.overlay.hide();
             this.bindEvents();
         }
         Modal.prototype.bindEvents = function () {
@@ -402,11 +406,14 @@ function initSearch() {
                 that.close();
             });
         }
+        Modal.prototype.isOpen = function() {
+            return this.overlay.hasClass('modal-open');
+        }
         Modal.prototype.open = function() {
-            this.isOpen = true;
             $('body').css('overflow', 'hidden');
-            $('body').append(this.overlay);
-            // this.context.addClass('animate__animated animate__fadeInUp');
+            // $('body').append(this.overlay);
+            this.overlay.show();
+            this.overlay.addClass('modal-open');
             anime({
                 targets: this.context.get(0),
                 opacity: 1,
@@ -417,17 +424,15 @@ function initSearch() {
             anime({
                 targets: this.overlay.get(0),
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                backdropFilter: 'blur(16px)',
+                // backdropFilter: 'blur(16px)',
                 easing: 'easeOutCubic',
                 duration: 500
             });
-
         }
         Modal.prototype.close = function() {
-            this.isOpen = false;
+            this.overlay.removeClass('modal-open');
             var that = this;
             $('body').css('overflow', 'auto');
-            // this.context.addClass('animate__animated animate__fadeOutDown');
             anime({
                 targets: this.context.get(0),
                 opacity: 0,
@@ -438,16 +443,17 @@ function initSearch() {
             anime({
                 targets: this.overlay.get(0),
                 backgroundColor: 'rgba(0, 0, 0, 0)',
-                backdropFilter: 'blur(0px)',
+                // backdropFilter: 'blur(0px)',
                 easing: 'easeOutCubic',
                 duration: 500
             }).finished.then(function(){
-                that.overlay.detach();
+                // that.overlay.detach();
+                that.overlay.hide();
                 delete that;
             });
         }
         Modal.prototype.toggle = function() {
-            if(this.isShown) this.close();
+            if(this.isOpen()) this.close();
             else this.open();
         }
         return Modal;
@@ -480,12 +486,26 @@ function initSearch() {
         });
     });
 }
+function anchorSmoothScroll() {
+    var marginTop = 76;
+    $('a').filter(function() {
+        return /^#[^\s]*/g.test($(this).attr('href'));
+    }).on('click', function (event) {
+        event.preventDefault();
+        var id = decodeURI($(this).attr('href'));
+        var $target = $(id);
+        $('html,body').animate({
+            scrollTop: $target.offset().top - marginTop
+        },400);
+    });
+}
+initNavbar();
 initNavMenu();
 initCategoryTree();
 initSidebarToc();
-initNavbar();
 initSidebarTabs();
 initSearch();
+anchorSmoothScroll();
 // var $ = JQ;
 // $.fn.transitionEnd = function (callback) {
 //     // eslint-disable-next-line @typescript-eslint/no-this-alias
