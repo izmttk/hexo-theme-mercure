@@ -239,6 +239,7 @@ function initNavbar() {
     $(window).on('scroll',$.throttle(function (event) {
         var scrollTop = $(window).scrollTop();
         if(scrollTop <= 10) {
+            $navbar.removeClass('nav-hide');
             $navbar.addClass('nav-top');
             // anime({
             //     targets: $navbar.get(0),
@@ -247,6 +248,7 @@ function initNavbar() {
             //     easing: 'linear',
             //     duration: 500
             // });
+            $sidebar.find('.tabs').removeClass('headblank');
         }
         else {
             $navbar.removeClass('nav-top');
@@ -448,7 +450,7 @@ function initSearch() {
                 duration: 500
             }).finished.then(function(){
                 // that.overlay.detach();
-                that.overlay.hide();
+                that.overlay.remove();
                 delete that;
             });
         }
@@ -488,7 +490,7 @@ function initSearch() {
 }
 function anchorSmoothScroll() {
     var marginTop = 76;
-    $('a').filter(function() {
+    $('.post a,.page a,.toc a').filter(function() {
         return /^#[^\s]*/g.test($(this).attr('href'));
     }).on('click', function (event) {
         event.preventDefault();
