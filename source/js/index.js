@@ -101,7 +101,7 @@ function initCategoryTree() {
             var $item = $(item).first();
             if(!$item.parent().is(this.element)) {
                 throw new Error('Item is not the children of Collapse element');
-            } 
+            }
             return $item;
         }
         Collapse.prototype.isOpen = function (item) {
@@ -462,14 +462,19 @@ function initSearch() {
     })();
     var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="输入点什么吧~" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
     $('.toolkit .search').on('click', function() {
+        //防止打开多个搜索界面
+        if($('.modal-layout.modal-open').length!=0)
+            return false;
         var context = template.clone();
         var modal = new Modal(context);
         modal.open();
         var Search = new LocalSearch('search-input','search-result-wrap');
         context.find('#search-input').on('keydown', function(event) {
             if(event.key === 'Enter'){
+                $('#site_search').addClass('searched');
+
                 anime({
-                    targets: '#site_search',
+                    targets: '#site_search  .form-group',
                     marginTop: '4rem',
                     easing: 'easeOutCubic',
                     duration: 500
@@ -478,8 +483,9 @@ function initSearch() {
             }
         });
         context.find('#search-btn').on('click',function(){
+            $('#site_search').addClass('searched');
             anime({
-                targets: '#site_search',
+                targets: '#site_search .form-group',
                 marginTop: '4rem',
                 easing: 'easeOutCubic',
                 duration: 500

@@ -1,25 +1,29 @@
 .modal-layout .content {
     width: 44rem;
+    height: 100%;
     max-height: 100vh;
     margin: 0 auto;
     display: flex;
 }
 #site_search {
-    @apply flex flex-col w-full mt-48 mb-8;
+    @apply w-full;
     .form-group {
-        @apply mx-16 h-12 rounded-full bg-white flex items-center flex-none mb-4 shadow-lg;
-    }
-    #search-input {
-        @apply  bg-transparent outline-none ml-5 mr-2 text-lg flex-auto;
-    }
-    #search-btn {
-        @apply bg-blue-500 rounded-full text-white h-10 w-10 mr-1 leading-10 shadow flex-none;
+        @apply mx-16 mt-48 mb-4 h-12 rounded-full bg-white flex items-center shadow-lg;
+        #search-input {
+            @apply  bg-transparent outline-none ml-5 mr-2 text-lg flex-auto;
+        }
+        #search-btn {
+            @apply bg-blue-500 rounded-full text-white h-10 w-10 mr-1 leading-10 shadow flex-none;
+        }
     }
     #search-result-wrap {
-        @apply flex-auto rounded-lg overflow-hidden;
+        @apply rounded-lg overflow-hidden;
+        height: calc(100% - 10rem);
         #search-result {
-            @apply bg-white p-3 rounded-lg overflow-y-auto h-full;
+            @apply bg-white p-3 rounded-lg overflow-y-auto;
+            height: 100%;
             animation: fadeInUp100px .5s;
+            -webkit-overflow-scrolling: touch;
             .search-result-list {
                 @apply space-y-3;
             }
@@ -31,6 +35,9 @@
             }
             .search-result-digest {
                 @apply block text-sm;
+            }
+            .no-result {
+                @apply block w-full py-14 text-center text-xl text-gray-500;
             }
         }
     }

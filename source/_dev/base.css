@@ -32,7 +32,7 @@ button:focus {
     }
 }
 .highlight {
-    @apply overflow-hidden rounded-xl bg-gray-800;
+    @apply relative overflow-hidden rounded-xl bg-gray-800;
     table,tbody {
         @apply block;
     }
@@ -47,6 +47,7 @@ button:focus {
     }
     .code {
         @apply flex-auto overflow-x-auto p-0;
+        -webkit-overflow-scrolling: touch;
         pre {
             @apply pl-0;
         }
