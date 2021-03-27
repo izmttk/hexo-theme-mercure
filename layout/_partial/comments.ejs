@@ -1,0 +1,9 @@
+<div class="comments">
+    <% if(theme.comments.disqus.enable) { %>
+    <%- partial('./comments/disqus.ejs')  %> 
+    <% } else if(theme.comments.disqusjs.enable) { %>
+    <%- partial('./comments/disqusjs.ejs')  %> 
+    <% } else { %>
+    <span>评论姬被捂住了嘴...</span>
+    <% } %>  
+</div>

@@ -4,11 +4,17 @@ html, body {
 button:focus {
     outline: none;
 }
+/* :root {
+    color-scheme: light dark;
+}
+iframe {
+    color-scheme: light;
+} */
 .page,.post {
-    @apply bg-white rounded-2xl shadow-lg p-8 prose max-w-none;
+    @apply bg-white rounded-2xl shadow-lg p-8 prose max-w-none mb-4;
 }
 .prev-next {
-    @apply flex flex-nowrap space-x-6 my-4;
+    @apply flex flex-nowrap space-x-6 mb-4;
     .prev,.next,.blank{
         @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition transform hover:scale-105;
         .deixis {

@@ -6,6 +6,7 @@
 @import "./partial/header";
 @import "./partial/footer";
 @import "./partial/sidebar";
+@import "./partial/comments";
 
 @import "./widget/post_item";
 

@@ -1,8 +1,7 @@
-
 <article class="page">
   <%- page.content %>
 </article>
 
-<div id="paginator">
-  <%-paginator()%>
-</div>
+<% if(page.comment!==false) { %> 
+  <%- partial('./_partial/comments.ejs') %>
+<% } %>

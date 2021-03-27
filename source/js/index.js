@@ -47,7 +47,7 @@ function initNavMenu() {
             animation: 'shift-away',
             // trigger: 'click',
             interactive: true,
-            interactiveDebounce: 120,
+            interactiveDebounce: 50,
             placement: isRootNav?'bottom-start':'right-start',
             arrow: isRootNav,
             // hideOnClick: false,

@@ -5,15 +5,47 @@
         @apply flex-none;
     }
     .content {
-        @apply p-3 text-sm overflow-x-hidden overflow-y-auto break-words;
+        @apply text-sm overflow-x-hidden overflow-y-auto break-words;
     }
     .toc-link {
-        @apply block py-0.5 text-gray-700;
+        transition: color,background-color .3s;
+        @apply block pr-2 py-1 text-gray-700 hover:bg-gray-100 relative;
+        &::before {
+            content: " ";
+            position:absolute;
+            transition: color,background-color .3s;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 6px;
+        }
+        &:hover::before {
+            @apply bg-gray-300;
+        }
     }
     .toc-activated>.toc-link{
-        @apply  text-blue-500;
+        @apply  text-blue-500 bg-blue-50;
+        &::before {
+            @apply bg-blue-400;
+        }
     }
-    .toc-child{
+    /* .toc-child{
+        @apply pl-4;
+    } */
+    .toc-level-2 .toc-link{
         @apply pl-4;
     }
+    .toc-level-3 .toc-link{
+        @apply pl-8;
+    }
+    .toc-level-4 .toc-link{
+        @apply pl-12;
+    }
+    .toc-level-5 .toc-link{
+        @apply pl-16;
+    }
+    .toc-level-6 .toc-link{
+        @apply pl-20;
+    }
+
 }

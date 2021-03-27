@@ -11,9 +11,6 @@
     @supports not (backdrop-filter: none){
         background-color: rgba(255,255,255,0.9);
     }
-    .nav-menu-item>.link:hover {
-        background-color: rgba(255,255,255,0.8);
-    }
     .content {
         @apply max-w-5xl m-auto h-16 flex flex-nowrap items-center;
         transition: max-width .5s;
@@ -33,15 +30,64 @@
             @apply h-16 flex-1;
             .nav-menu-list {
                 @apply flex flex-nowrap items-center;
-                .nav-menu-item>.link {
-                    @apply block px-4 h-16 leading-16;
+                .nav-menu-item {
+                    position: relative;
+                    &>.link {
+                        @apply block px-4 h-16 leading-16;
+                        position: relative;
+                        z-index: 20;
+                    }
+                    &:hover>.link {
+                        @apply text-gray-700 font-bold;
+                    }
+                    &::before {
+                        content: " ";
+                        position: absolute;
+                        z-index: 0;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        /* background-color: #fff; */
+                        border-radius: 0 0 0.5rem 0.5rem;
+                        transform: scale(1) translateY(-100%);
+                        transition: box-shadow,transform 0.3s;
+                        box-shadow: none;
+                        background-color: #F90;	
+                        background-image: repeating-linear-gradient(
+                            45deg,
+                            rgba(255, 255, 255, .2),
+                            rgba(255, 255, 255, .2) 0.5rem,
+                            transparent 0.5rem,
+                            transparent 1rem
+                        );
+                    }
+                    &:hover::before {
+                        transform: scale(1.2) translateY(0);
+                        box-shadow: 0 -1px 2px 1px rgba(0, 0, 0, 0.15);
+                    }
+                    &::after {
+                        content: " ";
+                        position: absolute;
+                        z-index: 10;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        border-radius: 0 0 0.3rem 0.3rem;
+                        background: #fff;
+                        margin: 0 4px 4px 4px;
+                        transform: scale(1) translateY(calc(-100% - 4px));
+                        transition: box-shadow,transform 0.3s;
+                    }
+                    &:hover::after {
+                        transform: scale(1.2) translateY(0);
+                        box-shadow: 0 -1px 2px 1px rgba(0, 0, 0, 0.15) inset;
+                    }
+                    .tippy-content {
+                        @apply p-0;
+                    }
                 }
-                .tippy-content {
-                    @apply p-0;
-                }
-                /* &>.nav-menu-item>.menu-list {
-                    @apply left-0 top-full;
-                } */
             }
         }
         .toolkit {
@@ -59,9 +105,6 @@
     @apply shadow-none text-gray-100;
     backdrop-filter: blur(0px);
     background-color: transparent;
-    .nav-menu-item>.link:hover {
-        background-color: rgba(255,255,255,0.2)!important;
-    }
     .content {
         max-width:calc(100% - 16rem);
     }
