@@ -460,7 +460,7 @@ function initSearch() {
         }
         return Modal;
     })();
-    var template = $(`<div id="site_search"><div class="form-group"><input type="search" id="search-input" name="q" placeholder="输入点什么吧~" autocomplete="off" class=""><button id="search-btn"><i class="ri-search-line"></i></button></div><div id="search-result-wrap"></div></div>`);
+    var template = $($('#site_search_template').html());
     $('.toolkit .search').on('click', function() {
         //防止打开多个搜索界面
         if($('.modal-layout.modal-open').length!=0)

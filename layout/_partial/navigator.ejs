@@ -43,7 +43,10 @@
             </ul>
         </div>
         <div class="toolkit">
+        <% if(theme.navigator.search) { %>
             <button class="search"><i class="iconfont icon-search"></i></button>
+            <%- partial('../_widget/search') %>
+        <% } %>
         </div>        
     </div>
 </div>
