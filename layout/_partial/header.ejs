@@ -7,31 +7,33 @@ if(cover.type=='none') {
 // console.log(page)
 %>
 <% if(is_home()) { %>
-    <div class="cover cover-full-screen" style="background-image:url('<%- url_for(cover.path) %>')">
+    <div class="cover cover-full-screen">
+        <div class="parallax">
+            <div class="layer" data-depth="0.2" style="background-image:url(<%- url_for('/assets/layer-1.png') %>)"></div>
+            <div class="layer" data-depth="0.4" style="background-image:url(<%- url_for('/assets/layer-2.png') %>)"></div>
+            <div class="layer" data-depth="1" style="background-image:url(<%- url_for('/assets/layer-3.png') %>)"></div>
+        </div>
         <div class="title"><%= config.title %></div>
         <div class="hitoko"><%= config.description %></div>
     </div>
-<% } else if(is_category()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
+<% } else { %>
+    <div class="cover">
+        <div class="parallax">
+            <div class="layer" data-depth="1" style="background-image:url('<%- url_for(cover.path) %>')"></div>
+        </div>
+
+        <% if(is_category()) { %>
         <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
-    </div>
-<% } else if(is_tag()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
+        <% } else if(is_tag()) { %>
         <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
-    </div>
-<% } else if(is_archive()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
+        <% } else if(is_archive()) { %>
         <div class="title">
             <i class="ri-archive-line"></i>
             <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
         </div>
-    </div>
-<% } else if(is_page()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
+        <% } else if(is_page()) { %>
         <div class="title"><%= page.title %></div>
-    </div>
-<% } else if(is_post()) { %>
-    <div class="cover" style="background-image:url('<%- url_for(cover.path) %>')">
+        <% } else if(is_post()) { %>
         <div class="title"><%= page.title %></div>
         <div class="meta">
             <div class="publish-date">
@@ -69,5 +71,6 @@ if(cover.type=='none') {
             </div>
             <% } %> 
         </div>
+        <% } %>
     </div>
 <% } %> 

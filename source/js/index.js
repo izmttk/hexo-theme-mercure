@@ -507,6 +507,21 @@ function anchorSmoothScroll() {
         },400);
     });
 }
+function initCoverParallax() {
+    var scene = $('#header .parallax').get(0);
+    parallaxInstance = new Parallax(scene, {
+        // selector: '.layer',
+        relativeInput: true,
+        // clipRelativeInput: true,
+        hoverOnly: true,
+        frictionX: 0.18,
+        frictionY: 0.18,
+        scalarX: 6,
+        scalarY: 6,
+        limitX: 50,
+        limitY: 50,
+    });
+}
 initNavbar();
 initNavMenu();
 initCategoryTree();
@@ -514,6 +529,7 @@ initSidebarToc();
 initSidebarTabs();
 initSearch();
 anchorSmoothScroll();
+initCoverParallax();
 // var $ = JQ;
 // $.fn.transitionEnd = function (callback) {
 //     // eslint-disable-next-line @typescript-eslint/no-this-alias
