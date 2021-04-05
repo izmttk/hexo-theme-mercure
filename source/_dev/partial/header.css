@@ -1,36 +1,107 @@
 #header {
     @apply mb-8;
     .cover {
-        @apply py-32 text-white flex flex-col flex-nowrap justify-center items-center;
+        @apply  flex justify-center items-center;
         position: relative;
         overflow: hidden;
         .title {
-            @apply text-5xl font-bold py-4;
-            * {
-                @apply align-middle;
+            @apply text-white text-5xl font-bold py-4;
+        }
+        .description {
+            color: #141f2c;
+            font-size: 0.875rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0.25rem;
+            margin: 1rem;
+            box-shadow: -4px -4px 0px 0px rgba(255, 255, 255, 0.45);
+            display:flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            align-items: center;
+            &:before, &:after {
+                content: "•";
+                padding: 0 1rem;
             }
-            z-index: 10;
         }
         .meta {
-            @apply py-4 text-sm;
+            @apply text-white py-4 text-sm;
             * {
                 @apply align-middle;
             }
-            z-index: 10;
         }
-        .parallax {
+        .indicator {
             position: absolute;
-            top: -50px;
-            left: -50px;
-            bottom: -50px;
-            right: -50px;
-            z-index: 0;
+            bottom: 0;
+            color: #fff;
+            animation: scroll-down 2s infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            span {
+                font-size: 1rem;
+            }
+            i {
+                font-size: 2rem;
+                line-height: 1.5rem;
+            }
+        }
+        @keyframes scroll-down {
+            0% {
+                opacity: .8;
+                transform: translateY(-0.5rem);
+            }
+            50% {
+                opacity: .4;
+                transform: translateY(-1.5rem);
+            }
+            100% {
+                opacity: .8;
+                transform: translateY(-0.5rem);
+            }
+        }
+        .parallax-content {
+            width: 100%;
+            height: 100%;
+            z-index: 10;
             .layer {
+                padding: 8rem 0;
                 width: 100%;
                 height: 100%;
+                display: flex !important;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .parallax-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 0;
+            .layer {
+                position: absolute !important;
+                top: -50px !important;
+                left: -50px !important;
+                bottom: -50px !important;
+                right: -50px !important;
+                /* width: 100%; */
+                /* height: 100%; */
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
+            }
+            &:after {
+                content: " ";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAKUlEQVQImU3IMREAIAgAwJfNkQCEsH8cijjpMf6vnXlQaIiJFx+omEBfmqIEZLe2jzcAAAAASUVORK5CYII=);
             }
         }
     }

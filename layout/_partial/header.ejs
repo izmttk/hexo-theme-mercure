@@ -8,69 +8,115 @@ if(cover.type=='none') {
 %>
 <% if(is_home()) { %>
     <div class="cover cover-full-screen">
-        <div class="parallax">
+        <div class="parallax-background">
             <div class="layer" data-depth="0.2" style="background-image:url(<%- url_for('/assets/layer-1.png') %>)"></div>
             <div class="layer" data-depth="0.4" style="background-image:url(<%- url_for('/assets/layer-2.png') %>)"></div>
             <div class="layer" data-depth="1" style="background-image:url(<%- url_for('/assets/layer-3.png') %>)"></div>
         </div>
-        <div class="title"><%= config.title %></div>
-        <div class="hitoko"><%= config.description %></div>
+        <div class="parallax-content">
+            <div class="layer" data-depth="1">
+                <div class="title">
+                    <% if(!theme.header.title) { %>
+                        <%= config.title %>
+                    <% } else { %>
+                        <%- theme.header.title %>
+                    <% } %>
+                </div>
+                <div class="description">
+                    <% if(!theme.header.description) { %>
+                        <%= config.description %>
+                    <% } else { %>
+                        <% if(isString(theme.header.description)) { %> 
+                            <span><%- theme.header.description %></span>
+                        <% } else if(isArray(theme.header.description)) { %>
+                            <% let len = theme.header.description.length; %> 
+                            <span><%- theme.header.description[Math.floor(Math.random()*len)] %></span>
+                        <% } else if(isObject(theme.header.description)) { %>
+                            <% if(theme.header.description.type === 'string') { %>
+                                <span><%- theme.header.description %></span>
+                            <% } else if(theme.header.description.type === 'list') { %>
+                                <% let len = theme.header.description.length; %> 
+                                <span><%- theme.header.description[Math.floor(Math.random()*len)] %></span>    
+                            <% } else if(theme.header.description.type === 'hitokoto') { %>
+                                <div class="hotokoto">
+                                    <span class="hitokoto-text"></span>
+                                    <span class="hitokoto-author"></span>                                    
+                                </div>
+                                <script async>
+                                    $.get('<%- theme.header.description.url?theme.header.description.url:'//v1.hitokoto.cn' %>',function(data){
+                                        $('#header .hitokoto-text').html(data.hitokoto);
+                                        $('#header .hitokoto-author').html('——'+data.from);
+                                    });
+                                </script>
+                            <% } %> 
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="indicator">
+            <span>SCROLL</span>
+            <i class="ri-arrow-down-s-line"></i>
+        </div>
     </div>
 <% } else { %>
     <div class="cover">
-        <div class="parallax">
+        <div class="parallax-background">
             <div class="layer" data-depth="1" style="background-image:url('<%- url_for(cover.path) %>')"></div>
         </div>
-
-        <% if(is_category()) { %>
-        <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
-        <% } else if(is_tag()) { %>
-        <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
-        <% } else if(is_archive()) { %>
-        <div class="title">
-            <i class="ri-archive-line"></i>
-            <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
+        <div class="parallax-content">
+            <div class="layer" data-depth="1">
+                <% if(is_category()) { %>
+                <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
+                <% } else if(is_tag()) { %>
+                <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
+                <% } else if(is_archive()) { %>
+                <div class="title">
+                    <i class="ri-archive-line"></i>
+                    <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
+                </div>
+                <% } else if(is_page()) { %>
+                <div class="title"><%= page.title %></div>
+                <% } else if(is_post()) { %>
+                <div class="title"><%= page.title %></div>
+                <div class="meta">
+                    <div class="publish-date">
+                        <i class="ri-calendar-line"></i>
+                        <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
+                    </div>
+                    <div class="update-date">
+                        <i class="ri-refresh-line"></i>
+                        <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
+                    </div>
+                    <% if(page.categories.length>0) { %> 
+                    <div class="category">
+                        <i class="ri-inbox-line"></i>
+                        <span>分类：</span>
+                        <% let cat_cnt = 0; %> 
+                        <% page.categories.each((category)=>{ %> 
+                        <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                        <%  cat_cnt++; if(cat_cnt!=page.categories.length) { %>
+                        <span>/</span>
+                        <% } %> 
+                        <% }) %>
+                    </div>
+                    <% } %>
+                    <% if(page.tags.length>0) { %> 
+                    <div class="tag">
+                        <i class="ri-price-tag-3-line"></i>
+                        <span>标签：</span>
+                        <% let tag_cnt = 0; %> 
+                        <% page.tags.each((tag)=>{ %> 
+                        <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+                        <%  tag_cnt++; if(tag_cnt!=page.tags.length) { %>
+                        <span>•</span>
+                        <% } %> 
+                        <% }) %>
+                    </div>
+                    <% } %> 
+                </div>
+                <% } %>
+            </div>
         </div>
-        <% } else if(is_page()) { %>
-        <div class="title"><%= page.title %></div>
-        <% } else if(is_post()) { %>
-        <div class="title"><%= page.title %></div>
-        <div class="meta">
-            <div class="publish-date">
-                <i class="ri-calendar-line"></i>
-                <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
-            </div>
-            <div class="update-date">
-                <i class="ri-refresh-line"></i>
-                <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
-            </div>
-            <% if(page.categories.length>0) { %> 
-            <div class="category">
-                <i class="ri-inbox-line"></i>
-                <span>分类：</span>
-                <% let cat_cnt = 0; %> 
-                <% page.categories.each((category)=>{ %> 
-                <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                <%  cat_cnt++; if(cat_cnt!=page.categories.length) { %>
-                <span>/</span>
-                <% } %> 
-                <% }) %>
-            </div>
-            <% } %>
-            <% if(page.tags.length>0) { %> 
-            <div class="tag">
-                <i class="ri-price-tag-3-line"></i>
-                <span>标签：</span>
-                <% let tag_cnt = 0; %> 
-                <% page.tags.each((tag)=>{ %> 
-                <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-                <%  tag_cnt++; if(tag_cnt!=page.tags.length) { %>
-                <span>•</span>
-                <% } %> 
-                <% }) %>
-            </div>
-            <% } %> 
-        </div>
-        <% } %>
     </div>
 <% } %> 

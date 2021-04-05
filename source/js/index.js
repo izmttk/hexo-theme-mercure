@@ -508,7 +508,7 @@ function anchorSmoothScroll() {
     });
 }
 function initCoverParallax() {
-    var scene = $('#header .parallax').get(0);
+    var scene = $('#header .parallax-background').get(0);
     parallaxInstance = new Parallax(scene, {
         // selector: '.layer',
         relativeInput: true,
@@ -521,6 +521,19 @@ function initCoverParallax() {
         limitX: 50,
         limitY: 50,
     });
+    var content = $('#header .parallax-content').get(0);
+    parallaxInstance2 = new Parallax(content, {
+        // selector: '.content',
+        relativeInput: true,
+        // inputElement: '.parallax-background',
+        // clipRelativeInput: true,
+        invertX: false,
+        invertY: false,
+        hoverOnly: true,
+        scalarX: 5,
+        scalarY: 5,
+    });
+
 }
 initNavbar();
 initNavMenu();
