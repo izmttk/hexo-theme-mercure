@@ -1,122 +1,147 @@
 <%- partial('../_partial/navigator') %>
-<%
-let cover = getCover(page);
-if(cover.type=='none') {
-    cover.path = theme.header.cover;
-}
-// console.log(page)
-%>
-<% if(is_home()) { %>
-    <div class="cover cover-full-screen">
-        <div class="parallax-background">
-            <div class="layer" data-depth="0.2" style="background-image:url(<%- url_for('/assets/layer-1.png') %>)"></div>
-            <div class="layer" data-depth="0.4" style="background-image:url(<%- url_for('/assets/layer-2.png') %>)"></div>
-            <div class="layer" data-depth="1" style="background-image:url(<%- url_for('/assets/layer-3.png') %>)"></div>
+<div id="header">
+    <%_ if(is_home()) { _%>
+    <div class="cover home-cover" style="height:<%- theme.header.height.home %>">
+        <!-- Header Background Section -->
+        <%_ if(theme.header.cover.type=='none') { _%>
+        <%_ } else if(theme.header.cover.type=='normal') { _%>
+        <div class="background" style="background-image:url(<%- url_for(theme.header.cover.image) %>)"></div>
+        <%_ } else if(theme.header.cover.type=='random') { _%>
+        <div class="background">
+            <script async>
+                var bgList = [<%- theme.header.cover.image.toString() %>];
+                $('#header .cover .background').css('background-image', 'url(<%- url_for(bgList[Math.floor(Math.random()*bgList.length)]) %>)');
+                $('#header .cover .background').empty();
+            </script>
         </div>
-        <div class="parallax-content">
+        <%_ } else if(theme.header.cover.type=='custom') { _%>
+        <div class="background" style="background:<%- theme.header.cover.image %>"></div>
+        <%_ } else if(theme.header.cover.type=='parallax') { _%>
+        <div class="background parallax-background">
+            <%_ theme.header.cover.image.forEach(image => { _%> 
+            <div class="layer" data-depth="<%- image.depth %>" style="background-image:url(<%- url_for(image.url) %>)"></div>
+            <%_ }) _%> 
+        </div>
+        <%_ } _%>
+        <!-- Header Title & Description Section -->
+        <%_ if(theme.header.cover.type=='parallax') { _%>
+        <div class="content parallax-content">
             <div class="layer" data-depth="1">
-                <div class="title">
-                    <% if(!theme.header.title) { %>
-                        <%= config.title %>
-                    <% } else { %>
-                        <%- theme.header.title %>
-                    <% } %>
-                </div>
+        <%_ } else { _%>
+        <div class="content">
+        <%_ } _%> 
+                <div class="title"><%- theme.header.title %></div>
                 <div class="description">
-                    <% if(!theme.header.description) { %>
-                        <%= config.description %>
-                    <% } else { %>
-                        <% if(isString(theme.header.description)) { %> 
-                            <span><%- theme.header.description %></span>
-                        <% } else if(isArray(theme.header.description)) { %>
-                            <% let len = theme.header.description.length; %> 
-                            <span><%- theme.header.description[Math.floor(Math.random()*len)] %></span>
-                        <% } else if(isObject(theme.header.description)) { %>
-                            <% if(theme.header.description.type === 'string') { %>
-                                <span><%- theme.header.description %></span>
-                            <% } else if(theme.header.description.type === 'list') { %>
-                                <% let len = theme.header.description.length; %> 
-                                <span><%- theme.header.description[Math.floor(Math.random()*len)] %></span>    
-                            <% } else if(theme.header.description.type === 'hitokoto') { %>
-                                <div class="hotokoto">
-                                    <span class="hitokoto-text"></span>
-                                    <span class="hitokoto-author"></span>                                    
-                                </div>
-                                <script async>
-                                    $.get('<%- theme.header.description.url?theme.header.description.url:'//v1.hitokoto.cn' %>',function(data){
-                                        $('#header .hitokoto-text').html(data.hitokoto);
-                                        $('#header .hitokoto-author').html('——'+data.from);
-                                    });
-                                </script>
-                            <% } %> 
-                        <% } %>
-                    <% } %>
+                    <%_ if(theme.header.description.type=='normal') { _%>
+                    <span><%- theme.header.description.content %></span>
+                    <%_ } else if(theme.header.description.type=='random') { _%>
+                    <script async>
+                        var descList = [<%- theme.header.description.content.toString() %>];
+                        $('#header .description').html('<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>');
+                    </script>
+                    <%_ } else if(theme.header.description.type=='api') { _%>
+                    <script async>
+                        $.get('<%- theme.header.description.url %>',function(data){
+                            var text = $(`<span class="hitokoto-text">${data['<%- theme.header.description.text_field %>']}</span>`);
+                            var author = $(`<span class="hitokoto-author"> —— ${data['<%- theme.header.description.from_field %>']}</span>`);
+                            var hitokoto = $('<span class="hotokoto"></span>').append(text, author);
+                            $('#header .description').empty().append(hitokoto);
+                        });
+                    </script>
+                    <%_ } _%>
                 </div>
+        <%_ if(theme.header.cover.type=='parallax') { _%>
             </div>
         </div>
-        <div class="indicator">
+        <%_ } else { _%>
+        </div>
+        <%_ } _%> 
+        <%_ if(theme.header.height.home=='100vh') { _%>
+        <div class="indicator" <% if(theme.header.bottom_effect!='none') { %>style="padding-bottom:3rem"<% } %> >
             <span>SCROLL</span>
             <i class="ri-arrow-down-s-line"></i>
         </div>
+        <%_ } _%>
     </div>
-<% } else { %>
-    <div class="cover">
-        <div class="parallax-background">
-            <div class="layer" data-depth="1" style="background-image:url('<%- url_for(cover.path) %>')"></div>
-        </div>
-        <div class="parallax-content">
-            <div class="layer" data-depth="1">
-                <% if(is_category()) { %>
-                <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
-                <% } else if(is_tag()) { %>
-                <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
-                <% } else if(is_archive()) { %>
-                <div class="title">
-                    <i class="ri-archive-line"></i>
-                    <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
-                </div>
-                <% } else if(is_page()) { %>
-                <div class="title"><%= page.title %></div>
-                <% } else if(is_post()) { %>
-                <div class="title"><%= page.title %></div>
-                <div class="meta">
-                    <div class="publish-date">
-                        <i class="ri-calendar-line"></i>
-                        <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
-                    </div>
-                    <div class="update-date">
-                        <i class="ri-refresh-line"></i>
-                        <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
-                    </div>
-                    <% if(page.categories.length>0) { %> 
-                    <div class="category">
-                        <i class="ri-inbox-line"></i>
-                        <span>分类：</span>
-                        <% let cat_cnt = 0; %> 
-                        <% page.categories.each((category)=>{ %> 
-                        <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                        <%  cat_cnt++; if(cat_cnt!=page.categories.length) { %>
-                        <span>/</span>
-                        <% } %> 
-                        <% }) %>
-                    </div>
-                    <% } %>
-                    <% if(page.tags.length>0) { %> 
-                    <div class="tag">
-                        <i class="ri-price-tag-3-line"></i>
-                        <span>标签：</span>
-                        <% let tag_cnt = 0; %> 
-                        <% page.tags.each((tag)=>{ %> 
-                        <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-                        <%  tag_cnt++; if(tag_cnt!=page.tags.length) { %>
-                        <span>•</span>
-                        <% } %> 
-                        <% }) %>
-                    </div>
-                    <% } %> 
-                </div>
-                <% } %>
+    <%_ } else { _%>
+    <%_ let cover = getCover(page); _%>
+    <div class="cover" style="height:<%- theme.header.height[page.layout] ?? theme.header.height.default %>">
+        <%_ if(cover.type == 'none') { _%>
+        <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>"></div>
+        <%_ } else { _%> 
+        <div class="background" style="background-image:url('<%- url_for(cover.path) %>')"></div>
+        <%_ } _%> 
+        <div class="content">
+            <%_ if(is_category()) { _%>
+            <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
+            <%_ } else if(is_tag()) { _%>
+            <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
+            <%_ } else if(is_archive()) { _%>
+            <div class="title">
+                <i class="ri-archive-line"></i>
+                <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
             </div>
+            <%_ } else if(is_page()) { _%>
+            <div class="title"><%= page.title %></div>
+            <%_ } else if(is_post()) { _%>
+            <div class="title"><%= page.title %></div>
+            <div class="meta">
+                <div class="publish-date">
+                    <i class="ri-calendar-line"></i>
+                    <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
+                </div>
+                <div class="update-date">
+                    <i class="ri-refresh-line"></i>
+                    <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
+                </div>
+                <%_ if(page.categories.length>0) { _%> 
+                <div class="category">
+                    <i class="ri-inbox-line"></i>
+                    <span>分类：</span>
+                    <%_ let cat_cnt = 0; _%> 
+                    <%_ page.categories.each((category)=>{ _%> 
+                    <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                    <%_  cat_cnt++; if(cat_cnt!=page.categories.length) { _%>
+                    <span>/</span>
+                    <%_ } _%> 
+                    <%_ }) _%>
+                </div>
+                <%_ } _%>
+                <%_ if(page.tags.length>0) { _%> 
+                <div class="tag">
+                    <i class="ri-price-tag-3-line"></i>
+                    <span>标签：</span>
+                    <%_ let tag_cnt = 0; _%> 
+                    <%_ page.tags.each((tag)=>{ _%> 
+                    <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+                    <%_  tag_cnt++; if(tag_cnt!=page.tags.length) { _%>
+                    <span>•</span>
+                    <%_ } _%> 
+                    <%_ }) _%>
+                </div>
+                <%_ } _%> 
+            </div>
+            <%_ } _%>
         </div>
     </div>
-<% } %> 
+    <%_ } _%>
+    <%_ if(theme.header.bottom_effect=='cloud') { _%>
+    <div class="cloud-bottom"></div>
+    <%_ } else if(theme.header.bottom_effect=='gradient') { _%>
+    <div class="gradient-bottom"></div>
+    <%_ } else if(theme.header.bottom_effect=='waves') { _%>
+    <div class="waves-bottom">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="parallax">
+                <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                <use xlink:href="#gentle-wave" x="48" y="7" fill="#f5f5fa" />
+            </g>
+        </svg>
+    </div>
+    <%_ } _%>
+</div>

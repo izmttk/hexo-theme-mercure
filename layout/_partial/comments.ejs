@@ -1,3 +1,4 @@
+<%_ if(page.comments !== false) { _%>
 <div class="comments">
     <% if(theme.comments.disqus.enable) { %>
     <%- partial('./comments/disqus.ejs')  %> 
@@ -7,3 +8,4 @@
     <span>评论姬被捂住了嘴...</span>
     <% } %>  
 </div>
+<%_ } _%> 

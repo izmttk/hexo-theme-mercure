@@ -509,6 +509,7 @@ function anchorSmoothScroll() {
 }
 function initCoverParallax() {
     var scene = $('#header .parallax-background').get(0);
+    if (scene)
     parallaxInstance = new Parallax(scene, {
         // selector: '.layer',
         relativeInput: true,
@@ -522,6 +523,7 @@ function initCoverParallax() {
         limitY: 50,
     });
     var content = $('#header .parallax-content').get(0);
+    if (content)
     parallaxInstance2 = new Parallax(content, {
         // selector: '.content',
         relativeInput: true,

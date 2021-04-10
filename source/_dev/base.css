@@ -106,3 +106,35 @@ body *::-webkit-scrollbar-thumb:vertical { /*垂直滚动条的样式*/
 body *::-webkit-scrollbar-thumb:hover { /*滚动条的hover样式*/
 	background-color: #9f9f9f;
 }
+
+
+.bg-gradient-0 {
+    background-image: linear-gradient( 135deg, #EE9AE5 10%, #5961F9 100%);
+}
+.bg-gradient-1 {
+    background-image: linear-gradient( 135deg, #FCCF31 10%, #F55555 100%);
+}
+.bg-gradient-2 {
+    background-image: linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%);
+}
+.bg-gradient-3 {
+    background-image: linear-gradient( 135deg, #79F1A4 10%, #0E5CAD 100%);
+}
+.bg-gradient-4 {
+    background-image: linear-gradient( 135deg, #FFAA85 10%, #B3315F 100%);
+}
+.bg-gradient-5 {
+    background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);
+}
+.bg-gradient-6 {
+    background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
+}
+.bg-gradient-7 {
+    background-image: linear-gradient( 135deg, #FEB692 10%, #EA5455 100%);
+}
+.bg-gradient-8 {
+    background-image: linear-gradient( 135deg, #ABDCFF 10%, #0396FF 100%);
+}
+.bg-gradient-9 {
+    background-image: linear-gradient( 135deg, #FEC163 10%, #DE4313 100%);
+}

@@ -1,6 +1,7 @@
 <%# 引入变量：post对象%> 
 <% 
 let cover = getCover(post);
+if(cover.type=='left'||cover.type=='right')
 cover.type=index%2==0?'left':'right';
 %> 
 <div class="post-item
@@ -9,62 +10,63 @@ cover.type=index%2==0?'left':'right';
 <% } else if(cover.type=='right'){ %> right-cover
 <% } else if(cover.type=='fill'){ %> fill-cover"
 <% } %>">
-  <% if(cover.type=='left'||cover.type=='right') {%> 
-  <div class="post-cover">
-    <a href="<%= url_for(post.path) %>">
-        <%- image_tag(url_for(cover.path),{
-            alt: post.title,
-            class: 'cover-img'
-        }) %>
-    </a>
-  </div>
-  <% } %>
-  <div class="post-info">
-      <%# 文章信息 %>
-      <div class="post-meta">
-          <%# 发布日期 %>
-          <span class="post-date">
-            <i class="iconfont icon-calendar"></i>
-            <%= post.date.locale(config.language).format('ll') %>
-          </span>
-          <%# 文章分类 %>
-          <span class="post-category">
-            <% if(post.categories.length>0) { %>
-            <i class="iconfont icon-inbox"></i>
-            <% let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; %>
-              <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-              <% if(cat_cnt!=post.categories.length) { %>
-              <span>•</span>
-              <% }
-              })
-            } %>
-          </span>
-          <%# 文章标签 %>
-          <span class="post-tag">
-            <% if(post.tags.length>0) { %>
-            <i class="iconfont icon-tag"></i>
-            <% let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; %>
-              <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-              <% if(tag_cnt!=post.tags.length) { %>
-              <span>•</span>
-              <% }
-              })
-            } %>
-          </span>
-      </div>
-      <%# 文章标题 %>
-      <div class="post-title">
-        <a href="<%= url_for(post.path) %>"><%= post.title %></a>
-      </div>
-      <%# 文章摘要 %>
-      <div class="post-excerpt"><%= post.excerpt %></div>
-  </div>
-  <div class="background">
-    <% if(cover.type!='none') {%>
-      <%- image_tag(url_for(cover.path),{
-          alt: post.title,
-          class: 'background-img'
-      }) %>
+    <% if(cover.type=='left'||cover.type=='right') { %> 
+    <div class="post-cover">
+        <a href="<%= url_for(post.path) %>">
+            <%- image_tag(url_for(cover.path),{
+                alt: post.title,
+                class: 'cover-img'
+            }) %>
+        </a>
+    </div>
+    <% } %>
+    <div class="post-info">
+        <%# 文章信息 %>
+        <div class="post-meta">
+            <%# 发布日期 %>
+            <span class="post-date">
+                <i class="iconfont icon-calendar"></i>
+                <%= post.date.locale(config.language).format('ll') %>
+            </span>
+            <%# 文章分类 %>
+            <span class="post-category">
+                <% if(post.categories.length>0) { %>
+                <i class="iconfont icon-inbox"></i>
+                <% let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; %>
+                  <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                  <% if(cat_cnt!=post.categories.length) { %>
+                  <span>•</span>
+                  <% }
+                  })
+                } %>
+            </span>
+            <%# 文章标签 %>
+            <span class="post-tag">
+                <% if(post.tags.length>0) { %>
+                <i class="iconfont icon-tag"></i>
+                <% let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; %>
+                  <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+                  <% if(tag_cnt!=post.tags.length) { %>
+                  <span>•</span>
+                  <% }
+                  })
+                } %>
+            </span>
+        </div>
+        <%# 文章标题 %>
+        <div class="post-title">
+            <a href="<%= url_for(post.path) %>"><%= post.title %></a>
+        </div>
+        <%# 文章摘要 %>
+        <div class="post-excerpt"><%= post.excerpt %></div>
+    </div>
+    <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>">
+      <% if(cover.type!='none') {%>
+            <%- image_tag(url_for(cover.path),{
+                alt: post.title,
+                class: 'background-img'
+            }) %>
       <% } %>
-  </div>
+
+    </div>
 </div>

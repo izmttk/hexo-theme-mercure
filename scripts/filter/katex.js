@@ -221,19 +221,19 @@ const renderMathInElement = function(elem, options) {
 
     renderElem(elem, optionsCopy);
 };
-hexo.extend.filter.register('after_post_render', function(data) {
-    if(this.theme.config.plugins.katex) {
-        document = new JSDOM(data.content).window.document;
-        // console.log(document.body.childNodes.length)
-        renderMathInElement(document.body, {
-            delimiters: [
-                {left: '$$', right: '$$', display: true},
-                {left: '$', right: '$', display: false},
-                {left: '\\(', right: '\\)', display: false},
-                {left: '\\[', right: '\\]', display: true}
-            ]
-        });
-        data.content = document.body.innerHTML;
-        return data;
-    }
-})
+// hexo.extend.filter.register('after_post_render', function(data) {
+//     if(this.theme.config.plugins.katex) {
+//         document = new JSDOM(data.content).window.document;
+//         // console.log(document.body.childNodes.length)
+//         renderMathInElement(document.body, {
+//             delimiters: [
+//                 {left: '$$', right: '$$', display: true},
+//                 {left: '$', right: '$', display: false},
+//                 {left: '\\(', right: '\\)', display: false},
+//                 {left: '\\[', right: '\\]', display: true}
+//             ]
+//         });
+//         data.content = document.body.innerHTML;
+//         return data;
+//     }
+// })

@@ -1,24 +1,23 @@
-<%  let flatMenu = (menu) => { %>
+<%_  let flatMenu = (menu) => { %>
     <ul class="menu-list">
-    <% menu.forEach((item) => { %>
-        <%# 分割线 %> 
-        <% if(item === 'divider') { %> 
-            <li class="menu-divider"></li>
-        <% } else { %>
-            <% let cascade = item.submenu&&item.submenu.length>0 %> 
-            <li class="menu-item">
-                <% if(item.url) { %> 
-                    <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
-                <% } else { %>
-                    <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
-                <% } %>
-                <%# 递归展开子菜单 %> 
-                <% if(cascade) flatMenu(item.submenu) %>
-            </li>
-        <% } %>
-    <% }) %>
+    <%_ menu.forEach((item) => { _%>
+        <%_ if(item === 'divider') { _%> 
+        <li class="menu-divider"></li>
+        <%_ } else { _%>
+        <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
+        <li class="menu-item">
+            <%_ if(item.url) { _%> 
+            <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
+            <%_ } else { _%>
+            <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
+            <%_ } _%>
+            <%# 递归展开子菜单 _%>
+            <%_ if(cascade) flatMenu(item.submenu) _%>
+        </li>
+        <%_ } _%>
+    <%_ }) _%>
     </ul>
-<% } %> 
+<%_ } _%>
 <div class="navigator">
     <div class="content">
         <div class="logo">
@@ -26,24 +25,24 @@
         </div>
         <div class="menu">
             <ul class="nav-menu-list">
-                <% theme.navigator.menu.forEach((item) => { %>
-                    <% let cascade = item.submenu&&item.submenu.length>0 %> 
-                    <li class="nav-menu-item">
-                        <% if(item.url) { %> 
-                            <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
-                        <% } else { %>
-                            <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
-                        <% } %>
-                        <% if(cascade) flatMenu(item.submenu) %>
-                    </li>
-                <% }) %> 
+            <%_ theme.navigator.menu.forEach((item) => { _%>
+                <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
+                <li class="nav-menu-item">
+                    <%_ if(item.url) { _%> 
+                    <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
+                    <%_ } else { _%>
+                    <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
+                    <%_ } _%>
+                    <%_ if(cascade) flatMenu(item.submenu) _%>
+                </li>
+            <%_ }) _%> 
             </ul>
         </div>
         <div class="toolkit">
-        <% if(theme.navigator.search) { %>
+        <%_ if(theme.navigator.search) { _%>
             <button class="search"><i class="iconfont icon-search"></i></button>
             <%- partial('../_widget/search') %>
-        <% } %>
+        <%_ } _%>
         </div>        
     </div>
 </div>
