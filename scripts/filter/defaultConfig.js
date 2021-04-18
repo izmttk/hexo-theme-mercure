@@ -22,15 +22,16 @@ function headerConfig(config) {
             type: 'normal',
             content: siteConfig.description,
         },
+        scroll_indicator: config.header?.scroll_indicator ?? true,
         bottom_effect: config.header?.bottom_effect ?? 'none'
     }
-    if(typeof header.enable !== 'boolean') {
+    if (typeof header.enable !== 'boolean') {
         header.enable = true;
     }
-    if(typeof header.height === 'object' && !Array.isArray(header.height)) {
-        for(let key in header.height) {
-            if(header.height[key] == 'full' || header.height[key] == 'fullscreen')
-            header.height[key] = '100vh';
+    if (typeof header.height === 'object' && !Array.isArray(header.height)) {
+        for (let key in header.height) {
+            if (header.height[key] == 'full' || header.height[key] == 'fullscreen')
+                header.height[key] = '100vh';
         }
         let height = {
             home: header.height.default,
@@ -43,7 +44,7 @@ function headerConfig(config) {
         Object.assign(height, header.height);
         header.height = height;
     }
-    if(typeof header.height === 'string') {
+    if (typeof header.height === 'string') {
         header.height = {
             home: header.height,
             post: header.height,
@@ -57,7 +58,7 @@ function headerConfig(config) {
     return header;
 }
 
-hexo.extend.filter.register('template_locals', function(locals) {
+hexo.extend.filter.register('template_locals', function (locals) {
     let localsCopy = Object.assign({}, locals);
     localsCopy.theme = themeConfig(localsCopy.theme);
     return localsCopy;

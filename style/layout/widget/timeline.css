@@ -28,38 +28,52 @@
             }
         }
     }
-    .timestamp:nth-child(7n+1) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 1) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #ff4e6a;
         }
     }
-    .timestamp:nth-child(7n+2) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 2) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #ff761e;
         }
     }
-    .timestamp:nth-child(7n+3) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 3) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #ffb900;
         }
     }
-    .timestamp:nth-child(7n+4) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 4) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #33d57a;
         }
     }
-    .timestamp:nth-child(7n+5) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 5) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #00dbff;
         }
     }
-    .timestamp:nth-child(7n+6) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 6) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #1a98ff;
         }
     }
-    .timestamp:nth-child(7n+7) {
-        a, &+.month-archive a, &+.month-archive a:before {
+    .timestamp:nth-child(7n + 7) {
+        a,
+        & + .month-archive a,
+        & + .month-archive a:before {
             background-color: #9090ff;
         }
     }

@@ -1,33 +1,30 @@
 .navigator {
-    @apply fixed w-full h-16 z-40 top-0 shadow-sm text-gray-700;
-    backdrop-filter: blur(10px);
-    transition-property: top, height, background-color, color, box-shadow backdrop-filter;
+    @apply fixed w-full h-16 z-40 top-0 text-gray-700;
+    transition-property: top, height, background-color, color,
+        box-shadow backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 700ms;
     will-change: backdrop-filter;
-    @supports (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.7);
-    }
-    @supports not (backdrop-filter: none){
-        background-color: rgba(255,255,255,0.9);
-    }
     .content {
         @apply max-w-5xl m-auto h-full flex flex-nowrap items-center;
-        transition: max-width .5s;
-        .logo{
+        transition: max-width 0.5s;
+        .nav-logo {
             @apply px-5 -ml-8;
             a {
                 @apply flex flex-nowrap h-16 leading-16 items-center;
-                img, svg {
+                img,
+                svg {
                     @apply h-10;
                     fill: currentColor;
                 }
-                span,a,p {
+                span,
+                a,
+                p {
                     @apply text-lg ml-2;
                 }
             }
         }
-        .menu {
+        .nav-menu {
             @apply h-16 flex-1;
             font-family: "Noto Serif SC", ui-serif, serif;
             font-weight: bold;
@@ -35,21 +32,18 @@
                 @apply flex flex-nowrap items-center;
                 .nav-menu-item {
                     position: relative;
-                    &>.link {
+                    >.link {
                         @apply block px-4 h-16 text-lg leading-16;
                         position: relative;
                         z-index: 20;
                     }
-                    &:hover>.link {
-                    }
-                    .tippy-content {
-                        @apply p-0;
+                    &:hover > .link {
                     }
                 }
             }
         }
-        .toolkit {
-            @apply px-5 -mr-8 ;
+        .nav-toolkit {
+            @apply px-5 -mr-8;
             .search {
                 @apply w-10 h-10 rounded-full bg-blue-400 outline-none text-white;
             }
@@ -57,28 +51,23 @@
     }
 }
 .navigator.nav-hide {
-    @apply -top-16;
+    @apply -top-16 shadow-none;
 }
 .navigator.nav-top {
     @apply h-20 shadow-none text-gray-100;
     backdrop-filter: blur(0px);
     background-color: transparent;
     .content {
-        max-width:calc(100% - 16rem);
+        max-width: calc(100% - 16rem);
     }
 }
-
-.menu-list {
-    /* @apply absolute border left-full top-0 py-2 bg-white rounded-lg shadow-xl; */
-    @apply  py-2;
-    min-width: 9rem;
-}
-.menu-item a {
-    @apply inline-block w-full h-full px-4 py-1.5 hover:bg-gray-100;
-}
-.menu-divider {
-    @apply border-b my-1;
-}
-.menu-item {
-    @apply relative;
+.navigator.nav-fix {
+    @apply shadow-sm;
+    backdrop-filter: blur(10px);
+    @supports (backdrop-filter: none) {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    @supports not (backdrop-filter: none) {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
 }

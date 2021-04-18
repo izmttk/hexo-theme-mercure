@@ -4,12 +4,12 @@
         a {
             @apply inline-block	rounded shadow-lg mr-1.25 mb-1.25 overflow-hidden;
             @apply text-gray-600 px-2 text-xs h-6.5 leading-6.5;
-            box-shadow: 0 5px 8px 0 rgba(31,45,61,.1);
+            box-shadow: 0 5px 8px 0 rgba(31, 45, 61, 0.1);
             background-color: white;
             transform: translateY(0);
-            transition-property: color,box-shadow,background-color,transform;
+            transition-property: color, box-shadow, background-color, transform;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: .15s;
+            transition-duration: 0.15s;
             .tag-heat {
                 @apply inline-block -mr-2 ml-2 w-5 h-6.5 text-center;
                 transition: inherit;
@@ -24,7 +24,7 @@
             &.level-0 {
                 .tag-heat {
                     color: #409eff;
-                    background-color: rgba(64,158,255,.06);
+                    background-color: rgba(64, 158, 255, 0.06);
                 }
             }
             &.level-0:hover {
@@ -38,7 +38,7 @@
             &.level-1 {
                 .tag-heat {
                     color: #13ce66;
-                    background-color: rgba(19,206,102,.06);                    
+                    background-color: rgba(19, 206, 102, 0.06);
                 }
             }
             &.level-1:hover {
@@ -52,7 +52,7 @@
             &.level-2 {
                 .tag-heat {
                     color: #ff4949;
-                    background-color: rgba(255,73,73,.06);
+                    background-color: rgba(255, 73, 73, 0.06);
                 }
             }
             &.level-2:hover {

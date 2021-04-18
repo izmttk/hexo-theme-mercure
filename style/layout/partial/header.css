@@ -2,7 +2,7 @@
     @apply mb-8;
     position: relative;
     .cover {
-        @apply  flex justify-center items-center;
+        @apply flex justify-center items-center;
         position: relative;
         overflow: hidden;
         .content {
@@ -29,12 +29,13 @@
                 padding: 0.25rem;
                 margin: 1rem;
                 box-shadow: -4px -4px 0px 0px rgba(255, 255, 255, 0.45);
-                display:flex;
+                display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 justify-content: space-around;
                 align-items: center;
-                &:before, &:after {
+                &:before,
+                &:after {
                     content: "•";
                     padding: 0 1rem;
                 }
@@ -90,15 +91,15 @@
         }
         @keyframes scroll-down {
             0% {
-                opacity: .8;
+                opacity: 0.8;
                 transform: translateY(-0.5rem);
             }
             50% {
-                opacity: .4;
+                opacity: 0.4;
                 transform: translateY(-1.5rem);
             }
             100% {
-                opacity: .8;
+                opacity: 0.8;
                 transform: translateY(-0.5rem);
             }
         }
@@ -135,41 +136,42 @@
         }
     }
     .gradient-bottom {
-        height:60px;
-        position:absolute;
-        left:0;
-        right:0;
-        bottom:0;
-        z-index:20;
+        height: 60px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
         box-shadow: inset 0 -72px 20px -44px #f5f5fa;
     }
     .cloud-bottom {
-        height:60px;
-        position:absolute;
-        left:0;
-        right:0;
-        bottom:0;
-        z-index:20;
+        height: 60px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
         background: url(/assets/cloud_border.svg) 50% 2px/688px 60px repeat-x;
-        filter: drop-shadow(-10px -6px 0px rgba(255,255,255,.5));
+        filter: drop-shadow(-10px -6px 0px rgba(255, 255, 255, 0.5));
     }
     .waves-bottom {
-        height:60px;
-        position:absolute;
-        left:0;
-        right:0;
-        bottom:0;
-        z-index:20;        
+        height: 60px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
         .waves {
             width: 100%;
             height: 60px;
-            margin-bottom:-7px; /*Fix for safari gap*/
-            min-height:60px;
-            max-height:150px;
+            margin-bottom: -7px; /*Fix for safari gap*/
+            min-height: 60px;
+            max-height: 150px;
         }
         /* Animation */
         .parallax > use {
-            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+            animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5)
+                infinite;
         }
         .parallax > use:nth-child(1) {
             animation-delay: -2s;
@@ -189,10 +191,10 @@
         }
         @keyframes move-forever {
             0% {
-            transform: translate3d(-90px,0,0);
+                transform: translate3d(-90px, 0, 0);
             }
-            100% { 
-            transform: translate3d(85px,0,0);
+            100% {
+                transform: translate3d(85px, 0, 0);
             }
         }
     }

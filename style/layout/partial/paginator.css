@@ -2,21 +2,21 @@
     @apply w-full flex justify-center my-5;
     .paginator-group {
         @apply flex flex-nowrap justify-center;
-        .page-number, .extend {
+        .page-number,
+        .extend {
             @apply w-10 h-10 leading-10 text-center align-middle border border-gray-300 bg-white;
         }
         .page-number.current {
             @apply bg-blue-500 text-white border-none;
         }
-        >:first-child {
-            @apply rounded-tl-md rounded-bl-md ;
+        > :first-child {
+            @apply rounded-tl-md rounded-bl-md;
         }
-        >:last-child {
-            @apply rounded-tr-md rounded-br-md ;
+        > :last-child {
+            @apply rounded-tr-md rounded-br-md;
         }
         .space {
             @apply w-12 h-10 leading-10 text-center align-middle;
         }
     }
-
 }

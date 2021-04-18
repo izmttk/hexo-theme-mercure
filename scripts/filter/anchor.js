@@ -8,7 +8,7 @@ hexo.extend.filter.register('after_post_render', data => {
   const $ = cheerio.load(data.content, { decodeEntities: false });
   const headings = $('h1, h2, h3, h4, h5, h6');
 
-  headings.each(function(index, element) {
+  headings.each(function (index, element) {
     let id = slugize($(element).text());
     $(element).attr('id', encodeURI(id));
   });

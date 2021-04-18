@@ -2,19 +2,20 @@
     @apply w-68 flex-none;
     .sidebar-content {
         @apply top-0;
-        &>.widget {
+        & > .widget {
             @apply m-4;
         }
     }
     .tabs {
         @apply h-screen flex flex-col;
-        transition-property: padding;
+        transition-property: padding-top;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 700ms;
         .tabs-header {
             @apply m-4 flex-none mb-2 p-1.5 flex rounded-lg relative overflow-hidden;
-            box-shadow: 0 1px rgba(255,255,255,.5), 0 8px 13px rgba(0,0,0,.15) inset;
-            background-color: rgba(0,0,0,.025);
+            box-shadow: 0 1px rgba(255, 255, 255, 0.5),
+                0 8px 13px rgba(0, 0, 0, 0.15) inset;
+            background-color: rgba(0, 0, 0, 0.025);
             .tab {
                 @apply flex-auto text-center text-sm font-bold p-1 z-10;
             }
@@ -27,7 +28,7 @@
             .tab-panel {
                 @apply absolute top-0 bottom-0 w-full overflow-x-visible;
                 will-change: transform;
-                .tab-panel-content{
+                .tab-panel-content {
                 }
             }
         }
@@ -63,8 +64,8 @@
                 position: absolute;
                 width: 40px;
                 height: 11px;
-                background: #FA7298;
-                opacity: .25;
+                background: #fa7298;
+                opacity: 0.25;
                 pointer-events: none;
                 border-radius: 15px;
                 left: 0.6rem;
@@ -78,5 +79,4 @@
             @apply border-none;
         }
     }
-    
 }

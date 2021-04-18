@@ -10,7 +10,7 @@
     .form-group {
         @apply mx-16 mt-48 mb-4 h-12 rounded-full bg-white flex items-center shadow-lg;
         #search-input {
-            @apply  bg-transparent outline-none ml-5 mr-2 text-lg flex-auto;
+            @apply bg-transparent outline-none ml-5 mr-2 text-lg flex-auto;
         }
         #search-btn {
             @apply bg-blue-500 rounded-full text-white h-10 w-10 mr-1 leading-10 shadow flex-none;
@@ -22,7 +22,7 @@
         #search-result {
             @apply bg-white p-3 rounded-lg overflow-y-auto;
             height: 100%;
-            animation: fadeInUp100px .5s;
+            animation: fadeInUp100px 0.5s;
             -webkit-overflow-scrolling: touch;
             .search-result-list {
                 @apply space-y-3;
@@ -54,7 +54,7 @@
 }
 
 .modal-layout {
-    transition: backdrop-filter .5s;
+    transition: backdrop-filter 0.5s;
     backdrop-filter: blur(0px);
 }
 

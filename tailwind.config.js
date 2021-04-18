@@ -4,10 +4,11 @@
  */
 module.exports = {
   // prefix: 'tw-',
+  mode: 'jit',
   important: true,
   purge: [
     './layout/**/*.ejs',
-    './source/_pre/*.css'
+    './style/**/*.css'
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -42,6 +43,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    require('@tailwindcss/line-clamp'),
     require('@tailwindcss/typography')
   ],
 }

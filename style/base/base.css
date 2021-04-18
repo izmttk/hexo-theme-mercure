@@ -1,5 +1,6 @@
-html, body {
-    background: #f5f5fa!important;
+html,
+body {
+    background: #f5f5fa !important;
 }
 button:focus {
     outline: none;
@@ -10,17 +11,20 @@ button:focus {
 iframe {
     color-scheme: light;
 } */
-.page,.post {
+.page,
+.post {
     @apply bg-white rounded-2xl shadow-lg p-8 prose max-w-none mb-4;
 }
 .prev-next {
     @apply flex flex-nowrap space-x-6 mb-4;
-    .prev,.next,.blank{
+    .prev,
+    .next,
+    .blank {
         @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition transform hover:scale-105;
         .deixis {
             @apply block text-sm;
         }
-        .title{
+        .title {
             @apply block text-xl font-bold;
         }
     }
@@ -39,14 +43,15 @@ iframe {
 }
 .highlight {
     @apply relative overflow-hidden rounded-xl bg-gray-800;
-    table,tbody {
+    table,
+    tbody {
         @apply block;
     }
     tr {
         @apply flex flex-row flex-nowrap;
     }
     .gutter {
-        @apply flex-none p-0 select-none ;
+        @apply flex-none p-0 select-none;
         pre {
             @apply text-gray-400 text-right;
         }
@@ -63,78 +68,77 @@ iframe {
     }
 }
 
-::-webkit-scrollbar-track
-{
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
-    background-color: #F5F5F5;
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+    background-color: #f5f5f5;
     border-radius: 5px;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
     width: 10px;
     background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb
-{
+::-webkit-scrollbar-thumb {
     border-radius: 5px;
-	background-color: #F90;	
+    background-color: #f90;
     background-image: repeating-linear-gradient(
         45deg,
-        rgba(255, 255, 255, .2),
-        rgba(255, 255, 255, .2) 1rem,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.2) 1rem,
         transparent 1rem,
         transparent 2rem
     );
     border: 2px solid #fff;
 }
 ::-webkit-scrollbar-track-piece {
-	border-radius: 5px;
+    border-radius: 5px;
 }
 
 body *::-webkit-scrollbar {
-	width: 10px; /*滚动条的宽度*/
-	height: 8px; /*滚动条的高度*/
+    width: 10px; /*滚动条的宽度*/
+    height: 8px; /*滚动条的高度*/
 }
-body *::-webkit-scrollbar-thumb:horizontal { /*水平滚动条的样式*/
-	background-color: #CCCCCC;
+body *::-webkit-scrollbar-thumb:horizontal {
+    /*水平滚动条的样式*/
+    background-color: #cccccc;
 }
-body *::-webkit-scrollbar-thumb:vertical { /*垂直滚动条的样式*/
-	background-color: #999;
+body *::-webkit-scrollbar-thumb:vertical {
+    /*垂直滚动条的样式*/
+    background-color: #999;
 }
-body *::-webkit-scrollbar-thumb:hover { /*滚动条的hover样式*/
-	background-color: #9f9f9f;
+body *::-webkit-scrollbar-thumb:hover {
+    /*滚动条的hover样式*/
+    background-color: #9f9f9f;
 }
-
 
 .bg-gradient-0 {
-    background-image: linear-gradient( 135deg, #EE9AE5 10%, #5961F9 100%);
+    background-image: linear-gradient(135deg, #ee9ae5 10%, #5961f9 100%);
 }
 .bg-gradient-1 {
-    background-image: linear-gradient( 135deg, #FCCF31 10%, #F55555 100%);
+    background-image: linear-gradient(135deg, #fccf31 10%, #f55555 100%);
 }
 .bg-gradient-2 {
-    background-image: linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%);
+    background-image: linear-gradient(135deg, #e2b0ff 10%, #9f44d3 100%);
 }
 .bg-gradient-3 {
-    background-image: linear-gradient( 135deg, #79F1A4 10%, #0E5CAD 100%);
+    background-image: linear-gradient(135deg, #79f1a4 10%, #0e5cad 100%);
 }
 .bg-gradient-4 {
-    background-image: linear-gradient( 135deg, #FFAA85 10%, #B3315F 100%);
+    background-image: linear-gradient(135deg, #ffaa85 10%, #b3315f 100%);
 }
 .bg-gradient-5 {
-    background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);
+    background-image: linear-gradient(135deg, #97abff 10%, #123597 100%);
 }
 .bg-gradient-6 {
-    background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
+    background-image: linear-gradient(135deg, #ce9ffc 10%, #7367f0 100%);
 }
 .bg-gradient-7 {
-    background-image: linear-gradient( 135deg, #FEB692 10%, #EA5455 100%);
+    background-image: linear-gradient(135deg, #feb692 10%, #ea5455 100%);
 }
 .bg-gradient-8 {
-    background-image: linear-gradient( 135deg, #ABDCFF 10%, #0396FF 100%);
+    background-image: linear-gradient(135deg, #abdcff 10%, #0396ff 100%);
 }
 .bg-gradient-9 {
-    background-image: linear-gradient( 135deg, #FEC163 10%, #DE4313 100%);
+    background-image: linear-gradient(135deg, #fec163 10%, #de4313 100%);
 }

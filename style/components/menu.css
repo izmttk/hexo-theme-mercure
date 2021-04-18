@@ -1,0 +1,23 @@
+.menu {
+    @apply hidden;
+    @apply py-2 min-w-[9rem];
+    .menu-item a {
+        @apply inline-block;
+        @apply w-full h-full px-4 py-1.5;
+        @apply hover:bg-gray-100;
+    }
+    .menu-divider {
+        @apply my-1;
+        @apply border-b;
+    }
+    .menu-item {
+        @apply relative;
+    }
+}
+.tippy-box[role="menu"] {
+    @apply border border-gray-300;
+    @apply rounded-lg shadow-md;
+    .tippy-content {
+        @apply p-0;
+    }
+}

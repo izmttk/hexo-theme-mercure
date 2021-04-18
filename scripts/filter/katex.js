@@ -2,7 +2,7 @@ const katex = require('katex');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 let document;
-const findEndOfMath = function(delimiter, text, startIndex) {
+const findEndOfMath = function (delimiter, text, startIndex) {
     // Adapted from
     // https://github.com/Khan/perseus/blob/master/src/perseus-markdown.jsx
     let index = startIndex;
@@ -30,7 +30,7 @@ const findEndOfMath = function(delimiter, text, startIndex) {
     return -1;
 };
 
-const splitAtDelimiters = function(startData, leftDelim, rightDelim, display) {
+const splitAtDelimiters = function (startData, leftDelim, rightDelim, display) {
     const finalData = [];
 
     for (let i = 0; i < startData.length; i++) {
@@ -101,8 +101,8 @@ const splitAtDelimiters = function(startData, leftDelim, rightDelim, display) {
 
     return finalData;
 };
-const splitWithDelimiters = function(text, delimiters) {
-    let data = [{type: "text", data: text}];
+const splitWithDelimiters = function (text, delimiters) {
+    let data = [{ type: "text", data: text }];
     for (let i = 0; i < delimiters.length; i++) {
         const delimiter = delimiters[i];
         data = splitAtDelimiters(
@@ -115,7 +115,7 @@ const splitWithDelimiters = function(text, delimiters) {
 /* Note: optionsCopy is mutated by this method. If it is ever exposed in the
  * API, we should copy it before mutating.
  */
-const renderMathInText = function(text, optionsCopy) {
+const renderMathInText = function (text, optionsCopy) {
     const data = splitWithDelimiters(text, optionsCopy.delimiters);
     if (data.length === 1 && data[0].type === 'text') {
         // There is no formula in the text.
@@ -159,7 +159,7 @@ const renderMathInText = function(text, optionsCopy) {
     return fragment;
 };
 
-const renderElem = function(elem, optionsCopy) {
+const renderElem = function (elem, optionsCopy) {
     for (let i = 0; i < elem.childNodes.length; i++) {
         const childNode = elem.childNodes[i];
         if (childNode.nodeType === 3) {
@@ -174,8 +174,8 @@ const renderElem = function(elem, optionsCopy) {
             const className = ' ' + childNode.className + ' ';
             const shouldRender = optionsCopy.ignoredTags.indexOf(
                 childNode.nodeName.toLowerCase()) === -1 &&
-                    optionsCopy.ignoredClasses.every(
-                        x => className.indexOf(' ' + x + ' ') === -1);
+                optionsCopy.ignoredClasses.every(
+                    x => className.indexOf(' ' + x + ' ') === -1);
 
             if (shouldRender) {
                 renderElem(childNode, optionsCopy);
@@ -185,7 +185,7 @@ const renderElem = function(elem, optionsCopy) {
     }
 };
 
-const renderMathInElement = function(elem, options) {
+const renderMathInElement = function (elem, options) {
     if (!elem) {
         throw new Error("No element provided to render");
     }
@@ -201,14 +201,14 @@ const renderMathInElement = function(elem, options) {
 
     // 默认设置
     optionsCopy.delimiters = optionsCopy.delimiters || [
-        {left: "$$", right: "$$", display: true},
-        {left: "\\(", right: "\\)", display: false},
+        { left: "$$", right: "$$", display: true },
+        { left: "\\(", right: "\\)", display: false },
         // LaTeX 使用 $…$, 但是这样影响了正常 `$` 在文本中的显示:
         // {left: "$", right: "$", display: false},
 
         //  \[…\] 必须在列表最后. 否则, renderMathInElement 会在匹配 $$ 或  \( 前先匹配 \[ 
         // 这会使得程序容易找到 \\[0.3em] 行分隔符并将它视为Katex数学区的开始
-        {left: "\\[", right: "\\]", display: true},
+        { left: "\\[", right: "\\]", display: true },
     ];
     optionsCopy.ignoredTags = optionsCopy.ignoredTags || [
         "script", "noscript", "style", "textarea", "pre", "code", "option",

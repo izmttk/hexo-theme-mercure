@@ -1,0 +1,32 @@
+.collapse {
+    .collapse-item {
+        .collapse-item-title {
+            @apply flex flex-row flex-nowrap justify-center items-center;
+            @apply h-9 pr-3;
+            @apply hover:bg-gray-100;
+            @apply cursor-pointer;
+            .arrow {
+                @apply flex-none inline-block;
+                @apply w-7 h-7 leading-7;
+                @apply text-gray-500 text-center;
+            }
+            .name {
+                @apply flex-1;
+                @apply pl-1.5;
+                @apply text-sm truncate;
+                .link {
+                    @apply hover:text-blue-500;
+                }
+            }
+            .blank {
+                @apply w-4;
+            }
+        }
+    }
+    .collapse-item .arrow {
+        @apply transition transform -rotate-90;
+    }
+    .collapse-item.collapse-item-open > .collapse-item-title > .arrow {
+        @apply transform rotate-0;
+    }
+}

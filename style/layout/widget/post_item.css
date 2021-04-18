@@ -29,7 +29,7 @@
             .post-category {
                 @apply flex-grow-0 flex-shrink truncate ml-3;
             }
-            .post-tag{
+            .post-tag {
                 @apply flex-grow-0 flex-shrink truncate ml-3;
                 span {
                     @apply mx-1;
@@ -64,7 +64,8 @@
             @apply order-first pl-9 pr-5;
         }
     }
-    &.left-cover, &.right-cover {
+    &.left-cover,
+    &.right-cover {
         .background {
             @apply absolute inset-0 z-0;
             @apply bg-indigo-700 bg-cover bg-center bg-no-repeat;

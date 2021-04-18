@@ -6,24 +6,24 @@
     "build": "postcss ./source/_pre/style.css --dir ./source/css/ --env production",
     "build-dev": "postcss ./source/_pre/style.css --dir ./source/css/ --env development"
   },
-  "devDependencies": {
-    "autoprefixer": "^10.2.3",
-    "color": "^3.1.3",
-    "cross-env": "^7.0.3",
-    "postcss": "^8.2.4",
-    "postcss-cli": "^8.3.1",
-    "postcss-import": "^14.0.0",
-    "postcss-nested": "^5.0.3",
-    "tailwindcss": "^2.0.2",
-    "@tailwindcss/typography": "^0.4.0"
-  },
+  "devDependencies": {},
   "main": "postcss.config.js",
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "jsdom": "^16.4.0",
+    "@tailwindcss/typography": "^0.4.0",
+    "@tailwindcss/line-clamp": "^0.2.0",
+    "color": "^3.1.3",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.2.10",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.1",
+    "postcss-nested": "^5.0.5",
+    "tailwindcss": "^2.1.1",
+    "autoprefixer": "^10.2.5",
+    "jsdom": "^16.5.3",
     "katex": "^0.12.0",
-    "pinyin": "^2.9.1"
+    "pinyin": "^2.10.2"
   }
 }

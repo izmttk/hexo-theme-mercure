@@ -1,5 +1,5 @@
-<%_  let flatMenu = (menu) => { %>
-    <ul class="menu-list">
+<%_  let flatNavMenu = (menu, depth = 0) => { %>
+    <ul class="menu">
     <%_ menu.forEach((item) => { _%>
         <%_ if(item === 'divider') { _%> 
         <li class="menu-divider"></li>
@@ -12,18 +12,51 @@
             <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
             <%_ } _%>
             <%# 递归展开子菜单 _%>
-            <%_ if(cascade) flatMenu(item.submenu) _%>
+            <%_ if(cascade) flatNavMenu(item.submenu, depth + 1) _%>
         </li>
         <%_ } _%>
     <%_ }) _%>
     </ul>
 <%_ } _%>
-<div class="navigator">
+
+<%_  let flatNavCollapse = (menu, depth = 0) => { %>
+    <ul class="collapse">
+    <%_ menu.forEach((item) => { _%>
+        <%_ if(item === 'divider') { _%> 
+        <li class="collapse-divider"></li>
+        <%_ } else { _%>
+        <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
+        <li class="collapse-item">
+            <div class="collapse-item-title">
+                <% for(let i=0; i<depth; i++) { %><span class="blank"></span><% } %> 
+                <span class="arrow">
+                    <% if(cascade) { %><i class="iconfont icon-arrow-down"></i><% } %>
+                </span>
+                <span class="name">
+                    <%_ if(item.url) { _%> 
+                    <a class="link" href="<%= item.url %>"><%- item.name %></a>
+                    <%_ } else { _%>
+                    <a class="link" href="javascript:void(0)"><%- item.name %></a>
+                    <%_ } _%>
+                </span>
+            </div>
+            <%# 递归展开子菜单 _%>
+            <%_ if(cascade) { _%>
+                <ul class="collapse-item-content">
+                <%_ flatNavCollapse(item.submenu, depth + 1) _%>
+                </ul>
+            <%_ } _%> 
+        </li>
+        <%_ } _%>
+    <%_ }) _%>
+    </ul>
+<%_ } _%>
+<div class="navigator nav-hide">
     <div class="content">
-        <div class="logo">
+        <div class="nav-logo">
             <a href="/"><%- theme.navigator.logo %></a>
         </div>
-        <div class="menu">
+        <div class="nav-menu">
             <ul class="nav-menu-list">
             <%_ theme.navigator.menu.forEach((item) => { _%>
                 <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
@@ -33,16 +66,19 @@
                     <%_ } else { _%>
                     <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
                     <%_ } _%>
-                    <%_ if(cascade) flatMenu(item.submenu) _%>
+                    <%_ if(cascade) flatNavMenu(item.submenu) _%>
                 </li>
             <%_ }) _%> 
             </ul>
         </div>
-        <div class="toolkit">
+        <div class="nav-toolkit">
         <%_ if(theme.navigator.search) { _%>
             <button class="search"><i class="iconfont icon-search"></i></button>
             <%- partial('../_widget/search') %>
         <%_ } _%>
         </div>        
     </div>
+</div>
+<div class="nav-menu-drawer drawer drawer-opened">
+    <%_ flatNavCollapse(theme.navigator.menu) _%>
 </div>
