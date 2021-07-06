@@ -37,20 +37,34 @@ $.extend({
     }
 });
 //初始化导航条菜单
-function initNavMenu() {
-    var navDrawer = new Drawer('.nav-menu-drawer');
+function initNavMenuDrawer() {
+
+    var menuDrawer = new Drawer('.nav-menu-drawer');
     $('.nav-menu-drawer .collapse').each(function () {
         var collapse = new Collapse(this);
     });
+    $('.navigator .nav-left-drawer').click(function(){
+        menuDrawer.toggle();
+    });
     var navMenuToggleList = [].slice.call(document.querySelectorAll('.navigator .nav-menu .menu-toggle'));
     var navMenuList = navMenuToggleList.map(function (menuToggleEl) {
-        var isRootNav = menuToggleEl.parentElement.classList.contains("nav-menu-item");
+        var isRootNav = menuToggleEl.parentElement.classList.contains('nav-menu-item');
         menuToggleEl.nextElementSibling.style.display = 'block';
         var menu = new Menu(menuToggleEl, menuToggleEl.nextElementSibling, {
             arrow: isRootNav,
             position: isRootNav ? 'bottom-start' : 'right-start',
             trigger: 'hover',
         });
+    });
+}
+//初始化侧边栏抽屉
+function initNavSidebarDrawer() {
+    var sidebarDrawer = new Drawer('.nav-sidebar-drawer',{
+        position: 'right',
+        width: 272
+    });
+    $('.navigator .nav-right-drawer').click(function(){
+        sidebarDrawer.toggle();
     });
 }
 //初始化分类树
@@ -85,7 +99,9 @@ function initCategoryTree() {
 }
 function initSidebarToc() {
     if ($('#sidebar .toc').length > 0)
-        var toc = new Toc('.toc');
+        var toc = new Toc('#sidebar .toc');
+    if ($('#sidebar-drawer .toc').length > 0)
+        var toc = new Toc('#sidebar-drawer .toc');
 }
 function initNavbar() {
     var $navbar = $('.navigator');
@@ -124,11 +140,13 @@ function initNavbar() {
 }
 function initSidebarTabs() {
     if ($('#sidebar .tabs').length > 0)
-        var tabs = new Tabs('.tabs');
+        var tabs = new Tabs('#sidebar .tabs');
+    if ($('#sidebar-drawer .tabs').length > 0)
+        var tabs = new Tabs('#sidebar-drawer .tabs');
 }
 function initSearch() {
     var template = $($('#site_search_template').html());
-    $('.toolkit .search').on('click', function () {
+    $('.nav-toolkit .search-toggle').on('click', function () {
         //防止打开多个搜索界面
         if ($('.modal-layout.modal-open').length != 0)
             return false;
@@ -209,7 +227,8 @@ function initCoverParallax() {
 
 }
 initNavbar();
-initNavMenu();
+initNavMenuDrawer();
+initNavSidebarDrawer();
 initCategoryTree();
 initSidebarToc();
 initSidebarTabs();

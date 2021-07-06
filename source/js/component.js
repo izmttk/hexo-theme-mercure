@@ -310,7 +310,7 @@ var Modal = (function () {
         return this.overlay.hasClass('modal-open');
     }
     Modal.prototype.open = function () {
-        $('body').css('overflow', 'hidden');
+        // $('body').css('overflow', 'hidden');
         // $('body').append(this.overlay);
         this.overlay.show();
         this.overlay.addClass('modal-open');
@@ -332,7 +332,7 @@ var Modal = (function () {
     Modal.prototype.close = function () {
         this.overlay.removeClass('modal-open');
         var that = this;
-        $('body').css('overflow', 'auto');
+        // $('body').css('overflow', 'auto');
         anime({
             targets: this.context.get(0),
             opacity: 0,
@@ -373,7 +373,7 @@ var Drawer = (function () {
         this.element.children('.content').width(options.width);
         this.bindEvents();
         if(this.element.hasClass('drawer-opened')) this.open();
-        else this.close();
+        else this.element.addClass('drawer-closed');
     }
     Drawer.prototype.bindEvents = function () {
         var that = this;
@@ -391,12 +391,25 @@ var Drawer = (function () {
         });
     }
     Drawer.prototype.open = function () {
-        this.element.removeClass('drawer-closed drawer-closing').addClass('drawer-opening');
+        this.element.addClass("drawer-preopen")
+        this.element.removeClass('drawer-closed drawer-closing')
+        
+        let that = this;
+        setTimeout(function(){
+            that.element.addClass('drawer-opening')
+            that.element.removeClass('drawer-preopen');
+        }, 50);
         $('body').css('overflow', 'hidden');
-
     }
     Drawer.prototype.close = function () {
-        this.element.removeClass('drawer-opened drawer-opening').addClass('drawer-closing');
+        this.element.removeClass('drawer-opened drawer-opening')
+        this.element.addClass("drawer-preclose")
+        
+        let that = this;
+        setTimeout(function(){
+            that.element.addClass('drawer-closing');
+            that.element.removeClass('drawer-preclose');
+        }, 50);
         $('body').css('overflow', 'auto');
     }
     Drawer.prototype.toggle = function () {

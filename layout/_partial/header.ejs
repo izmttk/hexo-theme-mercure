@@ -1,6 +1,16 @@
 <%- partial('../_partial/navigator') %>
 <div id="header">
     <%_ if(is_home()) { _%>
+    <style>
+        #header .cover {
+            height: <%- theme.header.height.default %>!important;
+        }
+        @media (min-width: 768px){
+            #header .cover {
+                height: <%- theme.header.height.home %>!important;
+            }
+        }
+    </style>
     <div class="cover home-cover" style="height:<%- theme.header.height.home %>">
         <!-- Header Background Section -->
         <%_ if(theme.header.cover.type=='none') { _%>

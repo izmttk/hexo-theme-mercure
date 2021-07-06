@@ -1,4 +1,7 @@
 #sidebar {
+    @apply hidden md:block;
+}
+#sidebar ,#sidebar-drawer{
     @apply w-68 flex-none;
     .sidebar-content {
         @apply top-0;
@@ -37,21 +40,16 @@
         @apply pt-16;
     }
     #tab-panel-overview .tab-panel-content {
-        @apply h-full overflow-auto;
+        @apply flex flex-col flex-nowrap h-full overflow-auto;
         .widget {
-            @apply m-4;
-            &:first-child {
-                @apply mt-0;
-            }
+            @apply mx-4 mt-0 mb-4;
         }
     }
     #tab-panel-toc .tab-panel-content {
-        @apply h-full overflow-hidden;
+        @apply flex flex-col flex-nowrap h-full overflow-hidden;
         .widget {
-            @apply h-full m-4;
-            &:first-child {
-                @apply mt-0;
-            }
+            @apply h-full;
+            @apply mx-4 mt-0 mb-4;
         }
     }
     .card {

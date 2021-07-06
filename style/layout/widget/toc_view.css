@@ -1,37 +1,38 @@
 .toc-view {
-    @apply overflow-hidden flex flex-col flex-nowrap;
+    @apply flex flex-col flex-nowrap;
+    @apply overflow-hidden;
     max-height: calc(100% - 1rem);
     .title {
         @apply flex-none;
     }
     .content {
-        @apply text-sm overflow-x-hidden overflow-y-auto break-words;
+        @apply overflow-x-hidden overflow-y-auto;
+        @apply text-sm break-words;
     }
     .toc-link {
-        transition: color, background-color 0.3s;
-        @apply block pr-2 py-1 text-gray-700 hover:bg-gray-100 relative;
+        @apply relative block;
+        @apply pr-2 py-1;
+        @apply text-gray-700;
+        @apply bg-white hover:bg-gray-100;
+        @apply transition duration-300;
         &::before {
-            content: " ";
-            position: absolute;
-            transition: color, background-color 0.3s;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 6px;
+            content: "";
+            @apply absolute top-0 bottom-0 left-0;
+            @apply w-1.5;
+            @apply bg-white;
+            @apply transition duration-300;
         }
         &:hover::before {
             @apply bg-gray-300;
         }
     }
     .toc-activated > .toc-link {
-        @apply text-blue-500 bg-blue-50;
+        @apply text-blue-500;
+        @apply bg-blue-50;
         &::before {
             @apply bg-blue-400;
         }
     }
-    /* .toc-child{
-        @apply pl-4;
-    } */
     .toc-level-2 .toc-link {
         @apply pl-4;
     }

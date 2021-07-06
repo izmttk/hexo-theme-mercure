@@ -43,7 +43,32 @@
     }
 }
 .drawer-closed {
-    @apply invisible;
+    @apply hidden;
+}
+.drawer-left.drawer-preopen {
+    .content {
+        @apply -translate-x-full;
+    }
+    .overlay {
+        @apply opacity-0;
+    }
+}
+.drawer-right.drawer-preopen {
+    .content {
+        @apply translate-x-full;
+    }
+    .overlay {
+        @apply opacity-0;
+    }
+}
+.drawer-left.drawer-preclose,
+.drawer-right.drawer-preclose {
+    .content {
+        @apply translate-x-0;
+    }
+    .overlay {
+        @apply opacity-60;
+    }
 }
 .drawer-left .content {
     @apply left-0;

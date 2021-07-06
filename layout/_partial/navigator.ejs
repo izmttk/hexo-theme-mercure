@@ -53,6 +53,9 @@
 <%_ } _%>
 <div class="navigator nav-hide">
     <div class="content">
+        <div class="nav-left-drawer">
+            <button class="drawer-toggle"><i class="ri-menu-line"></i></button>
+        </div>
         <div class="nav-logo">
             <a href="/"><%- theme.navigator.logo %></a>
         </div>
@@ -73,12 +76,18 @@
         </div>
         <div class="nav-toolkit">
         <%_ if(theme.navigator.search) { _%>
-            <button class="search"><i class="iconfont icon-search"></i></button>
+            <button class="search-toggle"><i class="iconfont icon-search"></i></button>
             <%- partial('../_widget/search') %>
         <%_ } _%>
-        </div>        
+        </div>
+        <div class="nav-right-drawer">
+            <button class="drawer-toggle"><i class="ri-layout-right-line"></i></button>
+        </div>
     </div>
 </div>
-<div class="nav-menu-drawer drawer drawer-opened">
+<div class="nav-menu-drawer drawer drawer-closed">
     <%_ flatNavCollapse(theme.navigator.menu) _%>
+</div>
+<div class="nav-sidebar-drawer drawer drawer-closed">
+    <div id="sidebar-drawer"><%- partial('./sidebar') %></div>
 </div>
