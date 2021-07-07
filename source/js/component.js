@@ -190,13 +190,20 @@ var Tabs = (function () {
         //默认标签
         var $activeTab = this.getActiveTab();
         this.getPanel($activeTab).show();
+        this.initGliderPos();
+        this.bindEvents();
+    }
+    Tabs.prototype.initGliderPos = function () {
         //初始化滑块位置
         var $glider = this.element.find('.glider');
-        $glider.height(this.tabs.outerHeight());
-        $glider.width($activeTab.outerWidth());
-        var tabOffsetLeft = $($activeTab).offset().left - this.tabs.offset().left;
+        // $glider.height(this.tabs.outerHeight());
+        // $glider.width($activeTab.outerWidth());
+        $glider.height(28);
+        $glider.width(114);
+        // var tabOffsetLeft = $($activeTab).offset().left - this.tabs.offset().left;
+        var tabOffsetLeft = 114 * this.getTabIndex(this.getActiveTab());
+        console.log(tabOffsetLeft)
         $glider.css('transform', 'translateX(' + tabOffsetLeft + 'px)');
-        this.bindEvents();
     }
     Tabs.prototype.bindEvents = function () {
         var that = this;
@@ -265,6 +272,10 @@ var Tabs = (function () {
             throw new Error('Tab Panel is not found');
         }
         return $panel;
+    }
+    Tabs.prototype.getTabIndex = function(tab) {
+        var $tab = this.getTab(tab);
+        return this.tabs.index($tab);
     }
     Tabs.prototype.getActiveTab = function () {
         return this.tabs.filter(function () {
