@@ -60,7 +60,7 @@ cover.type=index%2==0?'left':'right';
         <%# 文章摘要 %>
         <div class="post-excerpt"><%= post.excerpt %></div>
     </div>
-    <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>">
+    <div class="background <%- cover.type=='none'?'bg-gradient-'+Math.floor(Math.random()*10):'' %>">
       <% if(cover.type!='none') {%>
             <%- image_tag(url_for(cover.path),{
                 alt: post.title,

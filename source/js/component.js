@@ -300,6 +300,8 @@ var Modal = (function () {
             // backgroundColor: 'rgba(0, 0, 0, 0)',
             // backdropFilter: 'blur(0px)',
         });
+        this.closeBtn = $('<button class="close-btn"><i class="ri-close-fill"></i></button>');
+        this.overlay.append(this.closeBtn);
         this.context = $('<div class="content"></div>').append(context);
         anime.set(this.context.get(0), {
             opacity: 0,
@@ -312,8 +314,7 @@ var Modal = (function () {
     }
     Modal.prototype.bindEvents = function () {
         var that = this;
-        this.overlay.on('click', function (event) {
-            if (event.target !== event.currentTarget) return;
+        this.closeBtn.on('click', function (event) {
             that.close();
         });
     }

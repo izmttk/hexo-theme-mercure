@@ -39,7 +39,10 @@ $.extend({
 //初始化导航条菜单
 function initNavMenuDrawer() {
 
-    var menuDrawer = new Drawer('.nav-menu-drawer');
+    var menuDrawer = new Drawer('.nav-menu-drawer',{
+        position: 'left',
+        width: 272
+    });
     $('.nav-menu-drawer .collapse').each(function () {
         var collapse = new Collapse(this);
     });

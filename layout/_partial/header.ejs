@@ -40,7 +40,7 @@
         <%_ } else { _%>
         <div class="content">
         <%_ } _%> 
-                <div class="title"><%- theme.header.title %></div>
+                <div class="<%- is_home()?'site-title':'title' %>"><%- theme.header.title %></div>
                 <div class="description">
                     <%_ if(theme.header.description.type=='normal') { _%>
                     <span><%- theme.header.description.content %></span>

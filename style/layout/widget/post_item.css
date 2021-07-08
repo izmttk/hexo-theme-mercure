@@ -1,13 +1,13 @@
 .post-item {
-    @apply relative h-56;
+    @apply relative h-44 md:h-56;
     @apply shadow-lg rounded-lg;
     @apply flex flex-row flex-nowrap;
     @apply text-white overflow-hidden overflow-ellipsis;
     transform: scale(1); /*解决background层叠上下文的问题*/
-    content-visibility: auto;
     .post-cover {
+        @apply absolute md:inset-0 md:relative;
         @apply flex-none;
-        @apply w-72;
+        @apply w-full h-full md:w-72;
         @apply z-10;
         .cover-img {
             @apply object-cover h-full w-full;
@@ -15,22 +15,22 @@
     }
     .post-info {
         @apply flex-auto flex flex-col flex-nowrap justify-between;
-        @apply py-12 px-9 w-0;
+        @apply p-8 md:py-12 md:px-9 w-0;
         @apply z-10;
-        text-shadow: 0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3);
+        filter:drop-shadow(0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3));
         .post-meta {
-            @apply flex flex-nowrap justify-between text-sm;
+            @apply flex flex-wrap md:flex-nowrap md:justify-between text-sm;
             .iconfont {
                 @apply mr-1;
             }
             .post-date {
-                @apply flex-shrink-0 flex-grow;
+                @apply flex-shrink-0 flex-grow w-full md:w-auto mr-3;
             }
             .post-category {
-                @apply flex-grow-0 flex-shrink truncate ml-3;
+                @apply flex-grow-0 flex-shrink truncate mr-3;
             }
             .post-tag {
-                @apply flex-grow-0 flex-shrink truncate ml-3;
+                @apply flex-grow-0 flex-shrink truncate mr-3;
                 span {
                     @apply mx-1;
                 }
@@ -40,39 +40,43 @@
             @apply truncate text-2xl font-bold;
         }
         .post-excerpt {
+            @apply hidden md:line-clamp-2;
             @apply break-all leading-6 h-12 overflow-ellipsis overflow-hidden text-sm;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
         }
     }
     &.left-cover {
         .post-cover {
             @apply order-first;
-            clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
+            @media (min-width: 768px) {
+                clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
+            }
         }
         .post-info {
-            @apply order-last pl-5 pr-9;
+            @apply order-last md:pl-5 md:pr-9;
         }
     }
     &.right-cover {
         .post-cover {
             @apply order-last;
-            clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
+            @media (min-width: 768px) {
+                clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
+            }
         }
         .post-info {
-            @apply order-first pl-9 pr-5;
+            @apply order-first md:pl-9 md:pr-5;
         }
     }
     &.left-cover,
     &.right-cover {
         .background {
-            @apply absolute inset-0 z-0;
-            @apply bg-indigo-700 bg-cover bg-center bg-no-repeat;
+            @apply absolute inset-0 z-0 hidden md:block;
+            @apply bg-gray-500 bg-cover bg-center bg-no-repeat;
             .background-img {
+                filter: blur(1.5em) brightness(0.8);
+                transform: scale(1.2);
                 @apply object-cover h-full w-full z-0;
             }
-            @supports (backdrop-filter: none) {
+            /* @supports (backdrop-filter: none) {
                 &::after {
                     content: " ";
                     @apply absolute inset-0 h-full w-full;
@@ -86,7 +90,7 @@
                 .background-img {
                     filter: blur(1.5em) brightness(0.8);
                 }
-            }
+            } */
         }
     }
     &.fill-cover {
