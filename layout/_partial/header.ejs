@@ -83,12 +83,18 @@
         <%_ } _%> 
         <div class="content">
             <%_ if(is_category()) { _%>
-            <div class="title"><i class="ri-inbox-line"></i><span> 分类：<%= page.category %></span></div>
+            <div class="title">
+                <!-- <i class="ri-inbox-line"></i> -->
+                <span> 分类：<%= page.category %></span>
+            </div>
             <%_ } else if(is_tag()) { _%>
-            <div class="title"><i class="ri-price-tag-3-line"></i><span> 标签：<%= page.tag %></span></div>
+            <div class="title">
+                <!-- <i class="ri-price-tag-3-line"></i> -->
+                <span> 标签：<%= page.tag %></span>
+            </div>
             <%_ } else if(is_archive()) { _%>
             <div class="title">
-                <i class="ri-archive-line"></i>
+                <!-- <i class="ri-archive-line"></i> -->
                 <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
             </div>
             <%_ } else if(is_page()) { _%>
