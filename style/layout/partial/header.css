@@ -205,3 +205,20 @@
         }
     }
 }
+
+.waves {
+    @apply text-[#f5f5fa];
+    @apply dark:text-gray-900;
+    #wave-1 {
+        @apply fill-current opacity-30;
+    }
+    #wave-2 {
+        @apply fill-current opacity-50;
+    }
+    #wave-3 {
+        @apply fill-current opacity-70;
+    }
+    #wave-4 {
+        @apply fill-current opacity-100;
+    }
+} 

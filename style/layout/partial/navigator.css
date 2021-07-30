@@ -1,13 +1,14 @@
 .navigator {
-    @apply fixed w-full h-16 z-40 top-0 text-gray-700;
-    transition-property: top, height, background-color, color,
+    @apply fixed w-full h-16 z-40 translate-y-0 text-gray-700;
+    @apply dark:text-gray-200;
+    @apply transition duration-700;
+    /* transition-property: top, height, background-color, color,
                          box-shadow, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 700ms;
+    transition-duration: 700ms; */
     will-change: backdrop-filter;
     .content {
         @apply w-full lg:w-[63rem] xl:w-[67rem] 2xl:w-[71rem] mx-auto h-full flex flex-nowrap items-center;
-        transition: max-width 0.5s;
         .nav-left-drawer, .nav-right-drawer {
             @apply block md:hidden;
             .drawer-toggle {
@@ -31,14 +32,14 @@
             }
         }
         .nav-menu {
-            @apply h-16 flex-1;
+            @apply h-16 flex-1 overflow-x-auto overflow-y-hidden;
             font-family: "Noto Serif SC", ui-serif, serif;
             font-weight: bold;
             .nav-menu-list {
                 @apply hidden md:flex;
                 @apply flex-nowrap items-center;
                 .nav-menu-item {
-                    position: relative;
+                    @apply relative flex-none;
                     >.link {
                         @apply block px-4 h-16 text-lg leading-16;
                         position: relative;
@@ -51,30 +52,22 @@
         }
         .nav-toolkit {
             @apply mr-0 px-2 lg:-mr-4 md:px-5;
-            .search-toggle {
+            >button {
                 @apply w-10 h-10 rounded-full bg-blue-400 outline-none text-white;
             }
         }
     }
 }
 .navigator.nav-hide {
-    @apply -top-16 shadow-none;
+    @apply -translate-y-16 shadow-none border-b border-transparent;
 }
 .navigator.nav-top {
-    @apply h-20 shadow-none text-gray-100;
-    backdrop-filter: blur(0px);
-    background-color: transparent;
+    @apply shadow-none text-gray-100 backdrop-blur-none bg-transparent border-b border-transparent;
     .content {
         /* max-width: calc(100% - 16rem); */
     }
 }
 .navigator.nav-fix {
-    @apply shadow-sm;
-    backdrop-filter: blur(10px);
-    @supports (backdrop-filter: none) {
-        background-color: rgba(255, 255, 255, 0.7);
-    }
-    @supports not (backdrop-filter: none) {
-        background-color: rgba(255, 255, 255, 0.9);
-    }
+    @apply shadow-sm backdrop-blur-md bg-white/70 border-b border-gray-200;
+    @apply dark:bg-gray-900/50 dark:border-gray-800;
 }

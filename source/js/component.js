@@ -68,6 +68,7 @@ var Menu = (function () {
         animation: 'shift-away',
         theme: 'light-border',
         trigger: 'click',
+        appendTo: () => document.body,
     }
     function Menu(toggle, content, options = {}) {
         options = Object.assign(DEFAULT_OPTIONS, options);
@@ -80,6 +81,7 @@ var Menu = (function () {
             interactiveDebounce: 50,
             placement: options.position,
             arrow: options.arrow,
+            appendTo: options.appendTo,
             // hideOnClick: false,
             offset: [-6, -6],
             role: 'menu',
@@ -202,7 +204,7 @@ var Tabs = (function () {
         $glider.width(114);
         // var tabOffsetLeft = $($activeTab).offset().left - this.tabs.offset().left;
         var tabOffsetLeft = 114 * this.getTabIndex(this.getActiveTab());
-        console.log(tabOffsetLeft)
+        // console.log(tabOffsetLeft)
         $glider.css('transform', 'translateX(' + tabOffsetLeft + 'px)');
     }
     Tabs.prototype.bindEvents = function () {
@@ -239,6 +241,8 @@ var Tabs = (function () {
             targets: $activePanel.get(0),
             translateX: slideLeft ? [0, '-100%'] : [0, '100%'],
             opacity: [1, 0],
+            duration: 500,
+            easing: 'easeOutCubic',
         }).finished.then(function () {
             $activePanel.hide();
         });
@@ -250,6 +254,8 @@ var Tabs = (function () {
             targets: $panel.get(0),
             translateX: slideLeft ? ['100%', 0] : ['-100%', 0],
             opacity: [0, 1],
+            duration: 500,
+            easing: 'easeOutCubic',
         });
 
         this.tabs.removeClass('tab-activated');
@@ -322,7 +328,7 @@ var Modal = (function () {
         return this.overlay.hasClass('modal-open');
     }
     Modal.prototype.open = function () {
-        // $('body').css('overflow', 'hidden');
+        $('body').css('overflow', 'hidden');
         // $('body').append(this.overlay);
         this.overlay.show();
         this.overlay.addClass('modal-open');
@@ -344,7 +350,7 @@ var Modal = (function () {
     Modal.prototype.close = function () {
         this.overlay.removeClass('modal-open');
         var that = this;
-        // $('body').css('overflow', 'auto');
+        $('body').css('overflow', 'auto');
         anime({
             targets: this.context.get(0),
             opacity: 0,

@@ -36,8 +36,10 @@ $.extend({
         };
     }
 });
+
+
 //初始化导航条菜单
-function initNavMenuDrawer() {
+function initNavMenu() {
 
     var menuDrawer = new Drawer('.nav-menu-drawer',{
         position: 'left',
@@ -57,11 +59,12 @@ function initNavMenuDrawer() {
             arrow: isRootNav,
             position: isRootNav ? 'bottom-start' : 'right-start',
             trigger: 'hover',
+            appendTo: isRootNav ? () => document.body : 'parent',
         });
     });
 }
 //初始化侧边栏抽屉
-function initNavSidebarDrawer() {
+function initNavSidebar() {
     var sidebarDrawer = new Drawer('.nav-sidebar-drawer',{
         position: 'right',
         width: 272
@@ -147,7 +150,8 @@ function initSidebarTabs() {
     if ($('#sidebar-drawer .tabs').length > 0)
         var tabs = new Tabs('#sidebar-drawer .tabs');
 }
-function initSearch() {
+//初始化导航栏搜索功能
+function initNavSearch() {
     var template = $($('#site_search_template').html());
     $('.nav-toolkit .search-toggle').on('click', function () {
         //防止打开多个搜索界面
@@ -185,6 +189,40 @@ function initSearch() {
             Search.query();
         });
     });
+}
+//初始化导航栏音乐播放器
+function initNavMusicPlayer() {
+    var musicPlayerTooltip = tippy(document.querySelector('.music-player-toggle'), {
+        content: 'test',//document.querySelector('.music-player'),
+        theme: 'light-border',
+        animation: 'shift-away',
+        trigger: 'click',
+        interactive: true,
+        interactiveDebounce: 50,
+        placement: 'bottom-end',
+        arrow: true,
+        // hideOnClick: false,
+        role: 'menu',
+        popperOptions: {
+            modifiers: [
+                {
+                    name: 'flip',
+                    options: {
+                        boundary: 'viewport',
+                    },
+                },
+                {
+                    name: 'preventOverflow',
+                    options: {
+                        boundary: 'viewport'
+                    },
+                },
+            ],
+        },
+    });
+    // $('.nav-toolkit .music-player-toggle').on('click', function () {
+        
+    // });
 }
 function anchorSmoothScroll() {
     var marginTop = 76;
@@ -229,14 +267,56 @@ function initCoverParallax() {
         });
 
 }
+
+
 initNavbar();
-initNavMenuDrawer();
-initNavSidebarDrawer();
+initNavMenu();
+initNavSidebar();
+initNavSearch();
+initNavMusicPlayer();
 initCategoryTree();
 initSidebarToc();
 initSidebarTabs();
-initSearch();
 anchorSmoothScroll();
 initCoverParallax();
 
 
+
+
+function initDarkTheme() {
+    function getOsPreference() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function setDarkTheme() {
+        localStorage.setItem('theme','dark');
+        localStorage.setItem('osPreference', getOsPreference());
+        document.documentElement.classList.add('dark')
+    }
+    function setLightTheme() {
+        localStorage.removeItem('theme');
+        localStorage.setItem('osPreference', getOsPreference());
+        document.documentElement.classList.remove('dark')
+    }
+    //维持用户的选择直到下一次OsPreference切换
+    if(localStorage.getItem('osPreference') == getOsPreference()) {
+        if (localStorage.getItem('theme') === 'dark') {
+            setDarkTheme();
+        } else {
+            setLightTheme();
+        }
+    } else {
+        if(getOsPreference() === 'dark') {
+            setDarkTheme();
+        } else {
+            setLightTheme();
+        }
+    }
+    document.querySelector('.dark-theme-toggle').addEventListener("click", function() {
+        if(document.documentElement.classList.contains('dark')) {
+            setLightTheme();
+        } else {
+            setDarkTheme();
+        }
+    });
+}
+initDarkTheme();

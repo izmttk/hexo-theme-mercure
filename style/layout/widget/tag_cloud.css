@@ -3,9 +3,9 @@
         @apply flex flex-wrap flex-row pl-2;
         a {
             @apply inline-block	rounded shadow-lg mr-1.25 mb-1.25 overflow-hidden;
-            @apply text-gray-600 px-2 text-xs h-6.5 leading-6.5;
+            @apply text-gray-600 px-2 text-xs h-6.5 leading-6.5 bg-white;
+            @apply dark:text-gray-200 dark:bg-gray-700;
             box-shadow: 0 5px 8px 0 rgba(31, 45, 61, 0.1);
-            background-color: white;
             transform: translateY(0);
             transition-property: color, box-shadow, background-color, transform;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

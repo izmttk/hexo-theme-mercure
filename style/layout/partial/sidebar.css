@@ -14,16 +14,18 @@
         transition-property: padding-top;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 700ms;
+        @apply dark:text-gray-200;
         .tabs-header {
-            @apply m-4 flex-none mb-2 p-1.5 flex rounded-lg relative overflow-hidden;
-            box-shadow: 0 1px rgba(255, 255, 255, 0.5),
-                0 8px 13px rgba(0, 0, 0, 0.15) inset;
-            background-color: rgba(0, 0, 0, 0.025);
+            @apply m-4 flex-none mb-2 p-1.5 flex rounded-lg relative overflow-hidden bg-gray-200;
+            /* box-shadow: 0 1px rgba(255, 255, 255, 0.5),
+                0 8px 13px rgba(0, 0, 0, 0.15) inset; */
+            @apply dark:bg-gray-800;
             .tab {
                 @apply flex-auto text-center text-sm font-bold p-1 z-10;
             }
             .glider {
                 @apply absolute bg-white rounded shadow z-0;
+                @apply dark:bg-gray-700;
             }
         }
         .tabs-content {
@@ -32,6 +34,9 @@
                 @apply absolute top-0 bottom-0 w-full overflow-x-visible;
                 will-change: transform;
                 .tab-panel-content {
+                    &::-webkit-scrollbar {
+                        @apply hidden;
+                    }
                 }
             }
         }
@@ -53,9 +58,11 @@
         }
     }
     .card {
-        @apply bg-white rounded-xl shadow-lg border border-gray-200;
+        @apply bg-white rounded-xl shadow-lg;
+        @apply dark:bg-gray-800 dark:text-gray-300;
         .title {
-            @apply relative text-2xl font-bold p-3 border-b;
+            @apply relative text-2xl font-bold p-3 border-b border-gray-200;
+            @apply dark:border-gray-700;
             &::after {
                 content: " ";
                 display: block;

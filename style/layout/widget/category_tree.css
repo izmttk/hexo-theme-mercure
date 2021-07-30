@@ -4,6 +4,7 @@
         @apply inline-block;
         @apply h-5 px-1.5;
         @apply text-white text-xs text-center leading-5;
+        @apply dark:text-gray-900 dark:font-bold;
         @apply bg-blue-500;
         @apply rounded-full;
     }

@@ -1,6 +1,7 @@
 .profile {
     @apply shadow-2xl rounded-2xl bg-white;
     @apply overflow-hidden overflow-ellipsis;
+    @apply dark:bg-gray-800;
     transform: scale(1);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
         0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -60,10 +61,11 @@
             .avatar {
                 @apply w-28 h-28 rounded-full mx-auto relative -mt-14;
                 @apply ring-white ring-8;
+                @apply dark:ring-gray-800;
                 .avatar-img {
                     @apply object-cover h-full w-full rounded-full;
                 }
-                /* 左右凹角 */
+                /* 左右凹角
                 .left-corner-wrap {
                     @apply absolute overflow-hidden;
                     top: 1.52rem;
@@ -97,13 +99,15 @@
                         background: transparent;
                         box-shadow: -0.25rem 0.625rem 0 0.0625rem white;
                     }
-                }
+                } */
             }
             .name {
-                @apply text-black text-2xl text-center mt-2 relative;
+                @apply text-gray-800 text-2xl text-center mt-2 relative;
+                @apply dark:text-gray-200;
             }
             .signature {
                 @apply text-gray-500 text-center text-sm relative;
+                @apply dark:text-gray-400;
             }
         }
         .social-panel {

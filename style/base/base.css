@@ -1,12 +1,20 @@
 :root {
     @apply text-base;
 }
-html,
 body {
-    background: #f5f5fa !important;
+    @apply bg-[#f5f5fa];
+    @apply dark:bg-gray-900;
 }
 button:focus {
     outline: none;
+}
+#main {
+    #content {
+        @apply z-10 m-1 md:m-4;
+    }
+    #sidebar {
+        @apply z-0;
+    }
 }
 /* :root {
     color-scheme: light dark;
@@ -17,6 +25,7 @@ iframe {
 .page,
 .post {
     @apply bg-white rounded-2xl shadow-lg py-6 px-4 md:p-8 prose max-w-none mb-4 break-words;
+    @apply dark:bg-gray-800  dark:prose-dark;
 }
 .prev-next {
     @apply flex flex-nowrap space-x-6 mb-4;
@@ -45,7 +54,7 @@ iframe {
     }
 }
 .highlight {
-    @apply relative overflow-hidden rounded-xl bg-gray-800;
+    @apply relative overflow-hidden rounded-xl bg-gray-700;
     table,
     tbody {
         @apply block;
@@ -76,7 +85,6 @@ iframe {
     background-color: #f5f5f5;
     border-radius: 5px;
 }
-
 ::-webkit-scrollbar {
     width: 10px;
     background-color: transparent;
@@ -98,21 +106,31 @@ iframe {
     border-radius: 5px;
 }
 
+body *::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+}
 body *::-webkit-scrollbar {
-    width: 10px; /*滚动条的宽度*/
-    height: 8px; /*滚动条的高度*/
+    width: 6px; /*滚动条的宽度*/
+    height: 4px; /*滚动条的高度*/
+}
+body *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: rgba(0, 0, 0, .3);
+    background-image: none;
+    border: 0;
 }
 body *::-webkit-scrollbar-thumb:horizontal {
     /*水平滚动条的样式*/
-    background-color: #cccccc;
+    /* background-color: #cccccc; */
 }
 body *::-webkit-scrollbar-thumb:vertical {
     /*垂直滚动条的样式*/
-    background-color: #999;
+    /* background-color: #999; */
 }
 body *::-webkit-scrollbar-thumb:hover {
     /*滚动条的hover样式*/
-    background-color: #9f9f9f;
+    background-color: rgba(144, 144, 144, 0.5);
 }
 
 .bg-gradient-0 {

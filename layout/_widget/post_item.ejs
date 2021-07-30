@@ -5,11 +5,11 @@ if(cover.type=='left'||cover.type=='right')
 cover.type=index%2==0?'left':'right';
 %> 
 <div class="post-item
-<% if(cover.type=='none'){ %> no-cover
-<% } else if(cover.type=='left'){ %> left-cover
-<% } else if(cover.type=='right'){ %> right-cover
-<% } else if(cover.type=='fill'){ %> fill-cover"
-<% } %>">
+<%_ if(cover.type=='none'){ _%> no-cover
+<%_ } else if(cover.type=='left') { _%> left-cover
+<%_ } else if(cover.type=='right') { _%> right-cover
+<%_ } else if(cover.type=='fill') { _%> fill-cover"
+<%_ } _%>">
     <% if(cover.type=='left'||cover.type=='right') { %> 
     <div class="post-cover">
         <a href="<%= url_for(post.path) %>">

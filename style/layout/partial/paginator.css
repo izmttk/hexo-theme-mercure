@@ -5,9 +5,11 @@
         .page-number,
         .extend {
             @apply w-10 h-10 leading-10 text-center align-middle border border-gray-300 bg-white;
+            @apply dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400;
         }
         .page-number.current {
             @apply bg-blue-500 text-white border-none;
+            @apply dark:text-gray-800;
         }
         > :first-child {
             @apply rounded-tl-md rounded-bl-md;
