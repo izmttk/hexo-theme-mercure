@@ -5,6 +5,7 @@
         @apply w-96;
         @apply overflow-y-auto;
         @apply bg-white shadow-lg transform;
+        @apply dark:bg-gray-900 dark:text-gray-200;
         @apply transition duration-300;
 
     }

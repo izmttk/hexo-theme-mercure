@@ -54,6 +54,10 @@ function initNavMenu() {
     var navMenuToggleList = [].slice.call(document.querySelectorAll('.navigator .nav-menu .menu-toggle'));
     var navMenuList = navMenuToggleList.map(function (menuToggleEl) {
         var isRootNav = menuToggleEl.parentElement.classList.contains('nav-menu-item');
+        if(!isRootNav) {
+
+            menuToggleEl.insertAdjacentHTML('beforeend','<i class="ri-arrow-right-s-fill"></i>');
+        }
         menuToggleEl.nextElementSibling.style.display = 'block';
         var menu = new Menu(menuToggleEl, menuToggleEl.nextElementSibling, {
             arrow: isRootNav,
@@ -67,7 +71,7 @@ function initNavMenu() {
 function initNavSidebar() {
     var sidebarDrawer = new Drawer('.nav-sidebar-drawer',{
         position: 'right',
-        width: 272
+        width: 278
     });
     $('.navigator .nav-right-drawer').click(function(){
         sidebarDrawer.toggle();
@@ -284,17 +288,20 @@ initCoverParallax();
 
 
 function initDarkTheme() {
+    if(document.querySelector('.dark-theme-toggle') === null) return;
     function getOsPreference() {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     function setDarkTheme() {
         localStorage.setItem('theme','dark');
         localStorage.setItem('osPreference', getOsPreference());
+        document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-sun-fill"></i>';
         document.documentElement.classList.add('dark')
     }
     function setLightTheme() {
         localStorage.removeItem('theme');
         localStorage.setItem('osPreference', getOsPreference());
+        document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-moon-fill"></i>';
         document.documentElement.classList.remove('dark')
     }
     //维持用户的选择直到下一次OsPreference切换

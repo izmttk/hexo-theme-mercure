@@ -8,11 +8,14 @@
     @apply w-full;
     .form-group {
         @apply mx-8 md:mx-16 mt-48 mb-4 h-12 rounded-full bg-white flex items-center shadow-lg;
+        @apply dark:bg-gray-700 dark:border dark:border-gray-600;
         #search-input {
             @apply bg-transparent outline-none ml-5 mr-2 text-lg flex-auto;
+            @apply dark:text-gray-200;
         }
         #search-btn {
             @apply bg-blue-500 rounded-full text-white h-10 w-10 mr-1 leading-10 shadow flex-none;
+            @apply dark:text-gray-800;
         }
     }
     #search-result-wrap {
@@ -20,6 +23,7 @@
         height: calc(100% - 10rem);
         #search-result {
             @apply bg-white p-3 rounded-lg overflow-y-auto;
+            @apply dark:bg-gray-700 dark:border dark:border-gray-600;
             height: 100%;
             animation: fadeInUp100px 0.5s;
             -webkit-overflow-scrolling: touch;
@@ -28,6 +32,7 @@
             }
             .search-result-link {
                 @apply block bg-blue-100 p-3 rounded-lg text-gray-700 transition hover:bg-blue-500 hover:text-gray-50;
+                @apply dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-blue-500 dark:hover:text-gray-800;
             }
             .search-result-title {
                 @apply truncate text-lg font-bold block;

@@ -8,8 +8,8 @@
         <div class="author-info">
             <div class="avatar">
                 <%# 凹角效果，使用透明背景和白色阴影实现，外层包裹用来裁剪凹角 %>
-                <div class="left-corner-wrap"><div class="left-corner"></div></div>
-                <div class="right-corner-wrap"><div class="right-corner"></div></div>
+                <!-- <div class="left-corner-wrap"><div class="left-corner"></div></div> -->
+                <!-- <div class="right-corner-wrap"><div class="right-corner"></div></div> -->
                 <img class="avatar-img" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
             </div>
             <div class="name">
@@ -24,7 +24,7 @@
             <%# const { color } = require('hexo-util'); %>
             <% theme.author.social.forEach((item) =>{ %>
                 <% let bg_color=color(item.color).alpha(0.15); %> 
-                <a href="<%= item.link %>" title="<%= item.name %>" target="_blank" style="background-color: <%- bg_color %>;color:<%- item.color %>">
+                <a href="<%= item.link %>" title="<%= item.name %>" target="_blank" style="background-color: <%- bg_color %>;color:<%- item.color %>" data-tippy-content="<%= item.name %>">
                     <i class="<%= item.icon %>"></i>
                 </a>
             <% }) %>

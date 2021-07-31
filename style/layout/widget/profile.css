@@ -35,7 +35,7 @@
     }
     .body {
         @apply relative px-4 pb-4;
-        box-shadow: 0px -3px 10px 3px rgba(0, 0, 0, 0.4);
+        box-shadow: 0px -5px 10px 3px rgba(0, 0, 0, 0.4);
         .body-shadow-wrap {
             position: absolute;
             width: 100%;
@@ -102,7 +102,7 @@
                 } */
             }
             .name {
-                @apply text-gray-800 text-2xl text-center mt-2 relative;
+                @apply text-gray-800 text-2xl font-bold text-center mt-2 relative;
                 @apply dark:text-gray-200;
             }
             .signature {

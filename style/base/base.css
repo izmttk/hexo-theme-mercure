@@ -32,7 +32,7 @@ iframe {
     .prev,
     .next,
     .blank {
-        @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition transform hover:scale-105;
+        @apply flex-1 text-white p-4 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg transition duration-300 hover:scale-105;
         .deixis {
             @apply block text-sm;
         }
@@ -51,10 +51,11 @@ iframe {
     }
     .no-cover {
         @apply text-gray-700 bg-white;
+        @apply dark:text-gray-200 dark:bg-gray-800;
     }
 }
 .highlight {
-    @apply relative overflow-hidden rounded-xl bg-gray-700;
+    @apply relative overflow-hidden rounded-xl bg-gray-900;
     table,
     tbody {
         @apply block;
@@ -84,6 +85,7 @@ iframe {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
     background-color: #f5f5f5;
     border-radius: 5px;
+    @apply dark:bg-gray-700;
 }
 ::-webkit-scrollbar {
     width: 10px;
@@ -101,6 +103,7 @@ iframe {
         transparent 2rem
     );
     border: 2px solid #fff;
+    @apply dark:border-gray-800 dark:bg-blue-500;
 }
 ::-webkit-scrollbar-track-piece {
     border-radius: 5px;
@@ -119,6 +122,7 @@ body *::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, .3);
     background-image: none;
     border: 0;
+    @apply dark:bg-white/30;
 }
 body *::-webkit-scrollbar-thumb:horizontal {
     /*水平滚动条的样式*/
