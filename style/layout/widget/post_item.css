@@ -2,10 +2,9 @@
     @apply relative h-44 md:h-56;
     @apply shadow-lg rounded-xl;
     @apply flex flex-row flex-nowrap;
-    @apply text-white overflow-hidden overflow-ellipsis;
+    @apply overflow-hidden overflow-ellipsis;
     @apply transition duration-300 scale-100 md:hover:scale-105 md:hover:-translate-y-1 md:hover:shadow-2xl; 
     /* transform: scale(1); 解决background层叠上下文的问题 */
-    @apply dark:text-gray-200;
     .post-cover {
         @apply absolute md:inset-0 md:relative;
         @apply flex-none;
@@ -18,41 +17,64 @@
     }
     .post-info {
         @apply flex-auto flex flex-col flex-nowrap justify-between;
-        @apply p-8 md:py-12 md:px-9 w-0;
+        @apply p-8 md:py-10 md:px-9 w-0;
         @apply z-10;
-        filter:drop-shadow(0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3));
+        @apply text-gray-800;
+        @apply dark:text-gray-200;
+
         .post-meta {
-            @apply flex flex-wrap md:flex-nowrap md:justify-between text-sm;
+            @apply flex flex-wrap md:flex-nowrap text-sm;
             .iconfont {
                 @apply mr-1;
             }
             .post-date {
                 @apply flex-shrink-0 flex-grow w-full md:w-auto mr-3;
-            }
-            .post-category {
-                @apply flex-grow-0 flex-shrink truncate mr-3;
-            }
-            .post-tag {
-                @apply flex-grow-0 flex-shrink truncate mr-3;
-                span {
-                    @apply mx-1;
+                @apply inline-flex items-center;
+                i {
+                    @apply mr-1;
                 }
             }
+            .post-wordcount,
+            .post-readtime,
+            .post-category,
+            .post-tag  {
+                @apply flex-grow-0 flex-shrink truncate mr-3;
+                @apply inline-flex items-center;
+            }
+            .post-wordcount,
+            .post-readtime {
+                i {
+                    @apply mr-1;
+                }
+            }
+            .post-category {
+                i {
+                    @apply mx-0;
+                }
+            }
+            .post-tag  {
+                i {
+                    @apply ml-1;
+                }
+            }
+        }
+        .post-meta-line-1 {
+            @apply justify-start md:justify-between;
+        }
+        .post-meta-line-2 {
+            @apply justify-start;
         }
         .post-title {
             @apply truncate text-2xl font-bold;
         }
         .post-excerpt {
             @apply hidden md:line-clamp-2;
-            @apply break-all leading-6 h-12 overflow-ellipsis overflow-hidden text-sm;
+            @apply break-all overflow-ellipsis overflow-hidden text-sm;
         }
     }
     &.left-cover {
         .post-cover {
             @apply order-first;
-            @media (min-width: 768px) {
-                clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
-            }
         }
         .post-info {
             @apply order-last md:pl-5 md:pr-9;
@@ -61,16 +83,24 @@
     &.right-cover {
         .post-cover {
             @apply order-last;
-            @media (min-width: 768px) {
-                clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
-            }
         }
         .post-info {
             @apply order-first md:pl-9 md:pr-5;
         }
     }
-    &.left-cover,
-    &.right-cover {
+    @media screen(md) {
+        &.left-cover.blur-cover .post-cover{
+            clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
+        }
+        &.right-cover.blur-cover .post-cover {
+            clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
+        }
+    }
+    &.blur-cover {
+        .post-info {
+            @apply text-white;
+            filter:drop-shadow(0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3));
+        }
         .background {
             @apply absolute inset-0 z-0 hidden md:block;
             @apply bg-gray-500 bg-cover bg-center bg-no-repeat;
@@ -97,10 +127,28 @@
             } */
         }
     }
-    &.fill-cover {
+    &.material-cover {
+        &.left-cover .post-cover {
+            mask: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+        }
+        &.right-cover .post-cover {
+            mask: linear-gradient(-90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+        }
         .background {
             @apply absolute inset-0 z-0;
-            @apply bg-cover bg-center bg-no-repeat;
+            @apply bg-white bg-cover bg-center bg-no-repeat;
+            @apply dark:bg-gray-800;
+        }
+    }
+    &.full-cover {
+        .post-info {
+            @apply text-white;
+            filter:drop-shadow(0 0.1875rem 0.3125rem rgba(0, 0, 0, 0.3));
+        }
+        .background {
+            @apply absolute inset-0 z-0;
+            @apply bg-white bg-cover bg-center bg-no-repeat;
+            @apply dark:bg-gray-800;
             .background-img {
                 @apply object-cover h-full w-full z-0;
                 @apply brightness-[.8];
@@ -108,6 +156,9 @@
         }
     }
     &.no-cover {
+        .post-info {
+            @apply text-white;
+        }
         .background {
             @apply absolute inset-0 z-0;
             @apply dark:brightness-[.8];

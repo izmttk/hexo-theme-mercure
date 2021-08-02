@@ -51,7 +51,7 @@ function initNavMenu() {
     $('.navigator .nav-left-drawer').click(function(){
         menuDrawer.toggle();
     });
-    var navMenuToggleList = [].slice.call(document.querySelectorAll('.navigator .nav-menu .menu-toggle'));
+    var navMenuToggleList = Array.from(document.querySelectorAll('.navigator .nav-menu .menu-toggle'));
     var navMenuList = navMenuToggleList.map(function (menuToggleEl) {
         var isRootNav = menuToggleEl.parentElement.classList.contains('nav-menu-item');
         if(!isRootNav) {
@@ -117,6 +117,9 @@ function initNavbar() {
     var $navbar = $('.navigator');
     var $sidebar = $('#sidebar');
     var preScrollTop = $(window).scrollTop();
+    if(!window.blog.header) {
+        $navbar.addClass('nav-noheader');
+    }
     $(window).on('scroll', $.throttle(function (event) {
         var scrollTop = $(window).scrollTop();
         if (scrollTop <= 10) {
@@ -284,11 +287,39 @@ initSidebarTabs();
 anchorSmoothScroll();
 initCoverParallax();
 
-
+function initPostCover() {
+    document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
+        function setPostBgColor(img) {
+            Vibrant.from(img, {
+                quality: 5
+            }).getPalette().then(function(swatches) {
+                if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
+                    item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
+                    item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
+                } else {
+                    item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
+                    item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
+                }
+            });
+        }
+        var imgEl = item.querySelector('.cover-img');
+        // if(imgEl.complete) {
+            setPostBgColor(imgEl)
+        // } else {
+        //     imgEl.addEventListener('load', function() {
+        //         var that = this;
+        //         setTimeout(function() {
+        //             setPostBgColor(that);
+        //         },100);
+        //     });
+        // }
+    });
+}
+initPostCover();
 
 
 function initDarkTheme() {
-    if(document.querySelector('.dark-theme-toggle') === null) return;
+    if(!window.blog.darkmode) return;
     function getOsPreference() {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }

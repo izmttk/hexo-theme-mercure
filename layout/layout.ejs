@@ -68,11 +68,36 @@
     <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js"></script>
     <%- js('/js/component.js') %>
 
-    <!-- require APlayer -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-    <!-- require MetingJS -->
-    <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3/dist/vibrant.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/rgbaster@2/dist/rgbaster.umd.min.js"></script> -->
+
+    <%- partial('./_partial/jsbridge') %>
+    <%# 提前判断深色模式防止闪烁 %> 
+    <script type="text/javascript">
+    (function() {
+        if(!window.blog.darkmode) return;
+        function getOsPreference() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        //维持用户的选择直到下一次OsPreference切换
+        if(localStorage.getItem('osPreference') == getOsPreference()) {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        } else {
+            if(getOsPreference() === 'dark') {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        }
+    })();
+    </script>
 </head>
 
 <body>

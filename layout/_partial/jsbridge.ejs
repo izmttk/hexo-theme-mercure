@@ -1,0 +1,16 @@
+<% 
+    // 不同模板的页面有不同的配置
+    let headerConfig = theme.header.default;
+    if(is_home()) headerConfig = theme.header.index;
+    else if(is_category() || page.layout === 'category') headerConfig = theme.header.category;
+    else if(is_tag() || page.layout === 'tag') headerConfig = theme.header.tag;
+    else if(is_post()) headerConfig = theme.header.post;
+    else if(is_page()) headerConfig = theme.header.page;
+    else if(is_archive()) headerConfig = theme.header.archive;
+%>
+<script type="text/javascript">
+    window.blog = {
+        header: <%= headerConfig.enable %>,
+        darkmode:<%= theme.darkmode %>
+    }
+</script>

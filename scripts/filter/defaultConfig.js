@@ -1,65 +1,81 @@
+const { deepMerge } = require('hexo-util');
+
 let siteConfig = hexo.config;
 
 function themeConfig(config) {
     let THEME_CONFIG = {
         header: headerConfig(config),
+        post_card: postCardConfig(config),
     }
-    Object.assign(config, THEME_CONFIG);
-    return config;
+    let configCopy = Object.assign({}, config);
+    Object.assign(configCopy, THEME_CONFIG);
+    return configCopy;
+}
+function postCardConfig(config) {
+    const defaultConfig = {
+        cover: {
+            type: 'blur',
+            position: 'alter'
+        }
+    }
+    let combinedConfig = deepMerge(defaultConfig, config?.post_card ?? {});
+    return combinedConfig;
 }
 function headerConfig(config) {
-    let header = {
-        enable: config.header?.enable,
-        height: config.header?.height ?? {
-            default: '400px',
-        },
-        cover: config.header?.cover ?? {
+    // console.log(config)
+    const defaultConfig = {
+        enable: config?.header?.enable ?? true,
+        height: config?.header?.height ?? '400px',
+        bottom_effect: config?.header?.bottom_effect ?? 'none',
+    };
+    const indexConfig = Object.assign({
+        cover: {
             type: 'normal',
             image: '/assets/defalut-bg.jpg',
         },
-        title: config.header?.title ?? siteConfig.title,
-        description: config.header?.description ?? {
+        title: siteConfig.title,
+        description: {
             type: 'normal',
             content: siteConfig.description,
         },
-        scroll_indicator: config.header?.scroll_indicator ?? true,
-        bottom_effect: config.header?.bottom_effect ?? 'none'
+        scroll_indicator: true,
+    }, defaultConfig);
+    const postConfig = Object.assign({
+        cover: 'mini',
+    }, defaultConfig);
+    const pageConfig = Object.assign({
+        cover: 'mini',
+    }, defaultConfig);
+    const archiveConfig = Object.assign({
+        cover: 'mini',
+    }, defaultConfig);
+    const categoryConfig = Object.assign({
+        cover: 'mini',
+    }, defaultConfig);
+    const tagConfig = Object.assign({
+        cover: 'mini',
+    }, defaultConfig);
+    
+    let combinedConfig = {
+        default: defaultConfig,
+        index: deepMerge(indexConfig, config.header?.layout?.index ?? {}),
+        post: deepMerge(postConfig, config.header?.layout?.post ?? {}),
+        page: deepMerge(pageConfig, config.header?.layout?.page ?? {}),
+        archive: deepMerge(archiveConfig, config.header?.layout?.archive ?? {}),
+        category: deepMerge(categoryConfig, config.header?.layout?.category ?? {}),
+        tag: deepMerge(tagConfig, config.header?.layout?.tag ?? {}),
     }
-    if (typeof header.enable !== 'boolean') {
-        header.enable = true;
+    for (let key in config?.header?.layout) {
+        if (key !== 'index' && key !== 'post' && key !== 'page' &&
+            key !== 'archive' && key !== 'category' && key !== 'tag')
+        combinedConfig[key] = deepMerge(defaultConfig, config?.header?.layout[key]);
     }
-    if (typeof header.height === 'object' && !Array.isArray(header.height)) {
-        for (let key in header.height) {
-            if (header.height[key] == 'full' || header.height[key] == 'fullscreen')
-                header.height[key] = '100vh';
-        }
-        let height = {
-            home: header.height.default,
-            post: header.height.default,
-            page: header.height.default,
-            category: header.height.default,
-            tag: header.height.default,
-            archive: header.height.default,
-        };
-        Object.assign(height, header.height);
-        header.height = height;
-    }
-    if (typeof header.height === 'string') {
-        header.height = {
-            home: header.height,
-            post: header.height,
-            page: header.height,
-            category: header.height,
-            tag: header.height,
-            archive: header.height,
-            default: header.height,
-        };
-    }
-    return header;
+    return combinedConfig;
 }
 
 hexo.extend.filter.register('template_locals', function (locals) {
     let localsCopy = Object.assign({}, locals);
     localsCopy.theme = themeConfig(localsCopy.theme);
+    hexo.theme.config = localsCopy.theme;
     return localsCopy;
 });

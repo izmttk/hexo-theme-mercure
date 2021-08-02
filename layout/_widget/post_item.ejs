@@ -1,72 +1,103 @@
 <%# 引入变量：post对象%> 
 <% 
-let cover = getCover(post);
-if(cover.type=='left'||cover.type=='right')
-cover.type=index%2==0?'left':'right';
-%> 
-<div class="post-item
-<%_ if(cover.type=='none'){ _%> no-cover
-<%_ } else if(cover.type=='left') { _%> left-cover
-<%_ } else if(cover.type=='right') { _%> right-cover
-<%_ } else if(cover.type=='fill') { _%> fill-cover"
-<%_ } _%>">
-    <% if(cover.type=='left'||cover.type=='right') { %> 
+let cover = getPageCover(post);
+if(cover.type === 'blur' || cover.type === 'material'){
+    if(cover.position === 'alter') {
+        cover.position= index%2==0 ? 'left' : 'right';
+    }
+}
+let cover_class = [];
+if(cover.type === 'none') { 
+    cover_class.push('no-cover');
+} 
+else if(cover.type === 'blur') {
+    cover_class.push('blur-cover');
+} 
+else if(cover.type === 'material') {
+    cover_class.push('material-cover');
+} 
+else if(cover.type === 'full') {
+    cover_class.push('full-cover');
+} 
+if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'left') {
+    cover_class.push('left-cover');
+}
+else if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'right') {
+    cover_class.push('right-cover');
+} 
+%>
+<div class="post-item <%= cover_class.join(' ') %>">
+    <% if(cover.position === 'left' || cover.position === 'right') { %>
     <div class="post-cover">
         <a href="<%= url_for(post.path) %>">
             <%- image_tag(url_for(cover.path),{
                 alt: post.title,
-                class: 'cover-img'
-            }) %>
-        </a>
+                class: 'cover-img',
+                crossOrigin: ''
+            }) %></a>
     </div>
     <% } %>
     <div class="post-info">
         <%# 文章信息 %>
-        <div class="post-meta">
+        <div class="post-meta post-meta-line-1">
             <%# 发布日期 %>
             <span class="post-date">
-                <i class="iconfont icon-calendar"></i>
-                <%= post.date.locale(config.language).format('ll') %>
+                <i class="ri-calendar-fill"></i>
+                <span><%= post.date.locale(config.language).format('ll') %></span>
             </span>
-            <%# 文章分类 %>
-            <span class="post-category">
-                <% if(post.categories.length>0) { %>
-                <i class="iconfont icon-inbox"></i>
-                <% let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; %>
-                  <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                  <% if(cat_cnt!=post.categories.length) { %>
-                  <span>•</span>
-                  <% }
-                  })
-                } %>
+            <%# 文章字数 %>
+            <span class="post-wordcount">
+                <i class="ri-font-size-2"></i>
+                <span>共<%= wordcount(post.content) %>字</span>
             </span>
-            <%# 文章标签 %>
-            <span class="post-tag">
-                <% if(post.tags.length>0) { %>
-                <i class="iconfont icon-tag"></i>
-                <% let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; %>
-                  <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-                  <% if(tag_cnt!=post.tags.length) { %>
-                  <span>•</span>
-                  <% }
-                  })
-                } %>
+            <%# 文章阅读时长 %>
+            <span class="post-readtime">
+                <i class="ri-time-fill"></i>
+                <span>约<%= min2read(post.content) %>分钟</span>
             </span>
         </div>
         <%# 文章标题 %>
         <div class="post-title">
             <a href="<%= url_for(post.path) %>"><%= post.title %></a>
         </div>
+        
+        <div class="post-meta post-meta-line-2">
+            <%# 文章分类 %>
+            <%_ if(post.categories.length>0) { _%>
+            <span class="post-category">
+                <i class="ri-quill-pen-fill"></i>
+                <%_ let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; _%>
+                    <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                    <%_ if(cat_cnt!=post.categories.length) { _%>
+                        <i class="ri-arrow-right-s-line"></i>
+                    <%_ }
+                }) _%>
+            </span>
+            <%_ } _%> 
+            <%# 文章标签 %>
+            <%_ if(post.tags.length>0) { _%>
+            <span class="post-tag">
+                <!-- <i class="iconfont icon-tag"></i> -->
+                <%_ let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; _%>
+                    <i class="ri-hashtag"></i>
+                    <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
+                    <%_ if(tag_cnt!=post.tags.length) { _%>
+                    <!-- <span>•</span> -->
+                    <%_ }
+                }) _%>
+            </span>
+            <%_ } _%> 
+        </div>
+
         <%# 文章摘要 %>
         <div class="post-excerpt"><%= post.excerpt %></div>
     </div>
-    <div class="background <%- cover.type=='none'?'bg-gradient-'+Math.floor(Math.random()*10):'' %>">
-      <% if(cover.type!='none') {%>
-            <%- image_tag(url_for(cover.path),{
-                alt: post.title,
-                class: 'background-img'
-            }) %>
-      <% } %>
-
-    </div>
+    <div class="background <%- cover.type === 'none' ? 'bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
+    <%_ if(cover.type === 'blur' || cover.type === 'full') { _%>
+        <%- image_tag(url_for(cover.path),{
+            alt: post.title,
+            class: 'background-img',
+            crossOrigin: '' 
+        }) _%>
+    <%_ } _%></div>
 </div>

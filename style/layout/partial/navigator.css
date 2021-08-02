@@ -12,7 +12,7 @@
         .nav-left-drawer, .nav-right-drawer {
             @apply block md:hidden;
             .drawer-toggle {
-                @apply w-14 h-16 text-xl font-bold;
+                @apply w-14 h-16 text-xl;
             }
         }
         .nav-logo {
@@ -69,6 +69,10 @@
     .content {
         /* max-width: calc(100% - 16rem); */
     }
+}
+.navigator.nav-top.nav-noheader {
+    @apply text-gray-900;
+    @apply dark:text-gray-100;
 }
 .navigator.nav-fix {
     @apply shadow-sm backdrop-blur-md bg-white/70 border-b border-gray-200;

@@ -3,7 +3,7 @@
 </article>
 <div class="prev-next">
   <% if(page.prev) { %>
-  <% let prev_cover = getCover(page.prev) %>
+  <% let prev_cover = getPageCover(page.prev) %>
   <a 
     class="prev <%= prev_cover.type=='none'?'no-cover':'' %>" 
     href="<%= url_for(page.prev.path) %>"
@@ -18,7 +18,7 @@
   <span class="blank"></span>
   <% } %> 
   <% if(page.next) { %>
-  <% let next_cover = getCover(page.next) %>
+  <% let next_cover = getPageCover(page.next) %>
   <a 
     class="next <%= next_cover.type=='none'?'no-cover':'' %>" 
     href="<%= url_for(page.next.path) %>" 

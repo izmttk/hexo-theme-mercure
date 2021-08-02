@@ -1,81 +1,93 @@
 <%- partial('../_partial/navigator') %>
+<% 
+    // 不同模板的页面有不同的配置
+    let headerConfig = theme.header.default;
+    if(is_home()) headerConfig = theme.header.index;
+    else if(is_category() || page.layout === 'category') headerConfig = theme.header.category;
+    else if(is_tag() || page.layout === 'tag') headerConfig = theme.header.tag;
+    else if(is_post()) headerConfig = theme.header.post;
+    else if(is_page()) headerConfig = theme.header.page;
+    else if(is_archive()) headerConfig = theme.header.archive;
+    // console.log(headerConfig);
+%>
+<%_ if(headerConfig.enable) { _%>
 <div id="header">
     <%_ if(is_home()) { _%>
     <style>
         #header .cover {
-            height: <%- theme.header.height.default %>!important;
+            height: <%- theme.header.default.height %>!important;
         }
-        @media (min-width: 768px){
+        @media (min-width: 768px) {
             #header .cover {
-                height: <%- theme.header.height.home %>!important;
+                height: <%- headerConfig.height %>!important;
             }
         }
     </style>
-    <div class="cover home-cover" style="height:<%- theme.header.height.home %>">
+    <div class="cover home-cover" style="height:<%- headerConfig.height %>">
         <!-- Header Background Section -->
-        <%_ if(theme.header.cover.type=='none') { _%>
-        <%_ } else if(theme.header.cover.type=='normal') { _%>
-        <div class="background" style="background-image:url(<%- url_for(theme.header.cover.image) %>)"></div>
-        <%_ } else if(theme.header.cover.type=='random') { _%>
+        <%_ if(headerConfig.cover.type=='none') { _%>
+        <%_ } else if(headerConfig.cover.type=='normal') { _%>
+        <div class="background" style="background-image:url(<%- url_for(headerConfig.cover.image) %>)"></div>
+        <%_ } else if(headerConfig.cover.type=='random') { _%>
         <div class="background">
             <script async>
-                var bgList = [<%- theme.header.cover.image.toString() %>];
+                var bgList = [<%- headerConfig.cover.image.toString() %>];
                 $('#header .cover .background').css('background-image', 'url(<%- url_for(bgList[Math.floor(Math.random()*bgList.length)]) %>)');
                 $('#header .cover .background').empty();
             </script>
         </div>
-        <%_ } else if(theme.header.cover.type=='custom') { _%>
-        <div class="background" style="background:<%- theme.header.cover.image %>"></div>
-        <%_ } else if(theme.header.cover.type=='parallax') { _%>
+        <%_ } else if(headerConfig.cover.type=='custom') { _%>
+        <div class="background" style="background:<%- headerConfig.cover.image %>"></div>
+        <%_ } else if(headerConfig.cover.type=='parallax') { _%>
         <div class="background parallax-background">
-            <%_ theme.header.cover.image.forEach(image => { _%> 
+            <%_ headerConfig.cover.image.forEach(image => { _%> 
             <div class="layer" data-depth="<%- image.depth %>" style="background-image:url(<%- url_for(image.url) %>)"></div>
             <%_ }) _%> 
         </div>
         <%_ } _%>
         <!-- Header Title & Description Section -->
-        <%_ if(theme.header.cover.type=='parallax') { _%>
+        <%_ if(headerConfig.cover.type=='parallax') { _%>
         <div class="content parallax-content">
             <div class="layer" data-depth="1">
         <%_ } else { _%>
         <div class="content">
         <%_ } _%> 
-                <div class="<%- is_home()?'site-title':'title' %>"><%- theme.header.title %></div>
+                <div class="<%- is_home()?'site-title':'title' %>"><%- headerConfig.title %></div>
                 <div class="description">
-                    <%_ if(theme.header.description.type=='normal') { _%>
-                    <span><%- theme.header.description.content %></span>
-                    <%_ } else if(theme.header.description.type=='random') { _%>
+                    <%_ if(headerConfig.description.type=='normal') { _%>
+                    <span><%- headerConfig.description.content %></span>
+                    <%_ } else if(headerConfig.description.type=='random') { _%>
                     <script async>
-                        var descList = [<%- theme.header.description.content.toString() %>];
+                        var descList = [<%- headerConfig.description.content.toString() %>];
                         $('#header .description').html('<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>');
                     </script>
-                    <%_ } else if(theme.header.description.type=='api') { _%>
+                    <%_ } else if(headerConfig.description.type=='api') { _%>
                     <script async>
-                        $.get('<%- theme.header.description.url %>',function(data){
-                            var text = $(`<span class="hitokoto-text">${data['<%- theme.header.description.text_field %>']}</span>`);
-                            var author = $(`<span class="hitokoto-author"> —— ${data['<%- theme.header.description.from_field %>']}</span>`);
+                        $.get('<%- headerConfig.description.url %>',function(data){
+                            var text = $(`<span class="hitokoto-text">${data['<%- headerConfig.description.text_field %>']}</span>`);
+                            var author = $(`<span class="hitokoto-author"> —— ${data['<%- headerConfig.description.from_field %>']}</span>`);
                             var hitokoto = $('<span class="hotokoto"></span>').append(text, author);
                             $('#header .description').empty().append(hitokoto);
                         });
                     </script>
                     <%_ } _%>
                 </div>
-        <%_ if(theme.header.cover.type=='parallax') { _%>
+        <%_ if(headerConfig.cover.type=='parallax') { _%>
             </div>
         </div>
         <%_ } else { _%>
         </div>
         <%_ } _%> 
-        <%_ if(theme.header.scroll_indicator) { _%>
-        <div class="indicator" <% if(theme.header.bottom_effect!='none') { %>style="padding-bottom:3rem"<% } %> >
+        <%_ if(headerConfig.scroll_indicator) { _%>
+        <div class="indicator" <% if(headerConfig.bottom_effect!='none') { %>style="padding-bottom:3rem"<% } %> >
             <span>SCROLL</span>
             <i class="ri-arrow-down-s-line"></i>
         </div>
         <%_ } _%>
     </div>
     <%_ } else { _%>
-    <%_ let cover = getCover(page); _%>
-    <div class="cover" style="height:<%- theme.header.height[page.layout] ?? theme.header.height.default %>">
+    <%_ let cover = getPageCover(page); _%>
+    <div class="cover" style="height:<%- headerConfig.height %>">
         <%_ if(cover.type == 'none') { _%>
         <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>"></div>
         <%_ } else { _%> 
@@ -141,11 +153,11 @@
         </div>
     </div>
     <%_ } _%>
-    <%_ if(theme.header.bottom_effect=='cloud') { _%>
+    <%_ if(headerConfig.bottom_effect=='cloud') { _%>
     <div class="cloud-bottom"></div>
-    <%_ } else if(theme.header.bottom_effect=='gradient') { _%>
+    <%_ } else if(headerConfig.bottom_effect=='gradient') { _%>
     <div class="gradient-bottom"></div>
-    <%_ } else if(theme.header.bottom_effect=='waves') { _%>
+    <%_ } else if(headerConfig.bottom_effect=='waves') { _%>
     <div class="waves-bottom">
         <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
             <defs>
@@ -161,3 +173,6 @@
     </div>
     <%_ } _%>
 </div>
+<%_ } else { _%>
+<div class="h-16"></div>
+<%_ } _%>
