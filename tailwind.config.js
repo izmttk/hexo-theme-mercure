@@ -47,12 +47,6 @@ module.exports = {
                   color: theme('colors.blue.300'),
               },
             },
-            code: {
-              backgroundColor: theme('colors.blue.800'),
-              paddingLeft: '5px',
-              paddingRight: '5px',
-              borderRadius: '4px',
-            },
             svg: {
               color: theme('colors.gray.100')
             },
@@ -91,6 +85,21 @@ module.exports = {
               color: theme('colors.gray.400'),
               borderLeftColor: theme('colors.gray.600'),
             },
+            hr: {
+              borderColor: theme('colors.gray.600'),
+            },
+            thead: {
+              color: theme('colors.gray.300'),
+              borderBottomColor: theme('colors.gray.600'),
+            },
+            tbody: {
+              tr: {
+                borderBottomColor: theme('colors.gray.700'),
+              }
+            },
+            'ul > li::before': {
+              backgroundColor: theme('colors.gray.600'),
+            }
           },
         },
       }),

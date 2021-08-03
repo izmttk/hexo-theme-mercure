@@ -1,5 +1,5 @@
 :root {
-    @apply text-base;
+    @apply text-base antialiased;
 }
 body {
     @apply bg-[#f5f5fa];
@@ -9,8 +9,9 @@ button:focus {
     outline: none;
 }
 #main {
+    @apply flex flex-row flex-nowrap w-full lg:w-[67rem] xl:w-[69rem] 2xl:w-[71rem] mx-auto;
     #content {
-        @apply z-10 m-1 md:m-4;
+        @apply flex-1 min-w-0 z-10 m-1 md:m-4;
     }
     #sidebar {
         @apply z-0;

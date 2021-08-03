@@ -1,12 +1,12 @@
 .navigator {
     @apply fixed w-full h-16 z-40 translate-y-0 text-gray-900;
     @apply dark:text-gray-100;
-    @apply transition duration-700;
+    @apply transition duration-500;
     /* transition-property: top, height, background-color, color,
                          box-shadow, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 700ms; */
-    will-change: backdrop-filter;
+    /* will-change: backdrop-filter; */
     .content {
         @apply w-full lg:w-[63rem] xl:w-[67rem] 2xl:w-[71rem] mx-auto h-full flex flex-nowrap items-center;
         .nav-left-drawer, .nav-right-drawer {
@@ -51,9 +51,9 @@
             }
         }
         .nav-toolkit {
-            @apply mr-0 px-2 lg:-mr-4 md:px-5  space-x-2;
+            @apply mr-0 px-2 lg:-mr-4 md:px-5 space-x-2;
             >button {
-                @apply w-10 h-10 rounded-full text-current outline-none bg-gray-400/25;
+                @apply w-10 h-10 rounded-full text-current outline-none bg-gray-400/30;
                 i {
                     @apply text-lg leading-10;
                 }
@@ -65,9 +65,16 @@
     @apply -translate-y-16 shadow-none border-b border-transparent;
 }
 .navigator.nav-top {
-    @apply shadow-none text-gray-100 backdrop-blur-none bg-transparent border-b border-transparent;
+    @apply shadow-none text-gray-100 backdrop-filter-none bg-transparent border-b border-transparent;
     .content {
         /* max-width: calc(100% - 16rem); */
+        .nav-toolkit {
+            >button {
+                /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */
+                @apply bg-white/50 text-black;
+                @apply dark:bg-black/50 dark:text-white;
+            }
+        }
     }
 }
 .navigator.nav-top.nav-noheader {

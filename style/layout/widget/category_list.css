@@ -1,4 +1,7 @@
 .category-list {
+    .category-list-item {
+        @apply before:top-[calc(1.125em-0.1875em)];
+    }
     .category-list-link {
         @apply inline-block rounded-full px-3 py-1;
         @apply text-current no-underline;
@@ -9,50 +12,50 @@
             @apply text-xs;
         }
     }
-    .category-list-link {
-        background-color: #ffe0e5;
-        color: #ff4e6a;
+    a.category-list-link {
+        background-color: rgba(255,78,106,.25);
+        color: rgba(255,78,106,1);
     }
     .category-list-child .category-list-link {
-        background-color: #ffdac4;
-        color: #ff761e;
+        background-color: rgba(255,118,30,.25);
+        color: rgba(255,118,30,1);
     }
     .category-list-child .category-list-child .category-list-link {
-        background-color: #ffecb8;
-        color: #ffb900;
+        background-color: rgba(255,185,0,.25);
+        color: rgba(255,185,0,1);
     }
     .category-list-child
         .category-list-child
         .category-list-child
         .category-list-link {
-        background-color: #c4f3d8;
-        color: #33d57a;
+        background-color: rgba(51,213,122,.25);
+        color: rgba(51,213,122,1);
     }
     .category-list-child
         .category-list-child
         .category-list-child
         .category-list-child
         .category-list-link {
-        background-color: #d1f9ff;
-        color: #00dbff;
-    }
-    .category-list-child
-        .category-list-child
-        .category-list-child
-        .category-list-child
-        .category-list-child
-        .category-list-link {
-        background-color: #c2e3ff;
-        color: #1a98ff;
+        background-color: rgba(0,219,255,.25);
+        color: rgba(0,219,255,1);
     }
     .category-list-child
         .category-list-child
         .category-list-child
         .category-list-child
         .category-list-child
+        .category-list-link {
+        background-color: rgba(26,152,255,.25);
+        color: rgba(26,152,255,1);
+    }
+    .category-list-child
+        .category-list-child
+        .category-list-child
+        .category-list-child
+        .category-list-child
         .category-list-child
         .category-list-link {
-        background-color: #d6d6ff;
-        color: #9090ff;
+        background-color: rgba(144,144,255,.25);
+        color: rgba(144,144,255,1);
     }
 }

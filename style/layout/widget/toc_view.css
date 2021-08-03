@@ -14,7 +14,7 @@
         @apply pr-2 py-1;
         @apply text-gray-700;
         @apply bg-white hover:bg-gray-100;
-        @apply transition duration-300;
+        /* @apply transition duration-300; */
         @apply dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700;
         &::before {
             content: "";
@@ -22,7 +22,7 @@
             @apply w-1.5;
             @apply bg-white;
             @apply dark:bg-gray-800;
-            @apply transition duration-300;
+            /* @apply transition duration-300; */
         }
         &:hover::before {
             @apply bg-gray-300;
@@ -37,19 +37,19 @@
             @apply bg-blue-400;
         }
     }
-    .toc-level-2 .toc-link {
-        @apply pl-4;
+    .toc-level-2>.toc-link {
+        @apply pl-4 font-bold;
     }
-    .toc-level-3 .toc-link {
+    .toc-level-3>.toc-link {
         @apply pl-8;
     }
-    .toc-level-4 .toc-link {
+    .toc-level-4>.toc-link {
         @apply pl-12;
     }
-    .toc-level-5 .toc-link {
+    .toc-level-5>.toc-link {
         @apply pl-16;
     }
-    .toc-level-6 .toc-link {
+    .toc-level-6>.toc-link {
         @apply pl-20;
     }
 }

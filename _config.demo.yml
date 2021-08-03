@@ -157,6 +157,7 @@ post_card:
         position: alter
 
 darkmode: true
+
 comments:
     disqus:
         enable: false

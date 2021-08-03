@@ -139,7 +139,7 @@ var Toc = (function () {
         // });
         $(window).on('scroll', $.throttle(function (event) {
             that.updateView();
-        }, 200));
+        }, 50));
         this.updateView();
     }
     Toc.prototype.updateView = function () {

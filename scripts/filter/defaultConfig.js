@@ -41,19 +41,19 @@ function headerConfig(config) {
         scroll_indicator: true,
     }, defaultConfig);
     const postConfig = Object.assign({
-        cover: 'mini',
+        cover: 'full',
     }, defaultConfig);
     const pageConfig = Object.assign({
-        cover: 'mini',
+        cover: 'full',
     }, defaultConfig);
     const archiveConfig = Object.assign({
-        cover: 'mini',
+        cover: 'full',
     }, defaultConfig);
     const categoryConfig = Object.assign({
-        cover: 'mini',
+        cover: 'full',
     }, defaultConfig);
     const tagConfig = Object.assign({
-        cover: 'mini',
+        cover: 'full',
     }, defaultConfig);
     
     let combinedConfig = {

@@ -52,6 +52,7 @@
         <%_ } else { _%>
         <div class="content">
         <%_ } _%> 
+            <div class="site-info">
                 <div class="<%- is_home()?'site-title':'title' %>"><%- headerConfig.title %></div>
                 <div class="description">
                     <%_ if(headerConfig.description.type=='normal') { _%>
@@ -72,6 +73,7 @@
                     </script>
                     <%_ } _%>
                 </div>
+            </div>
         <%_ if(headerConfig.cover.type=='parallax') { _%>
             </div>
         </div>
@@ -91,65 +93,84 @@
         <%_ if(cover.type == 'none') { _%>
         <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>"></div>
         <%_ } else { _%> 
-        <div class="background" style="background-image:url('<%- url_for(cover.path) %>')"></div>
+        <div class="background <%= headerConfig.cover === 'mini'?'md:after:backdrop-blur-2xl':'' %>" style="background-image:url('<%- url_for(cover.path) %>')"></div>
         <%_ } _%> 
         <div class="content">
-            <%_ if(is_category()) { _%>
-            <div class="title">
-                <!-- <i class="ri-inbox-line"></i> -->
-                <span> 分类：<%= page.category %></span>
-            </div>
-            <%_ } else if(is_tag()) { _%>
-            <div class="title">
-                <!-- <i class="ri-price-tag-3-line"></i> -->
-                <span> 标签：<%= page.tag %></span>
-            </div>
-            <%_ } else if(is_archive()) { _%>
-            <div class="title">
-                <!-- <i class="ri-archive-line"></i> -->
-                <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
-            </div>
-            <%_ } else if(is_page()) { _%>
-            <div class="title"><%= page.title %></div>
-            <%_ } else if(is_post()) { _%>
-            <div class="title"><%= page.title %></div>
-            <div class="meta">
-                <div class="publish-date">
-                    <i class="ri-calendar-line"></i>
-                    <span>创建于<%= page.date.locale(config.language).format('ll dddd H:m') %></span>
+            <div class="page-info">
+                <%_ if(is_category()) { _%>
+                <div class="title">
+                    <!-- <i class="ri-inbox-line"></i> -->
+                    <span> 分类：<%= page.category %></span>
                 </div>
-                <div class="update-date">
-                    <i class="ri-refresh-line"></i>
-                    <span>更新于<%= page.updated.locale(config.language).format('ll dddd H:m') %></span>
+                <%_ } else if(is_tag()) { _%>
+                <div class="title">
+                    <!-- <i class="ri-price-tag-3-line"></i> -->
+                    <span> 标签：<%= page.tag %></span>
                 </div>
-                <%_ if(page.categories.length>0) { _%> 
-                <div class="category">
-                    <i class="ri-inbox-line"></i>
-                    <span>分类：</span>
-                    <%_ let cat_cnt = 0; _%> 
-                    <%_ page.categories.each((category)=>{ _%> 
-                    <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                    <%_  cat_cnt++; if(cat_cnt!=page.categories.length) { _%>
-                    <span>/</span>
+                <%_ } else if(is_archive()) { _%>
+                <div class="title">
+                    <!-- <i class="ri-archive-line"></i> -->
+                    <span> 归档<%= page.year?'：'+page.year:'' %><%= page.month?'/'+page.month:'' %></span>
+                </div>
+                <%_ } else if(is_page()) { _%>
+                <div class="title"><%= page.title %></div>
+                <%_ } else if(is_post()) { _%>
+
+                <div class="meta">
+                    <%# 文章字数 %>
+                    <span class="post-wordcount">
+                        <i class="ri-font-size-2"></i>
+                        <span>共<%= wordcount(page.content) %>字</span>
+                    </span>
+                    <%# 文章阅读时长 %>
+                    <span class="post-readtime">
+                        <i class="ri-time-fill"></i>
+                        <span>约<%= min2read(page.content) %>分钟</span>
+                    </span>
+                </div>
+                <div class="title"><%= page.title %></div>
+                <div class="meta">
+                    <div class="publish-date">
+                        <i class="ri-calendar-fill"></i>
+                        <span><%= page.date.locale(config.language).format('ll') %></span>
+                    </div>
+                    <div class="update-date">
+                        <i class="ri-edit-2-fill"></i>
+                        <span><%= page.updated.locale(config.language).format('ll') %></span>
+                    </div>
+                </div>
+                <div class="meta">
+                    <%_ if(page.categories.length>0) { _%>
+                    <div class="category">
+                        <i class="ri-quill-pen-fill"></i>
+                        <%_ let cat_cnt = 0; _%> 
+                        <%_ page.categories.each((category)=>{ _%> 
+                        <a href="<%= url_for(category.path) %>"><%= category.name %></a>
+                        <%_  cat_cnt++; if(cat_cnt!=page.categories.length) { _%>
+                        <i class="ri-arrow-right-s-line"></i>
+                        <%_ } _%> 
+                        <%_ }) _%>
+                    </div>
+                    <%_ } _%>
+                    <%_ if(page.tags.length>0) { _%> 
+                    <div class="tag">
+                        <%_ page.tags.each((tag)=>{ _%>
+                        <a href="<%= url_for(tag.path) %>"><i class="ri-hashtag"></i><%= tag.name %></a>
+                        <%_ }) _%>
+                    </div>
                     <%_ } _%> 
-                    <%_ }) _%>
                 </div>
                 <%_ } _%>
-                <%_ if(page.tags.length>0) { _%> 
-                <div class="tag">
-                    <i class="ri-price-tag-3-line"></i>
-                    <span>标签：</span>
-                    <%_ let tag_cnt = 0; _%> 
-                    <%_ page.tags.each((tag)=>{ _%> 
-                    <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-                    <%_  tag_cnt++; if(tag_cnt!=page.tags.length) { _%>
-                    <span>•</span>
-                    <%_ } _%> 
-                    <%_ }) _%>
-                </div>
-                <%_ } _%> 
             </div>
-            <%_ } _%>
+            <%_ if( headerConfig.cover === 'mini') { _%> 
+            <div class="mini-cover">
+                <%- image_tag(url_for(cover.path),{
+                    alt: page.title,
+                    class: 'background-img',
+                    crossOrigin: '' 
+                }) _%>
+            </div>
+            <%_ } _%> 
         </div>
     </div>
     <%_ } _%>

@@ -1,0 +1,26 @@
+<div class="friends">
+    <%_ page?.friends.forEach((group)=>{ _%>
+    <section class="group">
+        <div class="group-head">
+            <i class="<%= group.icon %>"></i>
+            <span class="title"><%= group.group %></span>
+            <span class="description"><%= group.desc %></span>
+        </div>
+        <div class="group-body">
+            <%_ group?.items.forEach((friend) => { _%>
+            <a class="friend" href="<%= friend.url %>">
+                <div class="avatar"><img src="<%= friend.avatar %>" alt="<%= friend.name %>"></div>
+                <div class="info">
+                    <div class="name"><%= friend.name %></div>
+                    <div class="description"><%= friend.desc %></div>
+                </div>
+            </a>
+            <%_ }) _%> 
+        </div>
+    </section>
+    <%_ }) _%> 
+</div>
+<article class="page">
+    <%- page.content %>
+</article>
+<%- partial('./_partial/comments.ejs') %>

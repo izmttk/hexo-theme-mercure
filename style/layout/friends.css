@@ -1,0 +1,49 @@
+.friends {
+    .group {
+        @apply mb-8;
+        .group-head {
+            @apply flex flex-row flex-nowrap items-center mb-2;
+            i {
+                @apply text-2xl text-gray-800;
+                @apply mr-1;
+                @apply dark:text-gray-200;
+            }
+            .title {
+                 @apply text-2xl text-gray-800;
+                @apply mr-4;
+                @apply dark:text-gray-200;
+            }
+            .description {
+                @apply text-sm text-gray-400;
+            }
+        }
+        .group-body {
+            @apply grid grid-cols-2 lg:grid-cols-3 gap-4 m-4;
+            .friend {
+                @apply flex flex-row flex-nowrap no-underline;
+                @apply rounded-md overflow-hidden shadow-md bg-white;
+                @apply dark:bg-gray-800;
+                @apply transition-transform duration-300 ease-out hover:scale-105 hover:shadow-lg;
+                .avatar {
+                    @apply flex-none w-20 h-20;
+                    img {
+                        @apply m-0 w-full h-full object-cover;
+                    }
+                }
+                .info {
+                    @apply flex flex-col flex-nowrap justify-around;
+                    @apply p-4 flex-auto;
+                    .name {
+                        @apply text-lg text-gray-800 truncate;
+                        @apply dark:text-gray-200;
+                    }
+                    .description {
+                        @apply text-sm text-gray-400 truncate;
+                    }
+                }
+            }
+        }
+    }
+
+
+}

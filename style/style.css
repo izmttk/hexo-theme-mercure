@@ -22,6 +22,8 @@
 @import "./layout/widget/category_list";
 @import "./layout/widget/timeline";
 
+@import "./layout/friends";
+
 @import "./components/drawer";
 @import "./components/collapse";
 @import "./components/menu";
