@@ -140,6 +140,7 @@ var Toc = (function () {
         $(window).on('scroll', $.throttle(function (event) {
             that.updateView();
         }, 50));
+        
         this.updateView();
     }
     Toc.prototype.updateView = function () {

@@ -9,7 +9,9 @@ module.exports = {
   darkMode: 'class',
   purge: [
     './layout/**/*.ejs',
-    './style/**/*.css'
+    './style/**/*.css',
+    './source/**/*.css',
+    './source/**/*.js'
   ],
   theme: {
     extend: {

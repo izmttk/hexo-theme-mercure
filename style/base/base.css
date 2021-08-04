@@ -9,7 +9,7 @@ button:focus {
     outline: none;
 }
 #main {
-    @apply flex flex-row flex-nowrap w-full lg:w-[67rem] xl:w-[69rem] 2xl:w-[71rem] mx-auto;
+    @apply flex flex-row flex-nowrap w-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
     #content {
         @apply flex-1 min-w-0 z-10 m-1 md:m-4;
     }

@@ -30,7 +30,7 @@
         <div class="background" style="background-image:url(<%- url_for(headerConfig.cover.image) %>)"></div>
         <%_ } else if(headerConfig.cover.type=='random') { _%>
         <div class="background">
-            <script async>
+            <script>
                 var bgList = [<%- headerConfig.cover.image.toString() %>];
                 $('#header .cover .background').css('background-image', 'url(<%- url_for(bgList[Math.floor(Math.random()*bgList.length)]) %>)');
                 $('#header .cover .background').empty();
@@ -48,7 +48,7 @@
         <!-- Header Title & Description Section -->
         <%_ if(headerConfig.cover.type=='parallax') { _%>
         <div class="content parallax-content">
-            <div class="layer" data-depth="1">
+            <!-- <div class="layer" data-depth="1"> -->
         <%_ } else { _%>
         <div class="content">
         <%_ } _%> 
@@ -58,12 +58,12 @@
                     <%_ if(headerConfig.description.type=='normal') { _%>
                     <span><%- headerConfig.description.content %></span>
                     <%_ } else if(headerConfig.description.type=='random') { _%>
-                    <script async>
+                    <script>
                         var descList = [<%- headerConfig.description.content.toString() %>];
                         $('#header .description').html('<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>');
                     </script>
                     <%_ } else if(headerConfig.description.type=='api') { _%>
-                    <script async>
+                    <script>
                         $.get('<%- headerConfig.description.url %>',function(data){
                             var text = $(`<span class="hitokoto-text">${data['<%- headerConfig.description.text_field %>']}</span>`);
                             var author = $(`<span class="hitokoto-author"> —— ${data['<%- headerConfig.description.from_field %>']}</span>`);
@@ -75,7 +75,7 @@
                 </div>
             </div>
         <%_ if(headerConfig.cover.type=='parallax') { _%>
-            </div>
+            <!-- </div> -->
         </div>
         <%_ } else { _%>
         </div>

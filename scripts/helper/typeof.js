@@ -16,9 +16,21 @@ function isObject(value) {
 function isArray(value) {
     return Array.isArray(value);
 }
-hexo.extend.helper.register('isString', isString);
-hexo.extend.helper.register('isNumber', isNumber);
-hexo.extend.helper.register('isBoolean', isBoolean);
-hexo.extend.helper.register('isDate', isDate);
-hexo.extend.helper.register('isObject', isObject);
-hexo.extend.helper.register('isArray', isArray);
+
+if(this.hexo) {
+    hexo.extend.helper.register('isString', isString);
+    hexo.extend.helper.register('isNumber', isNumber);
+    hexo.extend.helper.register('isBoolean', isBoolean);
+    hexo.extend.helper.register('isDate', isDate);
+    hexo.extend.helper.register('isObject', isObject);
+    hexo.extend.helper.register('isArray', isArray);
+}
+
+module.exports = {
+    isString,
+    isNumber,
+    isBoolean,
+    isDate,
+    isObject,
+    isArray,
+}

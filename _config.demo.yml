@@ -188,3 +188,7 @@ comments:
 plugins:
     katex: true
     anchor: false
+    lazyload:
+        enable: true
+        loading_img: /assets/avatar.png
+        error_img:

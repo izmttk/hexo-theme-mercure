@@ -27,14 +27,14 @@
     <title><% if(title){ %> <%= title %> - <% } %><%= config.title %></title>
     <%- favicon_tag(theme.favicon) %>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light-border.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light-border.min.css" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css" media="all">
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"> -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all">
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script> -->
@@ -43,15 +43,15 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-    <%- css('/css/style.css') %>
-    <%- css('/css/iconfont.css') %>
+    <%- css({href: '/css/style.css', media: 'all'}) %>
+    <%- css({href: '/css/iconfont.css', media: 'all'}) %>
     <% if(config.highlight.enable) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css" media="all">
     <% } %> 
-    <% if(theme.plugins.katex) { %> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+    <% if(theme.plugins.katex.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body, {
         delimiters: [
             {left: '$$', right: '$$', display: true},
@@ -59,24 +59,26 @@
             {left: '\\(', right: '\\)', display: false},
             {left: '\\[', right: '\\]', display: true}
         ]
-    });"></script>
+    });" defer></script>
     <style>.katex *{color:currentColor;border-color:currentColor}.katex{overflow-x:auto;overflow-y:hidden}</style>
     <% } %>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3/lib/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js"></script>
-    <%- js('/js/component.js') %>
+    <link rel="preconnect" href="https://fonts.gstatic.com" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3/lib/anime.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js" defer></script>
+    <%- js({src:'/js/component.js', defer:true}) %>
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3/dist/vibrant.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3/dist/vibrant.min.js" defer></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/rgbaster@2/dist/rgbaster.umd.min.js"></script> -->
-
+    <% if(theme.plugins.lazyload.enable) { %>
+    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script>
+    <% } %> 
     <%- partial('./_partial/jsbridge') %>
-    <%# 提前判断深色模式防止闪烁 %> 
-    <script type="text/javascript">
+    <%# 提前判断深色模式防止闪烁 %>
+    <script type="text/javascript" defer>
     (function() {
         if(!window.blog.darkmode) return;
         function getOsPreference() {
@@ -114,12 +116,6 @@
         <%- partial('./_partial/footer') %>
     </div>
 
-    <%- js('/js/index.js') %>
-    <script type="text/javascript">
-        tippy('[data-tippy-content]',{
-            animation: 'shift-away',
-            hideOnClick: false,
-        });
-    </script>
+    <%- js({src:'/js/index.js', defer:true}) %>
 </body>
 </html>

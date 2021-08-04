@@ -259,19 +259,19 @@ function initCoverParallax() {
             limitX: 50,
             limitY: 50,
         });
-    var content = $('#header .parallax-content').get(0);
-    if (content)
-        parallaxInstance2 = new Parallax(content, {
-            // selector: '.content',
-            relativeInput: true,
-            // inputElement: '.parallax-background',
-            // clipRelativeInput: true,
-            invertX: false,
-            invertY: false,
-            hoverOnly: true,
-            scalarX: 5,
-            scalarY: 5,
-        });
+    // var content = $('#header .parallax-content').get(0);
+    // if (content)
+    //     parallaxInstance2 = new Parallax(content, {
+    //         // selector: '.content',
+    //         relativeInput: true,
+    //         // inputElement: '.parallax-background',
+    //         // clipRelativeInput: true,
+    //         invertX: false,
+    //         invertY: false,
+    //         hoverOnly: true,
+    //         scalarX: 5,
+    //         scalarY: 5,
+    //     });
 
 }
 
@@ -304,20 +304,23 @@ function initPostCover() {
         }
         var imgEl = item.querySelector('.cover-img');
         // if(imgEl.complete) {
-            setPostBgColor(imgEl)
+            // setPostBgColor(imgEl)
         // } else {
-        //     imgEl.addEventListener('load', function() {
-        //         var that = this;
-        //         setTimeout(function() {
-        //             setPostBgColor(that);
-        //         },100);
-        //     });
+            imgEl.addEventListener('load', function() {
+                var that = this;
+                setPostBgColor(that);
+            });
+            imgEl.addEventListener('error', function() {
+                console.log(111)
+                this.setAttribute('src', this.getAttribute('data-error-src'));
+            });
         // }
     });
 }
 initPostCover();
-
-
+if(window.blog.lazyload) {
+    lazyload();
+}
 function initDarkTheme() {
     if(!window.blog.darkmode) return;
     function getOsPreference() {
@@ -358,3 +361,8 @@ function initDarkTheme() {
     });
 }
 initDarkTheme();
+
+tippy('[data-tippy-content]',{
+    animation: 'shift-away',
+    hideOnClick: false,
+});

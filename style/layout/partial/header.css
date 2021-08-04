@@ -6,7 +6,7 @@
         position: relative;
         overflow: hidden;
         .content {
-            @apply w-full h-full lg:w-[67rem] xl:w-[69rem] 2xl:w-[71rem] mx-auto;
+            @apply w-full h-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
             @apply px-4 py-16;
             @apply flex justify-between items-center flex-row z-10;
             /* filter:drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.26)); */

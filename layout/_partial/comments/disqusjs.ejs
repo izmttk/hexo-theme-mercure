@@ -1,9 +1,7 @@
 <script id="dsq-count-scr" src="//<%= theme.comments.disqusjs.shortname %>.disqus.com/count.js" async></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqusjs.min.css">
-<script src="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.min.js"></script>
-<div id="disqus_thread"></div>
-<script>
-var dsqjs = new DisqusJS({
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqusjs.min.css" media="all">
+<script src="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.min.js" defer 
+onload="var dsqjs = new DisqusJS({
     shortname: '<%= theme.comments.disqusjs.shortname %>',
     siteName: '<%= theme.comments.disqusjs.sitename %>',
     identifier: '<%= decodeURI(page.permalink) %>',
@@ -13,5 +11,5 @@ var dsqjs = new DisqusJS({
     apikey: '<%= theme.comments.disqusjs.apikey %>',
     admin: '<%= theme.comments.disqusjs.admin %>',
     adminLabel: '<%= theme.comments.disqusjs.adminLabel %>'
-});
-</script>
+})"></script>
+<div id="disqus_thread"></div>

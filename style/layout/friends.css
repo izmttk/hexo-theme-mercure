@@ -23,7 +23,7 @@
                 @apply flex flex-row flex-nowrap no-underline;
                 @apply rounded-md overflow-hidden shadow-md bg-white;
                 @apply dark:bg-gray-800;
-                @apply transition-transform duration-300 ease-out hover:scale-105 hover:shadow-lg;
+                @apply transition duration-300 ease-out hover:scale-105 hover:shadow-lg;
                 .avatar {
                     @apply flex-none w-20 h-20;
                     img {

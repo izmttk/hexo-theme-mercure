@@ -8,7 +8,7 @@
     transition-duration: 700ms; */
     /* will-change: backdrop-filter; */
     .content {
-        @apply w-full lg:w-[63rem] xl:w-[67rem] 2xl:w-[71rem] mx-auto h-full flex flex-nowrap items-center;
+        @apply w-full lg:max-w-[63rem] xl:max-w-[67rem] 2xl:max-w-[71rem] mx-auto h-full flex flex-nowrap items-center;
         .nav-left-drawer, .nav-right-drawer {
             @apply block md:hidden;
             .drawer-toggle {
