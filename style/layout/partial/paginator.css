@@ -1,15 +1,20 @@
 #paginator {
-    @apply w-full flex justify-center my-5;
+    @apply w-full flex justify-center mt-10;
     .paginator-group {
-        @apply flex flex-nowrap justify-center;
-        .page-number,
-        .extend {
-            @apply w-10 h-10 leading-10 text-center align-middle border border-gray-300 bg-white;
+        @apply flex flex-nowrap justify-center  z-0 shadow-sm rounded-md;
+        .page-number, .extend {
+            @apply bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium;
             @apply dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400;
         }
+        .extend {
+            @apply px-2 py-2 text-xl font-bold;
+            i {
+                @apply w-5 h-5 leading-5 text-center;
+            }
+        }
         .page-number.current {
-            @apply bg-blue-500 text-white border-none;
-            @apply dark:text-gray-800;
+            @apply bg-blue-500 border-blue-300 text-white;
+            @apply dark:text-gray-800 dark:border-blue-600;
         }
         > :first-child {
             @apply rounded-tl-md rounded-bl-md;

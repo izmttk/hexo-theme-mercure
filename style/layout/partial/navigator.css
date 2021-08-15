@@ -34,14 +34,14 @@
         .nav-menu {
             @apply h-16 flex-1 overflow-x-auto overflow-y-hidden;
             font-family: "Noto Serif SC", ui-serif, serif;
-            font-weight: bold;
+            /* font-weight: bold; */
             .nav-menu-list {
                 @apply hidden md:flex;
                 @apply flex-nowrap items-center;
                 .nav-menu-item {
                     @apply relative flex-none;
                     >.link {
-                        @apply block px-4 h-16 text-lg leading-16;
+                        @apply block px-4 h-16 text-lg font-bold leading-16;
                         position: relative;
                         z-index: 20;
                     }
@@ -62,7 +62,7 @@
     }
 }
 .navigator.nav-hide {
-    @apply -translate-y-16 shadow-none border-b border-transparent;
+    @apply md:-translate-y-16 shadow-none border-b border-transparent;
 }
 .navigator.nav-top {
     @apply shadow-none text-gray-100 backdrop-filter-none bg-transparent border-b border-transparent;

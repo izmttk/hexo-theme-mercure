@@ -1,5 +1,5 @@
 #header {
-    @apply mb-8;
+    @apply md:mb-8;
     position: relative;
     .cover {
         @apply flex justify-center items-center;
@@ -7,16 +7,14 @@
         overflow: hidden;
         .content {
             @apply w-full h-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
-            @apply px-4 py-16;
+            @apply px-4 md:px-8 pt-16 pb-16 md:pt-24 md:pb-20;
             @apply flex justify-between items-center flex-row z-10;
             /* filter:drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.26)); */
             .site-info {
                 @apply w-full h-full flex flex-col justify-center items-center;
                 .site-title {
-                    color: white;
-                    font-size: 3rem;
-                    font-weight: bold;
-                    @apply flex h-24 md:h-36 mx-4 my-4;
+                    @apply text-white text-5xl;
+                    @apply flex h-24 leading-[6rem] md:h-36 md:leading-[9rem] mx-4 my-4;
                     img {
                         @apply h-full object-contain;
                     }
@@ -42,11 +40,12 @@
             .page-info {
                 @apply flex justify-center flex-col z-10;
                 .title {
-                    @apply m-4 text-4xl md:text-5xl lg:text-6xl text-white;
+                    @apply my-4 text-4xl md:text-5xl lg:text-6xl text-white;
                     text-shadow: 0 2px 2px rgba(0,0,0,.5);
                 }
                 .meta {
-                    @apply flex flex-wrap mx-4 my-1 text-white text-sm gap-x-4 gap-y-1;
+                    @apply flex flex-wrap my-1 text-white text-sm gap-x-4 gap-y-1;
+                    text-shadow: 0 2px 2px rgba(0,0,0,.5);
                     >*,.tag a{
                         @apply inline-flex items-center;
                     }
@@ -60,7 +59,8 @@
                         @apply flex-none;
                         @apply text-black px-2.5 py-0.5 bg-white/50 rounded-full;
                         @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125;
-                        @apply dark:text-white dark:bg-black/50
+                        @apply dark:text-white dark:bg-black/50;
+                        text-shadow: none;
                     }
                 }
             }
@@ -138,8 +138,9 @@
         }
     }
     .cover.home-cover {
+        @apply max-h-80 md:max-h-full;
         .content {
-            @apply w-full;
+            @apply w-full p-0;
             .title {
                 font-size: 4.5rem;
             }

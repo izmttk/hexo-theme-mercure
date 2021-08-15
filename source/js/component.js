@@ -220,7 +220,9 @@ var Tabs = (function () {
             anime({
                 targets: $glider.get(0),
                 translateX: tabOffsetLeft,
-                width: tabWidth
+                width: tabWidth,
+                duration: 500,
+                easing: 'easeOutCubic',
             });
         });
     }
@@ -242,7 +244,7 @@ var Tabs = (function () {
             targets: $activePanel.get(0),
             translateX: slideLeft ? [0, '-100%'] : [0, '100%'],
             opacity: [1, 0],
-            duration: 500,
+            duration: 700,
             easing: 'easeOutCubic',
         }).finished.then(function () {
             $activePanel.hide();
@@ -255,7 +257,7 @@ var Tabs = (function () {
             targets: $panel.get(0),
             translateX: slideLeft ? ['100%', 0] : ['-100%', 0],
             opacity: [0, 1],
-            duration: 500,
+            duration: 700,
             easing: 'easeOutCubic',
         });
 

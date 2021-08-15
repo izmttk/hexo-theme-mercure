@@ -15,7 +15,7 @@ hexo.extend.filter.register('after_render:html', function (str, data) {
         }
         imgEl.addClass('lazyload');
         imgEl.attr('data-src', p2);
-        imgEl.attr('data-error-src', hexo.theme.config?.plugins?.lazyload?.error_img);
+        // imgEl.attr('data-error-src', hexo.theme.config?.plugins?.lazyload?.error_img);
         if (loadingImg) {
             imgEl.attr('src', url_for(loadingImg));
             return $.html();

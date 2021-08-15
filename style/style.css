@@ -21,6 +21,7 @@
 @import "./layout/widget/tag_list";
 @import "./layout/widget/category_list";
 @import "./layout/widget/timeline";
+@import "./layout/widget/float_toolbar";
 
 @import "./layout/friends";
 

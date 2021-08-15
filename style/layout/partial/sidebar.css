@@ -21,7 +21,11 @@
                 0 8px 13px rgba(0, 0, 0, 0.15) inset; */
             @apply dark:bg-gray-800;
             .tab {
-                @apply flex-auto text-center text-sm font-bold p-1 z-10;
+                @apply flex-auto text-sm font-bold p-1 z-10;
+                @apply inline-flex justify-center;
+                i {
+                    @apply font-normal mr-1;
+                }
             }
             .glider {
                 @apply absolute bg-white rounded shadow z-0;

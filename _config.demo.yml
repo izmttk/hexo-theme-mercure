@@ -155,6 +155,11 @@ post_card:
         #  - left 始终在左侧
         #  - right 始终在右侧
         position: alter
+        # 卡片背景默认值，仅对type为blur和material的卡片生效
+        # 全局设定，不可被Front-matter替换，允许值：
+        #  - none 无背景填充
+        #  - auto 根据type填充
+        background: none
 
 darkmode: true
 
@@ -190,5 +195,5 @@ plugins:
     anchor: false
     lazyload:
         enable: true
-        loading_img: /assets/avatar.png
-        error_img:
+        loading_img: /assets/loading.svg
+        error_img: /assets/loading.svg

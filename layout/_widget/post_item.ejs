@@ -12,7 +12,7 @@ if(cover.type === 'none') {
 } 
 else if(cover.type === 'blur') {
     cover_class.push('blur-cover');
-} 
+}
 else if(cover.type === 'material') {
     cover_class.push('material-cover');
 } 
@@ -24,7 +24,10 @@ if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'l
 }
 else if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'right') {
     cover_class.push('right-cover');
-} 
+}
+if(cover.background==='none') {
+    cover_class.push('no-bg');
+}
 %>
 <div class="post-item <%= cover_class.join(' ') %>">
     <% if(cover.position === 'left' || cover.position === 'right') { %>
@@ -92,6 +95,7 @@ else if((cover.type === 'blur' || cover.type === 'material') && cover.position =
         <%# 文章摘要 %>
         <div class="post-excerpt"><%= post.excerpt %></div>
     </div>
+    <%_ if(cover.type !== 'material' && cover.background !== 'none') { _%>
     <div class="background <%- cover.type === 'none' ? 'bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
     <%_ if(cover.type === 'blur' || cover.type === 'full') { _%>
         <%- image_tag(url_for(cover.path),{
@@ -100,4 +104,5 @@ else if((cover.type === 'blur' || cover.type === 'material') && cover.position =
             crossOrigin: '' 
         }) _%>
     <%_ } _%></div>
+    <%_ } _%>
 </div>

@@ -13,7 +13,7 @@
 <%_ if(headerConfig.enable) { _%>
 <div id="header">
     <%_ if(is_home()) { _%>
-    <style>
+    <!-- <style>
         #header .cover {
             height: <%- theme.header.default.height %>!important;
         }
@@ -22,7 +22,7 @@
                 height: <%- headerConfig.height %>!important;
             }
         }
-    </style>
+    </style> -->
     <div class="cover home-cover" style="height:<%- headerConfig.height %>">
         <!-- Header Background Section -->
         <%_ if(headerConfig.cover.type=='none') { _%>
@@ -93,7 +93,7 @@
         <%_ if(cover.type == 'none') { _%>
         <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>"></div>
         <%_ } else { _%> 
-        <div class="background <%= headerConfig.cover === 'mini'?'md:after:backdrop-blur-2xl':'' %>" style="background-image:url('<%- url_for(cover.path) %>')"></div>
+        <div class="background <%= headerConfig.cover === 'mini'?'md:blur-xl md:scale-125':'' %>" style="background-image:url('<%- url_for(cover.path) %>')"></div>
         <%_ } _%> 
         <div class="content">
             <div class="page-info">
@@ -162,7 +162,7 @@
                 </div>
                 <%_ } _%>
             </div>
-            <%_ if( headerConfig.cover === 'mini') { _%> 
+            <%_ if( headerConfig.cover === 'mini' && cover.type !== 'none' ) { _%> 
             <div class="mini-cover">
                 <%- image_tag(url_for(cover.path),{
                     alt: page.title,

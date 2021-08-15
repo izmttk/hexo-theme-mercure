@@ -288,6 +288,8 @@ anchorSmoothScroll();
 initCoverParallax();
 
 function initPostCover() {
+    if(window.blog.post_card.cover.background === 'none') return;
+    if(document.documentElement.clientWidth <= 768) return;
     document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
         function setPostBgColor(img) {
             Vibrant.from(img, {
@@ -318,9 +320,13 @@ function initPostCover() {
     });
 }
 initPostCover();
-if(window.blog.lazyload) {
-    lazyload();
+
+function initLazyLoad() {
+    if(window.blog.lazyload) {
+        lazyload();
+    }
 }
+initLazyLoad();
 function initDarkTheme() {
     if(!window.blog.darkmode) return;
     function getOsPreference() {
@@ -362,7 +368,41 @@ function initDarkTheme() {
 }
 initDarkTheme();
 
-tippy('[data-tippy-content]',{
-    animation: 'shift-away',
-    hideOnClick: false,
-});
+function initTooltip() {
+    tippy('[data-tippy-content]',{
+        animation: 'shift-away',
+        hideOnClick: false,
+    });
+}
+initTooltip();
+
+function initFloatToolbar() {
+    var commentsEl = document.querySelector('.comments');
+    var floatToolbarEl = document.querySelector('.float-toolbar');
+    document.addEventListener('scroll', function(event) {
+        if(this.documentElement.scrollTop > 20) {
+            floatToolbarEl.classList.remove('float-toolbar-hidden');
+        } else {
+            floatToolbarEl.classList.add('float-toolbar-hidden');
+        }
+    });
+    document.dispatchEvent(new Event('scroll'));
+
+    document.querySelector('#back-to-top-btn').addEventListener('click', function(event) {
+        anime({
+            targets: document.documentElement,
+            scrollTop: 0,
+            easing: 'easeOutCubic',
+            duration: 1000,
+        });
+    });
+    document.querySelector('#go-to-commit-btn').addEventListener('click', function(event) {
+        anime({
+            targets: document.documentElement,
+            scrollTop: commentsEl.offsetTop - 64,
+            easing: 'easeOutCubic',
+            duration: 1000,
+        });
+    });
+}
+initFloatToolbar();

@@ -4,6 +4,7 @@
 body {
     @apply bg-[#f5f5fa];
     @apply dark:bg-gray-900;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
 }
 button:focus {
     outline: none;
