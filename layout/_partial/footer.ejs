@@ -1,6 +1,9 @@
 <div class="copyright">
     <span>Copyright © <%= date(Date.now(),'YYYY') %></span>
     <a href="<%- config.url %>"><%= theme.author.name %></a>
+    <% if(theme.footer.text !== null) { %> 
+    <span> | <%- theme.footer.text %></span>
+    <% } %> 
 </div>
 <div class="theme-info">
     <span>Powered  By Hexo</span>

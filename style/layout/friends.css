@@ -26,7 +26,7 @@
                 @apply transition duration-300 ease-out hover:scale-105 hover:shadow-lg;
                 .avatar {
                     @apply flex-none w-20 h-20;
-                    img {
+                    img,svg {
                         @apply m-0 w-full h-full object-cover;
                     }
                 }

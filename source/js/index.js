@@ -244,7 +244,7 @@ function anchorSmoothScroll() {
         }, 400);
     });
 }
-function initCoverParallax() {
+function intiHeader() {
     var scene = $('#header .parallax-background').get(0);
     if (scene)
         parallaxInstance = new Parallax(scene, {
@@ -272,6 +272,14 @@ function initCoverParallax() {
     //         scalarX: 5,
     //         scalarY: 5,
     //     });
+    $('.indicator').on('click', function() {
+        anime({
+            targets: document.documentElement,
+            scrollTop: document.querySelector('#main').offsetTop,
+            easing: 'easeOutCubic',
+            duration: 1000,
+        });
+    })
 
 }
 
@@ -285,7 +293,7 @@ initCategoryTree();
 initSidebarToc();
 initSidebarTabs();
 anchorSmoothScroll();
-initCoverParallax();
+intiHeader();
 
 function initPostCover() {
     if(window.blog.post_card.cover.background === 'none') return;
@@ -372,6 +380,7 @@ function initTooltip() {
     tippy('[data-tippy-content]',{
         animation: 'shift-away',
         hideOnClick: false,
+        touch: 'hold',
     });
 }
 initTooltip();
@@ -387,22 +396,26 @@ function initFloatToolbar() {
         }
     });
     document.dispatchEvent(new Event('scroll'));
-
-    document.querySelector('#back-to-top-btn').addEventListener('click', function(event) {
-        anime({
-            targets: document.documentElement,
-            scrollTop: 0,
-            easing: 'easeOutCubic',
-            duration: 1000,
+    
+    if(document.querySelector('#back-to-top-btn') !== null) {
+        document.querySelector('#back-to-top-btn').addEventListener('click', function(event) {
+            anime({
+                targets: document.documentElement,
+                scrollTop: 0,
+                easing: 'easeOutCubic',
+                duration: 1000,
+            });
         });
-    });
-    document.querySelector('#go-to-commit-btn').addEventListener('click', function(event) {
-        anime({
-            targets: document.documentElement,
-            scrollTop: commentsEl.offsetTop - 64,
-            easing: 'easeOutCubic',
-            duration: 1000,
+    }
+    if(document.querySelector('#go-to-commit-btn') !== null) {
+        document.querySelector('#go-to-commit-btn').addEventListener('click', function(event) {
+            anime({
+                targets: document.documentElement,
+                scrollTop: commentsEl.offsetTop - 64,
+                easing: 'easeOutCubic',
+                duration: 1000,
+            });
         });
-    });
+    }
 }
 initFloatToolbar();

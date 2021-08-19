@@ -11,14 +11,14 @@
         .background {
             @apply bg-cover bg-center bg-no-repeat h-full w-full;
         }
-        &::after {
+        /* &::after {
             content: " ";
             @apply absolute inset-0 h-full w-full;
             border-radius: 1rem 1rem 0 0;
             border-width: 2px 2px 0 2px;
             border-style: solid;
             border-color: rgba(0, 0, 0, 0.1);
-        }
+        } */
         /* @supports (backdrop-filter: none) {
             .background::before {
                 content: " ";

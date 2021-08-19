@@ -6,6 +6,8 @@ function themeConfig(config) {
         header: headerConfig(config),
         post_card: postCardConfig(config),
         plugins: pluginsConfig(config),
+        footer: footerConfig(config),
+        navigator: navigatorConfig(config),
     }
     let configCopy = Object.assign({}, config);
     Object.assign(configCopy, THEME_CONFIG);
@@ -61,6 +63,29 @@ function headerConfig(config) {
             key !== 'archive' && key !== 'category' && key !== 'tag')
         combinedConfig[key] = deepMerge(defaultConfig, config?.header?.layout[key]);
     }
+    return combinedConfig;
+}
+
+function navigatorConfig(config) {
+    const defaultConfig = {
+        logo: siteConfig.title,
+        menu: config?.navigator ?? [
+            {name: '分类', url: '/categories'},
+            {name: '标签', url: '/tags'},
+            {name: '归档', url: '/archives'},
+        ],
+        search: true,
+        darkmode: true,
+    }
+    let combinedConfig = deepMerge(defaultConfig, config?.navigator ?? {});
+    return combinedConfig;
+}
+
+function footerConfig(config) {
+    const defaultConfig = {
+        text: null
+    }
+    let combinedConfig = deepMerge(defaultConfig, config?.footer ?? {});
     return combinedConfig;
 }
 

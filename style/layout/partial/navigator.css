@@ -19,14 +19,11 @@
             @apply ml-0 px-2 lg:-ml-4 md:px-5;
             a {
                 @apply flex flex-nowrap h-16 leading-16 items-center;
-                img,
-                svg {
+                img, svg {
                     @apply h-10;
                     fill: currentColor;
                 }
-                span,
-                a,
-                p {
+                span, a, p {
                     @apply text-lg ml-2;
                 }
             }

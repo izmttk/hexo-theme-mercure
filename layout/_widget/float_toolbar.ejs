@@ -6,7 +6,7 @@
             data-tippy-appendTo="parent"
         ><i class="ri-arrow-up-line"></i></button>
     </div>
-    <% if(!is_home() && page.comments !== false) { %> 
+    <% if(!is_home() && !is_archive() && !(is_category() || page.layout=='category') && !(is_tag() || page.layout=='tag') && page.comments !== false) { %> 
     <div class="go-to-commit">
         <button class="toolbar-btn" id="go-to-commit-btn"
             data-tippy-content="评论区直达"

@@ -1,7 +1,8 @@
 .float-toolbar {
-    @apply fixed right-4 bottom-4 z-50;
+    @apply fixed right-2 md:right-4 bottom-4 z-50;
     .toolbar-btn {
-        @apply w-10 h-10 rounded-full text-white bg-blue-500 shadow-md text-lg;
+        @apply transition duration-100;
+        @apply w-10 h-10 rounded-full text-white bg-blue-500 shadow-md text-lg hover:shadow-lg active:scale-[.85];
         @apply m-1 inline-flex items-center justify-center;
     }
     .tippy-content {
@@ -9,19 +10,19 @@
     }
 
     >* {
-        @apply transition duration-500;
+        @apply transition duration-[.3s];
     }
     :nth-child(2) {
-        @apply delay-[50ms];
-    }
-    :nth-child(3) {
         @apply delay-[100ms];
     }
+    :nth-child(3) {
+        @apply delay-[200ms];
+    }
     :nth-child(4) {
-        @apply delay-[150ms];
+        @apply delay-[300ms];
     }
     :nth-child(5) {
-        @apply delay-[200ms];
+        @apply delay-[400ms];
     }
     &.float-toolbar-hidden {
         >* {

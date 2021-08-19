@@ -43,8 +43,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-    <%- css({href: '/css/style.css', media: 'all'}) %>
-    <%- css({href: '/css/iconfont.css', media: 'all'}) %>
+    <%- css({href: url_for('/css/style.css'), media: 'all'}) %>
+    <%- css({href: url_for('/css/iconfont.css'), media: 'all'}) %>
     <% if(config.highlight.enable) { %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css" media="all">
     <% } %> 
@@ -66,7 +66,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all">
     <script src="https://cdn.jsdelivr.net/npm/animejs@3/lib/anime.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js" defer></script>
-    <%- js({src:'/js/component.js', defer:true}) %>
+    <%- js({src: url_for('/js/component.js'), defer: true}) %>
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
@@ -116,6 +116,6 @@
         <%- partial('./_partial/footer') %>
     </div>
     <%- partial('./_widget/float_toolbar') %>
-    <%- js({src:'/js/index.js', defer:true}) %>
+    <%- js({src: url_for('/js/index.js'), defer:true}) %>
 </body>
 </html>

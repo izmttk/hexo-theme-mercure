@@ -6,7 +6,7 @@
  *  - 'full' 卡片背景为图片填充
  *  - 'material' 卡片背景从图片取色
  */
-function getPageCover(post) {
+function getPageCover(page) {
     
     let coverConfig = hexo.theme.config?.post_card?.cover;
     // console.log(hexo.theme.config)
@@ -14,8 +14,8 @@ function getPageCover(post) {
     let coverPath = null, coverType = coverConfig.type, coverPos = coverConfig.position;
     // 如果cover属性直接填链接
     // cover:String
-    if ((typeof post.cover) == 'string') {
-        coverPath = post.cover;
+    if ((typeof page.cover) == 'string') {
+        coverPath = page.cover;
     }
     // 如果cover填了链接和类型
     // cover:{
@@ -23,10 +23,10 @@ function getPageCover(post) {
     //   type: String   图片位置
     // }
 
-    if ((typeof post.cover) == 'object') {
-        if (post.cover.path) coverPath = post.cover.path;
-        if(['none', 'blur', 'material', 'full'].includes(post.cover.type)) {
-            coverType = post.cover.type;
+    if ((typeof page.cover) == 'object') {
+        if (page.cover.path) coverPath = page.cover.path;
+        if(['none', 'blur', 'material', 'full'].includes(page.cover.type)) {
+            coverType = page.cover.type;
         }
     }
     if(coverPath == null) coverType = 'none';

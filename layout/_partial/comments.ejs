@@ -4,8 +4,14 @@
     <%- partial('./comments/disqus.ejs')  %> 
     <% } else if(theme.comments.disqusjs.enable) { %>
     <%- partial('./comments/disqusjs.ejs')  %> 
+    <% } else if(theme.comments.twikoo.enable) { %>
+    <%- partial('./comments/twikoo.ejs')  %> 
+    <% } else if(theme.comments.giscus.enable) { %>
+    <%- partial('./comments/giscus.ejs')  %> 
+    <% } else if(theme.comments.gitalk.enable) { %>
+    <%- partial('./comments/gitalk.ejs')  %> 
     <% } else { %>
-    <span>评论姬被捂住了嘴...</span>
+    <span>这个..评论区被关闭了...</span>
     <% } %>  
 </div>
 <%_ } _%> 

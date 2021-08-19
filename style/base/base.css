@@ -13,6 +13,9 @@ button:focus {
     @apply flex flex-row flex-nowrap w-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
     #content {
         @apply flex-1 min-w-0 z-10 m-1 md:m-4;
+        .recent-posts {
+            @apply space-y-4 md:space-y-7;
+        }
     }
     #sidebar {
         @apply z-0;
@@ -137,6 +140,11 @@ body *::-webkit-scrollbar-thumb:vertical {
 body *::-webkit-scrollbar-thumb:hover {
     /*滚动条的hover样式*/
     background-color: rgba(144, 144, 144, 0.5);
+}
+
+/* FireFox ScrollBar Thin Style */
+*, ::before, ::after {
+    scrollbar-width: thin;
 }
 
 .bg-gradient-0 {

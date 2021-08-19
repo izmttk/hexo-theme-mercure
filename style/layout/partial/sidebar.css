@@ -38,6 +38,9 @@
                 @apply absolute top-0 bottom-0 w-full overflow-x-visible;
                 will-change: transform;
                 .tab-panel-content {
+                    /* FireFox Hide ScrollBar */
+                    scrollbar-width: none;
+                    /* CHrome Safari Hide ScrollBar */
                     &::-webkit-scrollbar {
                         @apply hidden;
                     }

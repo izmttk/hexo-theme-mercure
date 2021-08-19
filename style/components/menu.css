@@ -5,7 +5,7 @@
         @apply inline-block;
         @apply w-full h-full px-4 py-1.5;
         @apply hover:bg-gray-100;
-        @apply dark:hover:bg-gray-600;
+        @apply dark:hover:bg-gray-700;
     }
     .menu-divider {
         @apply my-1;
@@ -18,12 +18,12 @@
 }
 .tippy-box[role="menu"] {
     @apply border border-gray-300;
-    @apply dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600;
+    @apply dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600;
     @apply rounded-lg shadow-md;
     .tippy-content {
         @apply p-0 whitespace-nowrap;
     }
     .tippy-arrow::before {
-        @apply dark:border-b-gray-700;
+        @apply dark:border-b-gray-800;
     }
 }

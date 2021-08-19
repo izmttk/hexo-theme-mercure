@@ -3,6 +3,7 @@ favicon: /favicon.ico
 author:
     name: 银河渡舟
     avatar: /assets/avatar.png
+    background: /assets/defalut-profile-bg.jpg
     signature: 永远相信美好的事情即将发生
     social:
         - name: QQ
@@ -92,7 +93,7 @@ header:
             #  - none     无封面图片
             #  - full     全覆盖特色图片
             #  - mini     局部卡片样式特色图片
-            cover: mini
+            cover: full
 
         page:
             height: 400px
@@ -137,7 +138,8 @@ sidebar:
     show_toc: true
 
 
-footer: #
+footer:
+  text: Copyright © 2021 银河渡舟
 
 # 配置默认文章卡片
 post_card: 
@@ -148,7 +150,7 @@ post_card:
         #  - blur 卡片背景为图片模糊
         #  - full 卡片背景为图片填充
         #  - material 卡片背景从图片取色
-        type: material
+        type: blur
         # 卡片封面位置默认值，仅对type为blur和material的卡片生效
         # 可被Front-matter替换，允许值：
         #  - alter 左右交替
@@ -159,7 +161,7 @@ post_card:
         # 全局设定，不可被Front-matter替换，允许值：
         #  - none 无背景填充
         #  - auto 根据type填充
-        background: none
+        background: auto
 
 darkmode: true
 
@@ -189,7 +191,34 @@ comments:
         # 你想显示在 Disqus Moderator Badge 中的文字。
         # 该配置应和 Disqus Admin - Settings - Community - Moderator Badge Text 相同
         #adminLabel: 银河渡舟
-
+    gitalk:
+        enable: false
+        # 所有配置项参考 https://github.com/gitalk/gitalk/blob/master/readme-cn.md
+        # 必须. GitHub Application Client ID.
+        clientID: xxxxxxxxxxxxxxxxxxxx
+        # 必须. GitHub Application Client Secret.
+        clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        # 必须. GitHub repository.
+        repo: example-repo
+        # 必须. GitHub repository 所有者，可以是个人或者组织。
+        owner: WiderGao
+        # 必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
+        admin: WiderGao
+    giscus:
+        enable: true
+        # 所有配置项参考 https://giscus.app/
+        repo: example-repo
+        repoId: xxxxxxxxxxxxxxxxxx
+        category: General
+        categoryId: xxxxxxxxxxxxxxxxxx
+        mapping: pathname
+        reactionsEnabled: 0
+        emitMetadata: 0
+        theme: light
+    twikoo:
+        enable: false
+        # CloudBase环境ID
+        envId: xxxx-xxxx-xxxxxxxxxxxx
 plugins:
     katex: true
     anchor: false
