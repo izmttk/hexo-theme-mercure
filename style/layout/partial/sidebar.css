@@ -2,7 +2,7 @@
     @apply hidden md:block;
 }
 #sidebar ,#sidebar-drawer{
-    @apply w-68 flex-none;
+    @apply w-[17rem] flex-none;
     .sidebar-content {
         @apply top-0;
         & > .widget {

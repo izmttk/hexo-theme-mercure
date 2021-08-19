@@ -18,7 +18,7 @@
         .nav-logo {
             @apply ml-0 px-2 lg:-ml-4 md:px-5;
             a {
-                @apply flex flex-nowrap h-16 leading-16 items-center;
+                @apply flex flex-nowrap h-16 leading-[4rem] items-center;
                 img, svg {
                     @apply h-10;
                     fill: currentColor;
@@ -38,7 +38,7 @@
                 .nav-menu-item {
                     @apply relative flex-none;
                     >.link {
-                        @apply block px-4 h-16 text-lg font-bold leading-16;
+                        @apply block px-4 h-16 text-lg font-bold leading-[4rem];
                         position: relative;
                         z-index: 20;
                     }

@@ -15,30 +15,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      width: {
-        '68': '17rem',
-      },
-      height: {
-        'header': '400px',
-        '6.5': '1.625rem',
-        '88': '22rem',
-      },
-      lineHeight: {
-        '6.5': '1.625rem',
-        '16': '4rem'
-      },
-      margin: {
-        '1.25': '0.3125rem'
-      },
-      ringWidth: {
-        '6': '6px'
-      },
-      transitionProperty: {
-        'height': 'height'
-      },
-      zIndex: {
-        'max': '9999'
-      },
       typography: (theme) => ({
         dark: {
           css: {

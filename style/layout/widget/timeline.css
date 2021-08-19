@@ -23,7 +23,7 @@
                 }
                 &:before {
                     content: "";
-                    @apply absolute w-2 h-2 rounded-full ring-6 ring-white bg-gray-400 left-0 top-1/2 transform -translate-x-1.5 -translate-y-1/2;
+                    @apply absolute w-2 h-2 rounded-full ring-[6px] ring-white bg-gray-400 left-0 top-1/2 transform -translate-x-1.5 -translate-y-1/2;
                 }
             }
         }

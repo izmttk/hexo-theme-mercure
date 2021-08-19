@@ -2,8 +2,8 @@
     .tags {
         @apply flex flex-wrap flex-row pl-2;
         a {
-            @apply inline-block	rounded shadow-lg mr-1.25 mb-1.25 overflow-hidden;
-            @apply text-gray-600 px-2 text-xs h-6.5 leading-6.5 bg-white;
+            @apply inline-block	rounded shadow-lg mr-[0.3125rem] mb-[0.3125rem] overflow-hidden;
+            @apply text-gray-600 px-2 text-xs h-[1.625rem] leading-[1.625rem] bg-white;
             @apply dark:text-gray-200 dark:bg-gray-700;
             box-shadow: 0 5px 8px 0 rgba(31, 45, 61, 0.1);
             transform: translateY(0);
@@ -11,7 +11,7 @@
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 0.15s;
             .tag-heat {
-                @apply inline-block -mr-2 ml-2 w-5 h-6.5 text-center;
+                @apply inline-block -mr-2 ml-2 w-5 h-[1.625rem] text-center;
                 transition: inherit;
                 .iconfont {
                     @apply text-xs;
