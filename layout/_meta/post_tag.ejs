@@ -1,0 +1,8 @@
+<%# 文章标签 %>
+<%_ if(post.tags.length>0) { _%> 
+<div class="post-tag">
+    <%_ post.tags.each((tag)=>{ _%>
+    <a href="<%= url_for(tag.path) %>"><i class="ri-hashtag"></i><%= tag.name %></a>
+    <%_ }) _%>
+</div>
+<%_ } _%>

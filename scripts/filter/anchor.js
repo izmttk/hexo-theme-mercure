@@ -13,5 +13,5 @@ hexo.extend.filter.register('after_post_render', data => {
     $(element).attr('id', encodeURI(id));
   });
 
-  data.content = $.html();
+  data.content = $('body').html();
 });

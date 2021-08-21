@@ -1,0 +1,65 @@
+.page,
+.post {
+    @apply bg-white rounded-2xl shadow-lg py-6 px-4 md:p-8 prose max-w-none mb-4 break-words;
+    @apply dark:bg-gray-800  dark:prose-dark;
+}
+.prev-next {
+    @apply flex flex-nowrap space-x-4 mb-4;
+    .prev, .next {
+        @apply relative flex flex-col flex-1 p-4;
+        @apply text-white;
+        @apply bg-center bg-no-repeat bg-cover;
+        @apply rounded-xl shadow-lg transition duration-300 hover:scale-105 overflow-hidden;
+        text-shadow: 0 2px 2px rgba(0,0,0,.5);
+        .deixis {
+            @apply z-10 inline-flex items-center text-sm;
+            i {
+                @apply mr-1 text-2xl leading-none;
+            }
+        }
+        .title {
+            @apply z-10 text-2xl font-bold py-3;
+        }
+        .meta {
+            @apply z-10 inline-flex flex-wrap gap-x-4 gap-y-1 text-sm;
+        }
+    }
+    .prev:not(.no-cover)::before, .next:not(.no-cover)::before {
+        content: "";
+        @apply z-0 absolute inset-0 bg-black bg-opacity-30;
+    }
+    .blank {
+        @apply flex-1 flex justify-center items-center shadow-none;
+    }
+    .no-cover {
+        @apply text-gray-700 bg-white;
+        @apply dark:text-gray-200 dark:bg-gray-800;
+        text-shadow: none;
+    }
+}
+.highlight {
+    @apply relative overflow-hidden rounded-xl bg-gray-900;
+    table,
+    tbody {
+        @apply block;
+    }
+    tr {
+        @apply flex flex-row flex-nowrap;
+    }
+    .gutter {
+        @apply flex-none p-0 select-none;
+        pre {
+            @apply text-gray-400 text-right;
+        }
+    }
+    .code {
+        @apply flex-auto overflow-x-auto p-0;
+        -webkit-overflow-scrolling: touch;
+        pre {
+            @apply pl-0;
+        }
+    }
+    pre {
+        @apply m-0 rounded-none text-sm;
+    }
+}

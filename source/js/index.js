@@ -60,10 +60,10 @@ function initNavMenu() {
         }
         menuToggleEl.nextElementSibling.style.display = 'block';
         var menu = new Menu(menuToggleEl, menuToggleEl.nextElementSibling, {
-            arrow: isRootNav,
+            arrow: false,
             position: isRootNav ? 'bottom-start' : 'right-start',
             trigger: 'hover',
-            appendTo: isRootNav ? () => document.body : 'parent',
+            appendTo: isRootNav ? () => document.querySelector('.navigator') : 'parent',
         });
     });
 }
@@ -120,6 +120,20 @@ function initNavbar() {
     if(!window.blog.header) {
         $navbar.addClass('nav-noheader');
     }
+    document.querySelectorAll('.nav-menu-item>.link').forEach(function (link) {
+        function pathname(url) {
+            // 清空origin、search、hash和最后一个/
+            url = url.replace(/^(\w+:)?\/\/([\w-]+\.)+[\w-]+/gi, '');
+            url = url.replace(/\?.*/gi, '');
+            url = url.replace(/#.*/gi, '');
+            url = url.replace(/\/$/gi, '');
+            return url;
+        }
+        if(pathname(window.location.href) == pathname(link.href)) {
+            link.parentElement.classList.add('active-nav');
+        }
+    })
+
     $(window).on('scroll', $.throttle(function (event) {
         var scrollTop = $(window).scrollTop();
         if (scrollTop <= 10) {
@@ -396,9 +410,19 @@ function initFloatToolbar() {
         }
     });
     document.dispatchEvent(new Event('scroll'));
-    
-    if(document.querySelector('#back-to-top-btn') !== null) {
-        document.querySelector('#back-to-top-btn').addEventListener('click', function(event) {
+    var backToTopBtnEl =  document.querySelector('#back-to-top-btn')
+    var goToCommentBtnEl =  document.querySelector('#go-to-comment-btn');
+    if(backToTopBtnEl !== null) {
+        tippy(backToTopBtnEl, {
+            content: '回到顶部',
+            animation: 'shift-away',
+            hideOnClick: false,
+            placement: 'left',
+            touch: 'hold',
+            appendTo: floatToolbarEl,
+            arrow: false,
+        });
+        backToTopBtnEl.addEventListener('click', function(event) {
             anime({
                 targets: document.documentElement,
                 scrollTop: 0,
@@ -407,8 +431,17 @@ function initFloatToolbar() {
             });
         });
     }
-    if(document.querySelector('#go-to-commit-btn') !== null) {
-        document.querySelector('#go-to-commit-btn').addEventListener('click', function(event) {
+    if(goToCommentBtnEl !== null) {
+        tippy(goToCommentBtnEl, {
+            content: '评论区直达',
+            animation: 'shift-away',
+            hideOnClick: false,
+            placement: 'left',
+            touch: 'hold',
+            appendTo: floatToolbarEl,
+            arrow: false,
+        });
+        goToCommentBtnEl.addEventListener('click', function(event) {
             anime({
                 targets: document.documentElement,
                 scrollTop: commentsEl.offsetTop - 64,

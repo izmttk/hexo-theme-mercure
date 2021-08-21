@@ -19,13 +19,13 @@
     }
     .post-info {
         @apply flex-auto flex flex-col flex-nowrap justify-between;
-        @apply p-8 md:py-10 md:px-9 w-0;
+        @apply p-6 md:py-8 md:px-8 w-0;
         @apply z-10;
         @apply md:text-gray-800;
         @apply dark:text-gray-200;
 
         .post-meta {
-            @apply flex flex-wrap text-sm;
+            @apply flex flex-wrap text-sm gap-x-4 gap-y-1;
             .iconfont {
                 @apply mr-1;
             }
@@ -37,9 +37,7 @@
                 }
             }
             .post-wordcount,
-            .post-readtime,
-            .post-category,
-            .post-tag  {
+            .post-readtime {
                 @apply flex-shrink truncate mr-3;
                 @apply inline-flex items-center;
             }
@@ -47,16 +45,6 @@
             .post-readtime {
                 i {
                     @apply mr-1;
-                }
-            }
-            .post-category {
-                i {
-                    @apply mx-0;
-                }
-            }
-            .post-tag  {
-                i {
-                    @apply ml-1;
                 }
             }
         }

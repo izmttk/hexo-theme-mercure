@@ -1,0 +1,12 @@
+.post-tag {
+    @apply flex-none flex gap-x-2 gap-y-1 flex-wrap;
+    @apply text-sm;
+    a {
+        @apply flex-none;
+        @apply text-black px-2 py-0 bg-white/50 rounded-full;
+        @apply inline-flex items-center;
+        /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */
+        @apply dark:text-white dark:bg-black/50;
+        text-shadow: none;
+    }
+}

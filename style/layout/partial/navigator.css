@@ -29,11 +29,11 @@
             }
         }
         .nav-menu {
-            @apply h-16 flex-1 overflow-x-auto overflow-y-hidden;
+            @apply h-16 flex-1;
             font-family: "Noto Serif SC", ui-serif, serif;
             /* font-weight: bold; */
             .nav-menu-list {
-                @apply hidden md:flex;
+                @apply hidden md:flex overflow-x-auto overflow-y-hidden;
                 @apply flex-nowrap items-center;
                 .nav-menu-item {
                     @apply relative flex-none;
@@ -44,6 +44,14 @@
                     }
                     &:hover > .link {
                     }
+                }
+                .nav-menu-item.active-nav::after {
+                    content: "";
+                    @apply absolute left-1 right-1 bottom-2.5;
+                    @apply h-1 rounded-full;
+                    background: #20a0ff;
+                    background: linear-gradient(#58B7FF 30%,#20a0ff 70%);
+                    box-shadow: 0 3px 4px rgba(32,160,255,.6);
                 }
             }
         }

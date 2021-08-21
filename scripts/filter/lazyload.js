@@ -21,10 +21,10 @@ hexo.extend.filter.register('after_render:html', function (str, data) {
         // imgEl.attr('data-error-src', hexo.theme.config?.plugins?.lazyload?.error_img);
         if (loadingImg) {
             imgEl.attr('src', url_for(loadingImg));
-            return $.html();
+            return $('body').html();
         }
         imgEl.attr('src', "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=");
-        return $.html();
+        return $('body').html();
 
     });
     return str;

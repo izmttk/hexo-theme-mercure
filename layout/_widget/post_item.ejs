@@ -65,31 +65,8 @@ if(cover.background==='none') {
         </div>
         
         <div class="post-meta post-meta-line-2">
-            <%# 文章分类 %>
-            <%_ if(post.categories.length>0) { _%>
-            <span class="post-category">
-                <i class="ri-quill-pen-fill"></i>
-                <%_ let cat_cnt=0; post.categories.each(category=>{ cat_cnt++; _%>
-                    <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                    <%_ if(cat_cnt!=post.categories.length) { _%>
-                        <i class="ri-arrow-right-s-line"></i>
-                    <%_ }
-                }) _%>
-            </span>
-            <%_ } _%> 
-            <%# 文章标签 %>
-            <%_ if(post.tags.length>0) { _%>
-            <span class="post-tag">
-                <!-- <i class="iconfont icon-tag"></i> -->
-                <%_ let tag_cnt=0; post.tags.each(tag=>{ tag_cnt++; _%>
-                    <i class="ri-hashtag"></i>
-                    <a href="<%= url_for(tag.path) %>"><%= tag.name %></a>
-                    <%_ if(tag_cnt!=post.tags.length) { _%>
-                    <!-- <span>•</span> -->
-                    <%_ }
-                }) _%>
-            </span>
-            <%_ } _%> 
+            <%- partial('../_meta/post_category', { post: post }) %>
+            <%- partial('../_meta/post_tag', { post: post }) %>
         </div>
 
         <%# 文章摘要 %>
@@ -101,7 +78,7 @@ if(cover.background==='none') {
         <%- image_tag(url_for(cover.path),{
             alt: post.title,
             class: 'background-img',
-            crossOrigin: '' 
+            crossOrigin: 'anonymous'
         }) _%>
     <%_ } _%></div>
     <%_ } _%>

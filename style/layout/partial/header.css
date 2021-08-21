@@ -46,21 +46,8 @@
                 .meta {
                     @apply flex flex-wrap my-1 text-white text-sm gap-x-4 gap-y-1;
                     text-shadow: 0 2px 2px rgba(0,0,0,.5);
-                    >*,.tag a{
+                    >* {
                         @apply inline-flex items-center;
-                    }
-                    >*>i:first-child {
-                        @apply mr-1;
-                    }
-                    .tag {
-                        @apply gap-x-2 gap-y-1 flex-wrap;
-                    }
-                    .category,.tag a {
-                        @apply flex-none;
-                        @apply text-black px-2.5 py-0.5 bg-white/50 rounded-full;
-                        @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125;
-                        @apply dark:text-white dark:bg-black/50;
-                        text-shadow: none;
                     }
                 }
             }

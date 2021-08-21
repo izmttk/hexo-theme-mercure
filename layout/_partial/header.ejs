@@ -139,27 +139,12 @@
                         <span><%= page.updated.locale(config.language).format('ll') %></span>
                     </div>
                 </div>
+                <%_ if (is_post()) { _%> 
                 <div class="meta">
-                    <%_ if(page.categories.length>0) { _%>
-                    <div class="category">
-                        <i class="ri-quill-pen-fill"></i>
-                        <%_ let cat_cnt = 0; _%> 
-                        <%_ page.categories.each((category)=>{ _%> 
-                        <a href="<%= url_for(category.path) %>"><%= category.name %></a>
-                        <%_  cat_cnt++; if(cat_cnt!=page.categories.length) { _%>
-                        <i class="ri-arrow-right-s-line"></i>
-                        <%_ } _%> 
-                        <%_ }) _%>
-                    </div>
-                    <%_ } _%>
-                    <%_ if(page.tags.length>0) { _%> 
-                    <div class="tag">
-                        <%_ page.tags.each((tag)=>{ _%>
-                        <a href="<%= url_for(tag.path) %>"><i class="ri-hashtag"></i><%= tag.name %></a>
-                        <%_ }) _%>
-                    </div>
-                    <%_ } _%> 
+                    <%- partial('../_meta/post_category', { post: page }) %>
+                    <%- partial('../_meta/post_tag', { post: page }) %>
                 </div>
+                <%_ } _%> 
                 <%_ } _%>
             </div>
             <%_ if( headerConfig.cover === 'mini' && cover.type !== 'none' ) { _%> 
