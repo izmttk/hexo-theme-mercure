@@ -1,215 +1,446 @@
-$.extend({
-    //消抖
-    debounce: function (fn, timeout, invokeAsap, ctx) {
-        if (arguments.length == 3 && typeof invokeAsap != 'boolean') {
-            ctx = invokeAsap;
-            invokeAsap = false;
+class ScrollManager {
+    constructor(element = document) {
+        let self = this;
+        this.store = {};
+        this.element = element;
+        this._listenerCallback = function(...args) {
+            self._handleScroll(this, args);
         }
-        var timer;
-        return function () {
-            var args = arguments;
-            ctx = ctx || this;
-            invokeAsap && !timer && fn.apply(ctx, args);
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                invokeAsap || fn.apply(ctx, args);
-                timer = null;
-            }, timeout);
-        };
-    },
-    //节流
-    throttle: function (fn, timeout, ctx) {
-        var timer, args, needInvoke;
-        return function () {
-            args = arguments;
-            needInvoke = true;
-            ctx = ctx || this;
-            timer || (function () {
-                if (needInvoke) {
-                    fn.apply(ctx, args);
-                    needInvoke = false;
-                    timer = setTimeout(arguments.callee, timeout);
-                } else {
-                    timer = null;
-                }
-            })();
-        };
+        this.element.addEventListener('scroll', this._listenerCallback);
     }
-});
-
-
-//初始化导航条菜单
-function initNavMenu() {
-
-    var menuDrawer = new Drawer('.nav-menu-drawer',{
-        position: 'left',
-        width: 272
-    });
-    $('.nav-menu-drawer .collapse').each(function () {
-        var collapse = new Collapse(this);
-    });
-    $('.navigator .nav-left-drawer').click(function(){
-        menuDrawer.toggle();
-    });
-    var navMenuToggleList = Array.from(document.querySelectorAll('.navigator .nav-menu .menu-toggle'));
-    var navMenuList = navMenuToggleList.map(function (menuToggleEl) {
-        var isRootNav = menuToggleEl.parentElement.classList.contains('nav-menu-item');
-        if(!isRootNav) {
-
-            menuToggleEl.insertAdjacentHTML('beforeend','<i class="ri-arrow-right-s-fill"></i>');
+    register(name, fn) {
+        if (!name) throw new TypeError('name is required');
+        if (typeof fn !== 'function') throw new TypeError('fn must be a function');
+        this.store[name] = fn;
+    }
+    unregister(name) {
+        if (!name) throw new TypeError('name is required');
+        Reflect.deleteProperty(this.store, name);
+    }
+    _handleScroll(ctx, args) {
+        for (let handler in this.store) {
+            Reflect.apply(this.store[handler], ctx, args);
         }
-        menuToggleEl.nextElementSibling.style.display = 'block';
-        var menu = new Menu(menuToggleEl, menuToggleEl.nextElementSibling, {
-            arrow: false,
-            position: isRootNav ? 'bottom-start' : 'right-start',
-            trigger: 'hover',
-            appendTo: isRootNav ? () => document.querySelector('.navigator') : 'parent',
+    }
+    getScrollTop() {
+        return this.element === document ? document.documentElement.scrollTop : this.element.scrollTop;
+    }
+    getScrollLeft() {
+        return this.element === document ? document.documentElement.scrollLeft : this.element.scrollLeft;
+    }
+    scrollTo(xCoord, yCoord = 0, duration = 1000) {
+        anime({
+            targets: this.element === document ? document.documentElement : this.element,
+            scrollTop: xCoord,
+            scrollLeft: yCoord,
+            easing: 'easeOutCubic',
+            duration: duration,
         });
-    });
+    }
+    triggerEvent() {
+        this.element.dispatchEvent(new Event('scroll'));
+    }
+    destroy() {
+        this.element.removeEventListener('scroll', this._listenerCallback);
+    }
 }
-//初始化侧边栏抽屉
-function initNavSidebar() {
-    var sidebarDrawer = new Drawer('.nav-sidebar-drawer',{
-        position: 'right',
-        width: 278
-    });
-    $('.navigator .nav-right-drawer').click(function(){
-        sidebarDrawer.toggle();
-    });
+const scrollManager = new ScrollManager();
+
+class Header {
+    constructor() {
+        this.init();
+    }
+    init() {
+        this.rootElement = document.querySelector('#header');
+        let scene = this.rootElement.querySelector('.parallax-background');
+        if(scene !== null) {
+            this.parallax = new Parallax(scene, {
+                // selector: '.layer',
+                relativeInput: true,
+                // clipRelativeInput: true,
+                hoverOnly: true,
+                frictionX: 0.18,
+                frictionY: 0.18,
+                scalarX: 6,
+                scalarY: 6,
+                limitX: 50,
+                limitY: 50,
+            });
+        }
+        this.indicatorElement = this.rootElement.querySelector('.indicator');
+        let self = this;
+        this._indicatorListener = function(...args) {
+            Reflect.apply(self._handleIndicatorClick, self, args);
+        }
+        this.indicatorElement?.addEventListener('click', this._indicatorListener);
+
+    }
+    _handleIndicatorClick(event) {
+        scrollManager.scrollTo(this.rootElement.offsetTop +this.rootElement.scrollHeight);
+    }
+    destroy() {
+        this.indicatorElement.removeEventListener('click', this._indicatorListener);
+    }
 }
-//初始化分类树
-function initCategoryTree() {
-   
-    //文件夹图标打开关闭变化
-    $('.category-tree .collapse').children('.collapse-item').on('open close', function (event) {
+
+class Sidebar {
+    constructor(element) {
+        this.rootElement = element ?? document.querySelector('#sidebar');
+        this.tabElement = this.rootElement.querySelector('.tabs');
+        this.tocWidgetElement = this.rootElement.querySelector('.toc');
+        if(this.tabElement !== null) {
+            this.tabIns = new Tabs(this.tabElement);
+        }
+        if(this.tocWidgetElement !== null) {
+            this.tocWidgetIns = new Toc(this.tocWidgetElement);
+        }
+        this._initWidgets();
+    }
+    _initWidgets() {
+        this.categoryTreeWidget = new CategoryTreeWidget();
+    }
+    destroy() {
+        this?.tabIns.destroy();
+        this?.tocWidgetIns.destroy();
+        this.categoryTreeWidget.destroy();
+    }
+}
+
+class Navbar {
+    constructor() {
+        this.rootElement = document.querySelector('.navigator');
+        this.menuElement = this.rootElement.querySelector('.nav-menu');
+        this.logoElement = this.rootElement.querySelector('.nav-logo');
+        this.toolElement = this.rootElement.querySelector('.nav-toolkit');
+        this.searchElement = this.toolElement.querySelector('.search-toggle');
+        this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
+        this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
+
+        this._initMenu();
+        this._initTool();
+        this._bindScrollListener();
+    }
+    _bindScrollListener() {
+        let self = this;
+        let sidebar  = document.querySelector('#sidebar');
+        //添加滚动事件监听
+        let lastScrollTop = scrollManager.getScrollTop();
+        scrollManager.register('nav', function(event) {
+            let scrollTop = scrollManager.getScrollTop();
+
+            if (scrollTop <= 30) {
+                self.show();
+                self.rootElement.classList.remove('nav-fix');
+                self.rootElement.classList.add('nav-top');
+
+                sidebar.querySelector('.tabs')?.classList.remove('headblank');
+            }
+            else {
+                self.rootElement.classList.remove('nav-top');
+                self.rootElement.classList.add('nav-fix');
+                if (scrollTop - lastScrollTop > 0) {
+                    self.hide();
+                    //向上滚动取消侧边栏头部留空
+                    sidebar.querySelector('.tabs')?.classList.remove('headblank');
+                }
+                else {
+                    self.show();
+                    //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
+                    if (sidebar.getBoundingClientRect().top < self.rootElement.getBoundingClientRect().height) {
+                        sidebar.querySelector('.tabs')?.classList.add('headblank');
+                    }
+                    else {
+                        sidebar.querySelector('.tabs')?.classList.remove('headblank');
+                    }
+                }
+            }
+            lastScrollTop = scrollTop;
+        });
+        scrollManager.triggerEvent();
+    }
+    _initMenu() {
+        // 初始化当前导航指示条
+        this.rootElement.querySelectorAll('.nav-menu-item>.link').forEach(link => {
+            link.parentElement.classList.remove('nav-active');
+            function pathname(url) {
+                // 清空origin、search、hash和最后一个/
+                url = url.replace(/^(\w+:)?\/\/([\w-]+\.)+[\w-]+/gi, '');
+                url = url.replace(/\?.*/gi, '');
+                url = url.replace(/#.*/gi, '');
+                url = url.replace(/\/$/gi, '');
+                return url;
+            }
+            if(pathname(window.location.href) == pathname(link.href)) {
+                link.parentElement.classList.add('nav-active');
+            }
+        });
+        // 初始化多级菜单
+        let menuToggleList = Array.from(this.menuElement.querySelectorAll('.menu-toggle'));
+        this.menuInsList = menuToggleList.map(element => {
+            let isRootToggle = element.parentElement.classList.contains('nav-menu-item');
+            if(!isRootToggle) {
+                element.insertAdjacentHTML('beforeend','<i class="ri-arrow-right-s-fill"></i>');
+            }
+            element.nextElementSibling.style.display = 'block';
+            return new Menu(element, element.nextElementSibling, {
+                arrow: false,
+                position: isRootToggle ? 'bottom-start' : 'right-start',
+                trigger: 'hover',
+                appendTo: isRootToggle ? () => this.rootElement : 'parent',
+            });
+        });
+    }
+    _initTool() {
+        this.searchIns = new Search();
+        this.menuDrawerIns = new MenuDrawer();
+        this.sideDrawerIns = new SideDrawer();
+
+        let self = this;
+
+        this._searchListener = function(event) {
+            self.searchIns.toggle();
+        }
+        this._menuDrawerListener = function(event) {
+            self.menuDrawerIns.toggle();
+        }
+        this._sideDrawerListener = function(event) {
+            self.sideDrawerIns.toggle();
+        }
+        this.searchElement.addEventListener('click', this._searchListener);
+        this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
+        this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
+
+    }
+    isShown() {
+        return !this.rootElement.classList.contains('nav-hide');
+    }
+    show() {
+        this.rootElement.classList.remove('nav-hide');
+        this.rootElement.classList.add('nav-show');
+    }
+    hide() {
+        this.rootElement.classList.remove('nav-show');
+        this.rootElement.classList.add('nav-hide');
+    }
+    destroy() {
+        this.menuInsList.forEach(element => {
+            element.destroy();
+        });
+        this.searchIns.destroy();
+        this.menuDrawerIns.destroy();
+        this.sideDrawerIns.destroy();
+        this.searchElement.removeEventListener('click', this._searchListener);
+        this.menuDrawerElement.removeEventListener('click', this._menuDrawerListener);
+        this.sideDrawerElement.removeEventListener('click', this._sideDrawerListener);
+        scrollManager.unregister('nav');
+    }
+}
+
+class CategoryTreeWidget {
+    constructor(element) {
+        this.rootElement = element ?? document.querySelector('.category-tree');
+        // 初始化多级菜单
+        let collapseElementList = Array.from(this.rootElement.querySelectorAll('.collapse'));
+        this.collapseInsList = collapseElementList.map(element => {
+            return new Collapse(element);
+        });
+        //替换叶子节点图标
+        this.toggleList = Array.from(this.rootElement.querySelectorAll('.collapse-item'));
+        this.toggleList.forEach(element => {
+            let titleEl = element.querySelector('.collapse-item-title');
+            titleEl.querySelector('.prefix')?.remove();
+            if(element.querySelector('.collapse') !== null) {
+                if(element.classList.contains('collapse-item-open')) {
+                    titleEl.querySelector('.name').insertAdjacentHTML(
+                        'beforebegin',
+                        '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
+                    );
+                } else {
+                    titleEl.querySelector('.name').insertAdjacentHTML(
+                        'beforebegin',
+                        '<span class="prefix"><i class="ri-folder-fill"></i></span>'
+                    );
+                }
+            } else {
+                titleEl.querySelector('.name').insertAdjacentHTML(
+                    'beforebegin',
+                    '<span class="prefix"><i class="ri-bookmark-fill"></i></span>'
+                );
+            }
+        });
+        this._initToggle();
+    }
+    _initToggle() {
+        let self = this;
+        this._toggleListener = function(...args) {
+            Reflect.apply(self._handleUnfoldCategory, self, args);
+        }
+        this.toggleList.forEach(element => {
+            element.addEventListener('collapse:open', this._toggleListener);
+            element.addEventListener('collapse:close', this._toggleListener);
+        });
+    }
+    _handleUnfoldCategory(event) {
         event.stopPropagation();
-        var $item = $(this);
-        var $title = $item.children('.collapse-item-title');
-        $title.children('.prefix').remove();
-        var $name = $title.children('.name');
-        if (event.type === 'open')
-            $name.before('<span class="prefix"><i class="ri-folder-open-fill"></i></span>');
-        else
-            $name.before('<span class="prefix"><i class="ri-folder-fill"></i></span>');
-    });
-    //实例化折叠面板
-    $('.category-tree .collapse').each(function () {
-        var collapse = new Collapse(this);
-    });
-    //替换叶子节点图标
-    $('.category-tree .collapse .collapse-item').filter(function () {
-        return $(this).has('.collapse').length === 0;
-    }).each(function () {
-        var $item = $(this);
-        var $title = $item.children('.collapse-item-title');
-        $title.children('.prefix').remove();
-        var $name = $title.children('.name');
-        $name.before('<span class="prefix"><i class="ri-bookmark-fill"></i></span>');
-    });
+        let titleEl = event.target.querySelector('.collapse-item-title');
+        titleEl.querySelector('.prefix')?.remove();
+        if (event.type === 'collapse:open') {
+            titleEl.querySelector('.name').insertAdjacentHTML(
+                'beforebegin',
+                '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
+            );
+        } else {
+            titleEl.querySelector('.name').insertAdjacentHTML(
+                'beforebegin',
+                '<span class="prefix"><i class="ri-folder-fill"></i></span>'
+            );
+        }
+    }
+    destroy() {
+        this.collapseInsList.forEach(element => {
+            element.destroy();
+        });
+        this.toggleList.forEach(element => {
+            element.removeEventListener('collapse:open', this._toggleListener);
+            element.removeEventListener('collapse:close', this._toggleListener);
+        });
+    }
 }
-function initSidebarToc() {
-    if ($('#sidebar .toc').length > 0)
-        var toc = new Toc('#sidebar .toc');
-    if ($('#sidebar-drawer .toc').length > 0)
-        var toc = new Toc('#sidebar-drawer .toc');
+
+class MenuDrawer extends Drawer {
+    constructor() {
+        let rootElement = document.querySelector('.nav-menu-drawer');
+        super(rootElement, {
+            position: 'left',
+            width: 272
+        });
+        this.rootElement = rootElement;
+
+        let menuToggleList = Array.from(this.rootElement.querySelectorAll('.collapse'));
+        this.menuInsList = menuToggleList.map(element => {
+            return new Collapse(element);
+        });
+    }
+    destroy() {
+        this.menuInsList.forEach(element => {
+            element.destroy();
+        });
+        super.destroy();
+    }
 }
+
+class SideDrawer extends Drawer {
+    constructor() {
+        let rootElement = document.querySelector('.nav-sidebar-drawer');
+
+        super(rootElement, {
+            position: 'right',
+            width: 278
+        });
+        this.rootElement = rootElement;
+        this.drawerContainer = document.querySelector('#sidebar-drawer');
+        this.sidebarContainer = document.querySelector('#sidebar');
+    }
+    open() {
+        this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
+        super.open();
+    }
+    close() {
+        this.sidebarContainer.appendChild(this.drawerContainer.querySelector('.sidebar-content'));
+        super.close();
+    }
+    destroy() {
+        super.destroy();
+    }
+}
+
+class Search {
+    constructor() {
+        this.init();
+    }
+    init() {
+        this.templateElement = document.querySelector('#site_search_template');
+    }
+    _handleSearch(event) {
+        if(event.type === 'keydown' && event.key !== 'Enter') {
+            return;
+        }
+        if (!this.searchApi.isKeywordsChanged()) return;
+        this.rootElement.classList.add('searched');
+        anime({
+            targets: '#site_search .form-group',
+            marginTop: '4rem',
+            easing: 'easeOutCubic',
+            duration: 500
+        });
+        this.searchApi.query();
+    }
+    isOpen() {
+        return this.modalIns?.isOpen();
+    }
+    open() {
+        let self = this;
+
+        let context = this.templateElement.content.cloneNode(true);
+        this.modalIns = new Modal(context);
+        this.modalIns.open();
+
+        this.searchApi = new LocalSearch('search-input', 'search-result-wrap');
+        this.modalElement = document.querySelector('.modal-layout');
+        this.rootElement = this.modalElement.querySelector('#site_search');
+        this.inputElement = this.rootElement.querySelector('#search-input');
+        this.buttonElement = this.rootElement.querySelector('#search-btn');
+
+        // 改变焦点到输入框
+        this.inputElement.focus();
+        this._eventListener = function(...args) {
+            Reflect.apply(self._handleSearch, self, args);
+        }
+        this.inputElement.addEventListener('keydown', this._eventListener);
+        this.buttonElement.addEventListener('click', this._eventListener);
+    }
+    close() {
+        this.inputElement.removeEventListener('keydown', this._eventListener);
+        this.buttonElement.removeEventListener('click', this._eventListener);
+        this.modalIns?.close();
+        this.modalIns = null;
+        this.searchApi = null;
+        this.modalElement = null;
+        this.inputElement = null;
+        this.buttonElement = null;
+    }
+    toggle() {
+        if(!this.isOpen()) {
+            this.open();
+        } else {
+            this.close();
+        }
+    }
+    destroy() {
+        this.modalIns?.destroy();
+    }
+}
+
+class BlogUiManager {
+    DEFAULT_OPTIONS = {
+
+    }
+    constructor(options) {
+        this.options = Object.assign(this.DEFAULT_OPTIONS, options);
+        this.navbar = new Navbar();
+        this.header = new Header();
+        this.sidebar = new Sidebar();
+        let self = this;
+    }
+}
+const blogUiManager = new BlogUiManager();
+
+
 function initNavbar() {
     var $navbar = $('.navigator');
-    var $sidebar = $('#sidebar');
-    var preScrollTop = $(window).scrollTop();
     if(!window.blog.header) {
         $navbar.addClass('nav-noheader');
     }
-    document.querySelectorAll('.nav-menu-item>.link').forEach(function (link) {
-        function pathname(url) {
-            // 清空origin、search、hash和最后一个/
-            url = url.replace(/^(\w+:)?\/\/([\w-]+\.)+[\w-]+/gi, '');
-            url = url.replace(/\?.*/gi, '');
-            url = url.replace(/#.*/gi, '');
-            url = url.replace(/\/$/gi, '');
-            return url;
-        }
-        if(pathname(window.location.href) == pathname(link.href)) {
-            link.parentElement.classList.add('active-nav');
-        }
-    })
-
-    $(window).on('scroll', $.throttle(function (event) {
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop <= 10) {
-            $navbar.removeClass('nav-hide');
-            $navbar.removeClass('nav-fix');
-            $navbar.addClass('nav-top');
-            $sidebar.find('.tabs').removeClass('headblank');
-        }
-        else {
-            $navbar.removeClass('nav-top');
-            $navbar.addClass('nav-fix');
-
-            if (scrollTop - preScrollTop > 0) {
-                $navbar.addClass('nav-hide');
-                //向上滚动取消侧边栏头部留空
-                $sidebar.find('.tabs').removeClass('headblank');
-            }
-            else {
-                $navbar.removeClass('nav-hide');
-                //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
-                if ($sidebar.offset().top - $navbar.offset().top - $navbar.height() < 0) {
-                    $sidebar.find('.tabs').addClass('headblank');
-                }
-                else {
-                    $sidebar.find('.tabs').removeClass('headblank');
-                }
-            }
-        }
-        preScrollTop = scrollTop;
-    }, 200)).scroll();
-}
-function initSidebarTabs() {
-    if ($('#sidebar .tabs').length > 0)
-        var tabs = new Tabs('#sidebar .tabs');
-    if ($('#sidebar-drawer .tabs').length > 0)
-        var tabs = new Tabs('#sidebar-drawer .tabs');
-}
-//初始化导航栏搜索功能
-function initNavSearch() {
-    var template = $($('#site_search_template').html());
-    $('.nav-toolkit .search-toggle').on('click', function () {
-        //防止打开多个搜索界面
-        if ($('.modal-layout.modal-open').length != 0)
-            return false;
-        var context = template.clone();
-        var modal = new Modal(context);
-        var Search = new LocalSearch('search-input', 'search-result-wrap');
-        modal.open();
-        // 输入框获取焦点
-        $('#search-input').focus();
-        context.find('#search-input').on('keydown', function (event) {
-            if (event.key === 'Enter') {
-                if (!Search.isKeywordsChanged()) return false;
-                $('#site_search').addClass('searched');
-
-                anime({
-                    targets: '#site_search  .form-group',
-                    marginTop: '4rem',
-                    easing: 'easeOutCubic',
-                    duration: 500
-                });
-                Search.query();
-            }
-        });
-        context.find('#search-btn').on('click', function () {
-            if (!Search.isKeywordsChanged()) return false;
-            $('#site_search').addClass('searched');
-            anime({
-                targets: '#site_search .form-group',
-                marginTop: '4rem',
-                easing: 'easeOutCubic',
-                duration: 500
-            });
-            Search.query();
-        });
-    });
 }
 //初始化导航栏音乐播放器
 function initNavMusicPlayer() {
@@ -258,56 +489,10 @@ function anchorSmoothScroll() {
         }, 400);
     });
 }
-function intiHeader() {
-    var scene = $('#header .parallax-background').get(0);
-    if (scene)
-        parallaxInstance = new Parallax(scene, {
-            // selector: '.layer',
-            relativeInput: true,
-            // clipRelativeInput: true,
-            hoverOnly: true,
-            frictionX: 0.18,
-            frictionY: 0.18,
-            scalarX: 6,
-            scalarY: 6,
-            limitX: 50,
-            limitY: 50,
-        });
-    // var content = $('#header .parallax-content').get(0);
-    // if (content)
-    //     parallaxInstance2 = new Parallax(content, {
-    //         // selector: '.content',
-    //         relativeInput: true,
-    //         // inputElement: '.parallax-background',
-    //         // clipRelativeInput: true,
-    //         invertX: false,
-    //         invertY: false,
-    //         hoverOnly: true,
-    //         scalarX: 5,
-    //         scalarY: 5,
-    //     });
-    $('.indicator').on('click', function() {
-        anime({
-            targets: document.documentElement,
-            scrollTop: document.querySelector('#main').offsetTop,
-            easing: 'easeOutCubic',
-            duration: 1000,
-        });
-    })
-
-}
-
 
 initNavbar();
-initNavMenu();
-initNavSidebar();
-initNavSearch();
 initNavMusicPlayer();
-initCategoryTree();
-initSidebarToc();
-initSidebarTabs();
 anchorSmoothScroll();
-intiHeader();
 
 function initPostCover() {
     if(window.blog.post_card.cover.background === 'none') return;
@@ -452,3 +637,28 @@ function initFloatToolbar() {
     }
 }
 initFloatToolbar();
+
+
+// var pjax = new Pjax({
+//     selectors: [
+//         'title',
+//         'meta[name=description]',
+//         '#header',
+//         '#content',
+//         '#sidebar',
+//     ]
+// });
+// document.addEventListener("pjax:success", function() {
+//     initNavbar();
+//     initCategoryTree();
+//     initSidebarToc();
+//     initSidebarTabs();
+//     anchorSmoothScroll();
+//     intiHeader();
+//     initPostCover();
+//     initLazyLoad();
+//     initTooltip();
+//     initFloatToolbar();
+// })
+
+

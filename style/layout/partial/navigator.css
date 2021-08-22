@@ -45,7 +45,7 @@
                     &:hover > .link {
                     }
                 }
-                .nav-menu-item.active-nav::after {
+                .nav-menu-item.nav-active::after {
                     content: "";
                     @apply absolute left-1 right-1 bottom-2.5;
                     @apply h-1 rounded-full;

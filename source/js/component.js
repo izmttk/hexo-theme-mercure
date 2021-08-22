@@ -1,6 +1,44 @@
- //可折叠面板
- var Collapse = (function () {
-    function Collapse(selector, options = {}) {
+$.extend({
+    //消抖
+    debounce: function (fn, timeout, invokeAsap, ctx) {
+        if (arguments.length == 3 && typeof invokeAsap != 'boolean') {
+            ctx = invokeAsap;
+            invokeAsap = false;
+        }
+        var timer;
+        return function () {
+            var args = arguments;
+            ctx = ctx || this;
+            invokeAsap && !timer && fn.apply(ctx, args);
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                invokeAsap || fn.apply(ctx, args);
+                timer = null;
+            }, timeout);
+        };
+    },
+    //节流
+    throttle: function (fn, timeout, ctx) {
+        var timer, args, needInvoke;
+        return function () {
+            args = arguments;
+            needInvoke = true;
+            ctx = ctx || this;
+            timer || (function () {
+                if (needInvoke) {
+                    fn.apply(ctx, args);
+                    needInvoke = false;
+                    timer = setTimeout(arguments.callee, timeout);
+                } else {
+                    timer = null;
+                }
+            })();
+        };
+    }
+});
+//可折叠面板
+class Collapse {
+    constructor (selector, options = {}) {
         var that = this;
         this.element = $(selector).first();
         this.items = this.element.children('.collapse-item');
@@ -11,7 +49,7 @@
             else that.close(this, 0);
         });
     }
-    Collapse.prototype.bindEvents = function () {
+    bindEvents () {
         var that = this;
         this.items.children('.collapse-item-title').on('click', function (event) {
             if ($(event.target).is('a')) return;
@@ -20,7 +58,7 @@
             that.toggle($item, 200);
         });
     }
-    Collapse.prototype.getItem = function (item) {
+    getItem (item) {
         if (typeof item === 'number') return this.items.eq(item);
         var $item = $(item).first();
         if (!$item.parent().is(this.element)) {
@@ -28,41 +66,40 @@
         }
         return $item;
     }
-    Collapse.prototype.isOpen = function (item) {
+    isOpen (item) {
         var $item = this.getItem(item);
         return $item.hasClass('collapse-item-open');
     }
-    Collapse.prototype.open = function (item, duration = 200) {
+    open (item, duration = 200) {
         var $item = this.getItem(item);
         var $content = $item.children('.collapse-item-content');
         if (!$content.length) return;
         $content.stop();
         $item.addClass('collapse-item-open');
-        $item.trigger('open');
+        $item.get(0).dispatchEvent(new CustomEvent('collapse:open'));
         var contentHeight = $content[0].scrollHeight;
         $content.animate({ height: contentHeight }, duration, function () {
             $content.css({ height: 'auto', overflow: 'auto' })
         });
     }
-    Collapse.prototype.close = function (item, duration = 200) {
+    close (item, duration = 200) {
         var $item = this.getItem(item);
         var $content = $item.children('.collapse-item-content');
         if (!$content.length) return;
         $content.stop();
         $item.removeClass('collapse-item-open');
-        $item.trigger('close');
+        $item.get(0).dispatchEvent(new CustomEvent('collapse:close'));
         $content.css({ overflow: 'hidden' });
         $content.animate({ height: 0 }, duration);
     }
-    Collapse.prototype.toggle = function (item, duration = 200) {
+    toggle (item, duration = 200) {
         if (this.isOpen(item)) this.close(item, duration);
         else this.open(item, duration);
     }
-    return Collapse;
-})();
+}
 //菜单
-var Menu = (function () {
-    var DEFAULT_OPTIONS = {
+class Menu {
+    DEFAULT_OPTIONS = {
         position: 'bottom-start',
         arrow: false,
         animation: 'shift-away',
@@ -70,8 +107,8 @@ var Menu = (function () {
         trigger: 'click',
         appendTo: () => document.body,
     }
-    function Menu(toggle, content, options = {}) {
-        options = Object.assign(DEFAULT_OPTIONS, options);
+    constructor (toggle, content, options = {}) {
+        options = Object.assign(this.DEFAULT_OPTIONS, options);
         this.instance = tippy($(toggle).get(0), {
             content: $(content).get(0),
             theme: options.theme,
@@ -103,22 +140,21 @@ var Menu = (function () {
             },
         });
     }
-    Menu.prototype.open = function() {
+    open () {
         this.instance.show();
     }
-    Menu.prototype.close = function() {
+    close () {
         this.instance.hide();
     }
-    Menu.prototype.toggle = function() {
+    toggle () {
         if(this.instance.state.isShown)
         this.close();
         else this.open();
     }
-    return Menu;
-})();
+}
 //目录
-var Toc = (function () {
-    function Toc(selector, options = {}) {
+class Toc {
+    constructor (selector, options = {}) {
         var that = this;
         this.element = $(selector).first();
         var $container = this.element.parent();
@@ -126,7 +162,7 @@ var Toc = (function () {
         this.items = this.element.find('.toc-item');
         this.bindEvents();
     }
-    Toc.prototype.bindEvents = function () {
+    bindEvents () {
         var that = this;
         // this.items.children('.toc-link').on('click', function (event) {
         //     event.preventDefault();
@@ -143,7 +179,7 @@ var Toc = (function () {
         
         this.updateView();
     }
-    Toc.prototype.updateView = function () {
+    updateView () {
         var scrollTop = $(window, document).scrollTop();
         for (var i = 0; i < this.items.length; i++) {
             var $curItem = this.items.eq(i);
@@ -165,12 +201,12 @@ var Toc = (function () {
             }
         }
     }
-    Toc.prototype.getHeader = function (item) {
+    getHeader (item) {
         var id = decodeURI(item.children('.toc-link').attr('href'));
         var $target = $(id);
         return $target;
     }
-    Toc.prototype.activateTocItem = function (item) {
+    activateTocItem (item) {
         var $item = $(item).first();
         if ($item.hasClass('toc-activated')) return;
 
@@ -181,11 +217,10 @@ var Toc = (function () {
             scrollTop: $item.offset().top - this.element.offset().top - $container.height() / 2
         }, 200);
     }
-    return Toc;
-})();
+}
 //标签页
-var Tabs = (function () {
-    function Tabs(selector, options = {}) {
+class Tabs {
+    constructor (selector, options = {}) {
         this.element = $(selector).first();
         this.tabs = this.element.children('.tabs-header').children('.tab');
         this.panels = this.element.children('.tabs-content').children('.tab-panel');
@@ -196,7 +231,7 @@ var Tabs = (function () {
         this.initGliderPos();
         this.bindEvents();
     }
-    Tabs.prototype.initGliderPos = function () {
+    initGliderPos () {
         //初始化滑块位置
         var $glider = this.element.find('.glider');
         // $glider.height(this.tabs.outerHeight());
@@ -208,7 +243,7 @@ var Tabs = (function () {
         // console.log(tabOffsetLeft)
         $glider.css('transform', 'translateX(' + tabOffsetLeft + 'px)');
     }
-    Tabs.prototype.bindEvents = function () {
+    bindEvents () {
         var that = this;
         this.tabs.on('click', function (event) {
             event.preventDefault();
@@ -226,7 +261,7 @@ var Tabs = (function () {
             });
         });
     }
-    Tabs.prototype.switch = function (tab) {
+    switch (tab) {
         var $tab = this.getTab(tab);
         var $panel = this.getPanel(tab);
         var $activePanel = this.getPanel(this.getActiveTab());
@@ -266,14 +301,14 @@ var Tabs = (function () {
         $tab.addClass('tab-activated');
         $panel.addClass('tab-activated');
     }
-    Tabs.prototype.getTab = function (tab) {
+    getTab (tab) {
         var $tab = $(tab).first();
         if (this.tabs.filter($tab).length == 0) {
             throw new Error('Tab is not found');
         }
         return $tab;
     }
-    Tabs.prototype.getPanel = function (tab) {
+    getPanel (tab) {
         var $tab = this.getTab(tab);
         var id = $tab.attr('href');
         var $panel = this.panels.filter(id);
@@ -282,20 +317,19 @@ var Tabs = (function () {
         }
         return $panel;
     }
-    Tabs.prototype.getTabIndex = function(tab) {
+    getTabIndex (tab) {
         var $tab = this.getTab(tab);
         return this.tabs.index($tab);
     }
-    Tabs.prototype.getActiveTab = function () {
+    getActiveTab () {
         return this.tabs.filter(function () {
             return $(this).hasClass('tab-activated');
         });
     }
-    return Tabs;
-})();
+}
 //模态框
-var Modal = (function () {
-    function Modal(context) {
+class Modal {
+    constructor (context) {
         if (typeof context !== 'string') context = $(context);
         else context = $('<span>' + context + '</span>');
         this.overlay = $('<div class="modal-layout"></div>');
@@ -310,83 +344,92 @@ var Modal = (function () {
             // backdropFilter: 'blur(0px)',
         });
         this.closeBtn = $('<button class="close-btn"><i class="ri-close-fill"></i></button>');
-        this.overlay.append(this.closeBtn);
         this.context = $('<div class="content"></div>').append(context);
-        anime.set(this.context.get(0), {
-            opacity: 0,
-            translateY: 100
-        });
+        this.context.append(this.closeBtn);
+        // anime.set(this.context.get(0), {
+        //     opacity: 0,
+        //     translateY: 100
+        // });
         this.overlay.append(this.context);
         $('body').append(this.overlay);
         this.overlay.hide();
         this.bindEvents();
     }
-    Modal.prototype.bindEvents = function () {
+    bindEvents () {
         var that = this;
         this.closeBtn.on('click', function (event) {
             that.close();
         });
     }
-    Modal.prototype.isOpen = function () {
+    isOpen () {
         return this.overlay.hasClass('modal-open');
     }
-    Modal.prototype.open = function () {
+    open () {
         $('body').css('overflow', 'hidden');
         // $('body').append(this.overlay);
         this.overlay.show();
         this.overlay.addClass('modal-open');
-        anime({
-            targets: this.context.get(0),
-            opacity: 1,
-            translateY: 0,
-            easing: 'easeOutCubic',
-            duration: 800
-        });
-        anime({
-            targets: this.overlay.get(0),
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            // backdropFilter: 'blur(16px)',
-            easing: 'easeOutCubic',
-            duration: 500
-        });
+        this.overlay.addClass('fade-in');
+        this.context.addClass('slide-up');
+
+        // anime({
+        //     targets: this.context.get(0),
+        //     opacity: 1,
+        //     translateY: 0,
+        //     easing: 'easeOutCubic',
+        //     duration: 800
+        // });
+        // anime({
+        //     targets: this.overlay.get(0),
+        //     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        //     // backdropFilter: 'blur(16px)',
+        //     easing: 'easeOutCubic',
+        //     duration: 500
+        // });
     }
-    Modal.prototype.close = function () {
+    close () {
         this.overlay.removeClass('modal-open');
         var that = this;
         $('body').css('overflow', 'auto');
-        anime({
-            targets: this.context.get(0),
-            opacity: 0,
-            translateY: 100,
-            easing: 'easeOutCubic',
-            duration: 800
-        });
-        anime({
-            targets: this.overlay.get(0),
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            // backdropFilter: 'blur(0px)',
-            easing: 'easeOutCubic',
-            duration: 500
-        }).finished.then(function () {
-            // that.overlay.detach();
+        this.overlay.removeClass('fade-in');
+        this.context.removeClass('slide-up');
+        this.overlay.addClass('fade-out');
+        this.context.addClass('slide-down');
+        setTimeout(function(){
             that.overlay.remove();
-            delete that;
-        });
+        }, 800);
+        // anime({
+        //     targets: this.context.get(0),
+        //     opacity: 0,
+        //     translateY: 100,
+        //     easing: 'easeOutCubic',
+        //     duration: 800
+        // });
+        // anime({
+        //     targets: this.overlay.get(0),
+        //     backgroundColor: 'rgba(0, 0, 0, 0)',
+        //     // backdropFilter: 'blur(0px)',
+        //     easing: 'easeOutCubic',
+        //     duration: 500
+        // }).finished.then(function () {
+        //     // that.overlay.detach();
+        //     that.overlay.remove();
+        //     delete that;
+        // });
     }
-    Modal.prototype.toggle = function () {
+    toggle () {
         if (this.isOpen()) this.close();
         else this.open();
     }
-    return Modal;
-})();
+}
 // 抽屉
-var Drawer = (function () {
+class Drawer {
     DEFAULT_OPTIONS = {
         position: 'left',
         width: 300,
     }
-    function Drawer(selector, options = {}) {
-        options = Object.assign(DEFAULT_OPTIONS, options);
+    constructor (selector, options = {}) {
+        options = Object.assign(this.DEFAULT_OPTIONS, options);
         this.element = $(selector).first();
         this.element.addClass('drawer-'+options.position);
         this.element.wrapInner('<div class="content"></div>');
@@ -396,7 +439,7 @@ var Drawer = (function () {
         if(this.element.hasClass('drawer-opened')) this.open();
         else this.element.addClass('drawer-closed');
     }
-    Drawer.prototype.bindEvents = function () {
+    bindEvents () {
         var that = this;
         var $overlay = this.element.children('.overlay');
         $overlay.on('click', function (event) {
@@ -411,7 +454,10 @@ var Drawer = (function () {
             }
         });
     }
-    Drawer.prototype.open = function () {
+    isOpen () {
+        return !this.element.hasClass('drawer-closed');
+    }
+    open () {
         this.element.addClass("drawer-preopen")
         this.element.removeClass('drawer-closed drawer-closing')
         
@@ -422,7 +468,7 @@ var Drawer = (function () {
         }, 50);
         $('body').css('overflow', 'hidden');
     }
-    Drawer.prototype.close = function () {
+    close () {
         this.element.removeClass('drawer-opened drawer-opening')
         this.element.addClass("drawer-preclose")
         
@@ -433,10 +479,9 @@ var Drawer = (function () {
         }, 50);
         $('body').css('overflow', 'auto');
     }
-    Drawer.prototype.toggle = function () {
+    toggle () {
         if(this.element.hasClass('drawer-opening')||this.element.hasClass('drawer-opened'))
         this.close();
         else this.open();
     }
-    return Drawer;
-})();
+}

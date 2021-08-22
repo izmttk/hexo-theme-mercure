@@ -76,7 +76,7 @@ var LocalSearch = (function () {
         if ($resultList.children('li').length > 0) {
             $searchResult.append($resultList);
         } else {
-            $searchResult.append('<span class="no-result">找不到结果哦~</span>');
+            $searchResult.append('<span class="no-result">没有找到相关内容~</span>');
         }
         this.resultElement.empty().append($searchResult);
     }
