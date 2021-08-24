@@ -4,7 +4,7 @@ class ScrollManager {
         this.store = {};
         this.element = element;
         this._listenerCallback = function(...args) {
-            self._handleScroll(this, args);
+            self._handleScroll(self, args);
         }
         this.element.addEventListener('scroll', this._listenerCallback);
     }
@@ -46,6 +46,25 @@ class ScrollManager {
 }
 const scrollManager = new ScrollManager();
 
+const animateCSS = (element, animation, prefix = '') =>
+  new Promise((resolve, reject) => {
+    const animationName = `${prefix}${animation}`;
+    let node = element;
+    if(typeof element === 'string') {
+        node = document.querySelector(element);
+    }
+    node.classList.add(`${prefix}animated`, animationName);
+
+    // When the animation ends, we clean the classes and resolve the Promise
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, animationName);
+      resolve('Animation ended');
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd, {once: true});
+});
+
 class Header {
     constructor() {
         this.init();
@@ -79,7 +98,11 @@ class Header {
         scrollManager.scrollTo(this.rootElement.offsetTop +this.rootElement.scrollHeight);
     }
     destroy() {
-        this.indicatorElement.removeEventListener('click', this._indicatorListener);
+        this.parallax?.destroy();
+        this.indicatorElement?.removeEventListener('click', this._indicatorListener);
+        delete this.rootElement;
+        delete this.indicatorElement;
+        delete this.parallax;
     }
 }
 
@@ -88,21 +111,30 @@ class Sidebar {
         this.rootElement = element ?? document.querySelector('#sidebar');
         this.tabElement = this.rootElement.querySelector('.tabs');
         this.tocWidgetElement = this.rootElement.querySelector('.toc');
+        this._initTabs();
+        this._initToc();
+        this._initWidgets();
+    }
+    _initTabs() {
         if(this.tabElement !== null) {
             this.tabIns = new Tabs(this.tabElement);
         }
+    }
+    _initToc() {
         if(this.tocWidgetElement !== null) {
             this.tocWidgetIns = new Toc(this.tocWidgetElement);
         }
-        this._initWidgets();
     }
     _initWidgets() {
         this.categoryTreeWidget = new CategoryTreeWidget();
     }
     destroy() {
-        this?.tabIns.destroy();
-        this?.tocWidgetIns.destroy();
-        this.categoryTreeWidget.destroy();
+        this.tabIns?.destroy();
+        this.tocWidgetIns?.destroy();
+        this.categoryTreeWidget?.destroy();
+        delete this.rootElement;
+        delete this.tabElement;
+        delete this.tocWidgetElement;
     }
 }
 
@@ -119,13 +151,14 @@ class Navbar {
         this._initMenu();
         this._initTool();
         this._bindScrollListener();
+        this.updateMenuIndicator();
     }
     _bindScrollListener() {
         let self = this;
-        let sidebar  = document.querySelector('#sidebar');
         //添加滚动事件监听
         let lastScrollTop = scrollManager.getScrollTop();
         scrollManager.register('nav', function(event) {
+            let sidebar  = document.querySelector('#sidebar');
             let scrollTop = scrollManager.getScrollTop();
 
             if (scrollTop <= 30) {
@@ -156,9 +189,8 @@ class Navbar {
             }
             lastScrollTop = scrollTop;
         });
-        scrollManager.triggerEvent();
     }
-    _initMenu() {
+    updateMenuIndicator() {
         // 初始化当前导航指示条
         this.rootElement.querySelectorAll('.nav-menu-item>.link').forEach(link => {
             link.parentElement.classList.remove('nav-active');
@@ -174,6 +206,8 @@ class Navbar {
                 link.parentElement.classList.add('nav-active');
             }
         });
+    }
+    _initMenu() {
         // 初始化多级菜单
         let menuToggleList = Array.from(this.menuElement.querySelectorAll('.menu-toggle'));
         this.menuInsList = menuToggleList.map(element => {
@@ -183,10 +217,32 @@ class Navbar {
             }
             element.nextElementSibling.style.display = 'block';
             return new Menu(element, element.nextElementSibling, {
-                arrow: false,
-                position: isRootToggle ? 'bottom-start' : 'right-start',
-                trigger: 'hover',
+                placement: isRootToggle ? 'bottom-start' : 'right-start',
+                trigger: 'mouseenter focus',
                 appendTo: isRootToggle ? () => this.rootElement : 'parent',
+                onCreate(instance) {
+                    if(window.BLOG_CONFIG.pjax.enable === true) {
+                        instance.popper.querySelectorAll('a[href]')?.forEach(element => {
+                            let url = element.getAttribute('href');
+                            if(url === 'javascript:void(0)') return;
+                            element.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                new Pjax({
+                                    selectors: [
+                                        'title',
+                                        'meta[name=description]',
+                                        '#script_blog_config',
+                                        '#header',
+                                        '#content',
+                                        '#sidebar',
+                                        '.float-toolbar'
+                                    ],
+                                    cacheBust: false,
+                                }).loadUrl(url);
+                            });  
+                        });
+                    }
+                }
             });
         });
     }
@@ -224,15 +280,23 @@ class Navbar {
     }
     destroy() {
         this.menuInsList.forEach(element => {
-            element.destroy();
+            element?.destroy();
         });
-        this.searchIns.destroy();
-        this.menuDrawerIns.destroy();
-        this.sideDrawerIns.destroy();
-        this.searchElement.removeEventListener('click', this._searchListener);
-        this.menuDrawerElement.removeEventListener('click', this._menuDrawerListener);
-        this.sideDrawerElement.removeEventListener('click', this._sideDrawerListener);
+        this.searchIns?.destroy();
+        this.menuDrawerIns?.destroy();
+        this.sideDrawerIns?.destroy();
+        this.searchElement?.removeEventListener('click', this._searchListener);
+        this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
+        this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
         scrollManager.unregister('nav');
+
+        delete this.rootElement;
+        delete this.menuElement;
+        delete this.logoElement;
+        delete this.toolElement;
+        delete this.searchElement;
+        delete this.menuDrawerElement;
+        delete this.sideDrawerElement;
     }
 }
 
@@ -297,13 +361,16 @@ class CategoryTreeWidget {
         }
     }
     destroy() {
-        this.collapseInsList.forEach(element => {
+        this.collapseInsList?.forEach(element => {
             element.destroy();
         });
-        this.toggleList.forEach(element => {
+        this.toggleList?.forEach(element => {
             element.removeEventListener('collapse:open', this._toggleListener);
             element.removeEventListener('collapse:close', this._toggleListener);
         });
+        delete this.rootElement;
+        delete this.collapseInsList;
+        delete this.toggleList;
     }
 }
 
@@ -322,10 +389,12 @@ class MenuDrawer extends Drawer {
         });
     }
     destroy() {
-        this.menuInsList.forEach(element => {
+        this.menuInsList?.forEach(element => {
             element.destroy();
         });
         super.destroy();
+        delete this.rootElement;
+        delete this.menuInsList;
     }
 }
 
@@ -351,6 +420,9 @@ class SideDrawer extends Drawer {
     }
     destroy() {
         super.destroy();
+        delete this.rootElement;
+        delete this.drawerContainer;
+        delete this.sidebarContainer;
     }
 }
 
@@ -403,11 +475,13 @@ class Search {
         this.inputElement.removeEventListener('keydown', this._eventListener);
         this.buttonElement.removeEventListener('click', this._eventListener);
         this.modalIns?.close();
-        this.modalIns = null;
-        this.searchApi = null;
-        this.modalElement = null;
-        this.inputElement = null;
-        this.buttonElement = null;
+        this.modalIns?.destroy();
+        delete this.rootElement;
+        delete this.modalIns;
+        delete this.searchApi;
+        delete this.modalElement;
+        delete this.inputElement;
+        delete this.buttonElement;
     }
     toggle() {
         if(!this.isOpen()) {
@@ -418,8 +492,96 @@ class Search {
     }
     destroy() {
         this.modalIns?.destroy();
+        delete this.templateElement;
     }
 }
+
+class FloatToolbar {
+    constructor() {
+        this.rootElement = document.querySelector('.float-toolbar');
+        this.backToTopBtn = document.querySelector('#back-to-top-btn');
+        this.goToCommentBtn = document.querySelector('#go-to-comment-btn');
+        let self = this;
+        scrollManager.register('toolbar', function(...args) {
+            Reflect.apply(self._handleFloatToolbar, self, args);
+        });
+        if(this.backToTopBtn !== null) {
+            this._initBacktoTopBtn();
+        }
+        if(this.goToCommentBtn !== null) {
+            this._initGotoCommentBtn();
+        }
+    }
+    _handleFloatToolbar(event) {
+        if(scrollManager.getScrollTop() > 20) {
+            this.rootElement.classList.remove('float-toolbar-hidden');
+        } else {
+            this.rootElement.classList.add('float-toolbar-hidden');
+        }
+    }
+    _initBacktoTopBtn() {
+        tippy(this.backToTopBtn, {
+            content: '回到顶部',
+            animation: 'shift-away',
+            hideOnClick: false,
+            placement: 'left',
+            touch: 'hold',
+            appendTo: this.rootElement,
+            arrow: false,
+        });
+        this._backToTop = function() {
+            scrollManager.scrollTo(0);
+        }
+        this.backToTopBtn.addEventListener('click', this._backToTop);
+    }
+    _initGotoCommentBtn() {
+        tippy(this.goToCommentBtn, {
+            content: '评论区直达',
+            animation: 'shift-away',
+            hideOnClick: false,
+            placement: 'left',
+            touch: 'hold',
+            appendTo: this.rootElement,
+            arrow: false,
+        });
+        this._goToComment = function() {
+            let commentEl = document.querySelector('.comments');
+            scrollManager.scrollTo(commentEl.offsetTop - 64);
+        }
+        this.goToCommentBtn.addEventListener('click', this._goToComment);
+    }
+    destroy() {
+        scrollManager.unregister('toolbar');
+        this.backToTopBtn?.removeEventListener('click', this._backToTop);
+        this.goToCommentBtn?.removeEventListener('click', this._goToComment);
+        delete this.rootElement;
+        delete this.backToTopBtn;
+        delete this.goToCommentBtn;
+    }
+}
+
+class Loading {
+    constructor(element) {
+        this.element = element ?? document.querySelector('.loading');
+    }
+    show() {
+        this.element.style.display = 'block';
+        animateCSS(this.element, 'fade-in');
+        // this.element.classList.add('fade-in');
+    }
+    hide() {
+        animateCSS(this.element, 'fade-out').then(() => {
+            this.element.style.display = 'none';
+        });
+
+        // this.element.classList.add('fade-out');
+        // setTimeout(() => {
+        //     this.element.style.display = 'none';
+        // }, 500);
+    }
+}
+const loading = new Loading();
+
 
 class BlogUiManager {
     DEFAULT_OPTIONS = {
@@ -427,115 +589,205 @@ class BlogUiManager {
     }
     constructor(options) {
         this.options = Object.assign(this.DEFAULT_OPTIONS, options);
-        this.navbar = new Navbar();
-        this.header = new Header();
-        this.sidebar = new Sidebar();
+        this.initNavbar();
+        this.initHeader();
+        this.initSidebar();
+        this.initFloatToolbar();
+        this.initMaterialPostCover();
+        this.initLazyLoad();
+        this.anchorSmoothScroll();
+        this.initTooltip();
+        this.initKatex();
+        this.initComments();
+        this.initPjax();
+        scrollManager.triggerEvent();
+        topbar?.hide();
+    }
+    initNavbar() {
+        if(window.BLOG_CONFIG.navigator.enable) {
+            this.navbar = new Navbar();
+        }
+    }
+    initHeader() {
+        if(window.BLOG_CONFIG.header.enable) {
+            this.header = new Header();
+        } else {
+            document.querySelector('.navigator').classList.add('nav-noheader');
+        }
+    }
+    initSidebar() {
+        if(window.BLOG_CONFIG.sidebar.enable) {
+            this.sidebar = new Sidebar();
+        }
+    }
+    initFloatToolbar() {
+        this.floatToolbar = new FloatToolbar();
+    }
+    anchorSmoothScroll() {
+        let marginTop = 76;
+        document.querySelectorAll('.post a, .page a, .toc a').forEach(element => {
+            if(!/^#[^\s]*/g.test(element.getAttribute('href'))) {
+                return;
+            }
+            element.addEventListener('click', function(event) {
+                event.preventDefault();
+                let id = decodeURI(this.getAttribute('href'));
+                let target = document.querySelector(id);
+                scrollManager.scrollTo(target.offsetTop - marginTop);
+            })
+        });
+    }
+    initMaterialPostCover() {
+        if(window.BLOG_CONFIG.post_card.cover.type === 'material'
+            && window.BLOG_CONFIG.post_card.cover.background === 'auto') {
+            document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
+                function setPostBgColor(img) {
+                    Vibrant.from(img, {
+                        quality: 5
+                    }).getPalette().then(function(swatches) {
+                        if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
+                            item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
+                            item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
+                        } else {
+                            item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
+                            item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
+                        }
+                    });
+                }
+                var imgEl = item.querySelector('.cover-img');
+                // if(imgEl.complete) {
+                    // setPostBgColor(imgEl)
+                // } else {
+                    imgEl.addEventListener('load', function() {
+                        var that = this;
+                        setPostBgColor(that);
+                    });
+                    imgEl.addEventListener('error', function() {
+                        this.setAttribute('src', this.getAttribute('data-error-src'));
+                    });
+                // }
+            });
+        }
+    }
+    initLazyLoad() {
+        if(window.BLOG_CONFIG.lazyload.enable) {
+            lazyload();
+        }
+    }
+    initTooltip() {
+        tippy('[data-tippy-content]',{
+            animation: 'shift-away',
+            hideOnClick: false,
+            touch: 'hold',
+        });
+    }
+    initKatex() {
+        if(window.BLOG_CONFIG.katex.enable) {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ]
+            });
+        }
+    }
+    initComments() {
+        // if(typeof window.loadComments === 'function') {
+        //     window.loadComments();
+        // }
+    }
+    initPjax() {
+        if(!window.BLOG_CONFIG.pjax.enable) {
+            return;
+        }
+        this.pjax = new Pjax({
+            selectors: [
+                'title',
+                'meta[name=description]',
+                '#script_blog_config',
+                '#header',
+                '#content',
+                '#sidebar',
+                '.float-toolbar'
+            ],
+            cacheBust: false,
+        });
         let self = this;
+        topbar.config({
+            barColors: {
+                0: 'rgb(71,154,248)'
+            },
+        });
+        document.addEventListener("pjax:send", function() {
+            topbar?.show();
+            loading?.show();
+            self.header?.destroy();
+            self.sidebar?.destroy();
+            self.floatToolbar?.destroy();
+            window.loadComments = null;
+        });
+        document.addEventListener("pjax:success", function() {
+            self.navbar?.updateMenuIndicator();
+            self.initHeader();
+            self.initSidebar();
+            self.anchorSmoothScroll();
+            self.initMaterialPostCover();
+            self.initFloatToolbar();
+            self.initLazyLoad();
+            self.initTooltip();
+            self.initKatex();
+            self.initComments();
+            scrollManager.triggerEvent();
+            animateCSS('#header','slide-down-fade-in');
+            animateCSS('#main','slide-up-fade-in');
+            topbar?.hide();
+            loading?.hide();
+        })
     }
 }
 const blogUiManager = new BlogUiManager();
 
 
-function initNavbar() {
-    var $navbar = $('.navigator');
-    if(!window.blog.header) {
-        $navbar.addClass('nav-noheader');
-    }
-}
-//初始化导航栏音乐播放器
-function initNavMusicPlayer() {
-    var musicPlayerTooltip = tippy(document.querySelector('.music-player-toggle'), {
-        content: 'test',//document.querySelector('.music-player'),
-        theme: 'light-border',
-        animation: 'shift-away',
-        trigger: 'click',
-        interactive: true,
-        interactiveDebounce: 50,
-        placement: 'bottom-end',
-        arrow: true,
-        // hideOnClick: false,
-        role: 'menu',
-        popperOptions: {
-            modifiers: [
-                {
-                    name: 'flip',
-                    options: {
-                        boundary: 'viewport',
-                    },
-                },
-                {
-                    name: 'preventOverflow',
-                    options: {
-                        boundary: 'viewport'
-                    },
-                },
-            ],
-        },
-    });
-    // $('.nav-toolkit .music-player-toggle').on('click', function () {
+// //初始化导航栏音乐播放器
+// function initNavMusicPlayer() {
+//     var musicPlayerTooltip = tippy(document.querySelector('.music-player-toggle'), {
+//         content: 'test',//document.querySelector('.music-player'),
+//         theme: 'light-border',
+//         animation: 'shift-away',
+//         trigger: 'click',
+//         interactive: true,
+//         interactiveDebounce: 50,
+//         placement: 'bottom-end',
+//         arrow: true,
+//         // hideOnClick: false,
+//         role: 'menu',
+//         popperOptions: {
+//             modifiers: [
+//                 {
+//                     name: 'flip',
+//                     options: {
+//                         boundary: 'viewport',
+//                     },
+//                 },
+//                 {
+//                     name: 'preventOverflow',
+//                     options: {
+//                         boundary: 'viewport'
+//                     },
+//                 },
+//             ],
+//         },
+//     });
+//     // $('.nav-toolkit .music-player-toggle').on('click', function () {
         
-    // });
-}
-function anchorSmoothScroll() {
-    var marginTop = 76;
-    $('.post a,.page a,.toc a').filter(function () {
-        return /^#[^\s]*/g.test($(this).attr('href'));
-    }).on('click', function (event) {
-        event.preventDefault();
-        var id = decodeURI($(this).attr('href'));
-        var $target = $(id);
-        $('html,body').animate({
-            scrollTop: $target.offset().top - marginTop
-        }, 400);
-    });
-}
+//     // });
+// }
 
-initNavbar();
-initNavMusicPlayer();
-anchorSmoothScroll();
+// initNavMusicPlayer();
 
-function initPostCover() {
-    if(window.blog.post_card.cover.background === 'none') return;
-    if(document.documentElement.clientWidth <= 768) return;
-    document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
-        function setPostBgColor(img) {
-            Vibrant.from(img, {
-                quality: 5
-            }).getPalette().then(function(swatches) {
-                if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
-                    item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
-                    item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
-                } else {
-                    item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
-                    item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
-                }
-            });
-        }
-        var imgEl = item.querySelector('.cover-img');
-        // if(imgEl.complete) {
-            // setPostBgColor(imgEl)
-        // } else {
-            imgEl.addEventListener('load', function() {
-                var that = this;
-                setPostBgColor(that);
-            });
-            imgEl.addEventListener('error', function() {
-                console.log(111)
-                this.setAttribute('src', this.getAttribute('data-error-src'));
-            });
-        // }
-    });
-}
-initPostCover();
-
-function initLazyLoad() {
-    if(window.blog.lazyload) {
-        lazyload();
-    }
-}
-initLazyLoad();
 function initDarkTheme() {
-    if(!window.blog.darkmode) return;
     function getOsPreference() {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -574,91 +826,3 @@ function initDarkTheme() {
     });
 }
 initDarkTheme();
-
-function initTooltip() {
-    tippy('[data-tippy-content]',{
-        animation: 'shift-away',
-        hideOnClick: false,
-        touch: 'hold',
-    });
-}
-initTooltip();
-
-function initFloatToolbar() {
-    var commentsEl = document.querySelector('.comments');
-    var floatToolbarEl = document.querySelector('.float-toolbar');
-    document.addEventListener('scroll', function(event) {
-        if(this.documentElement.scrollTop > 20) {
-            floatToolbarEl.classList.remove('float-toolbar-hidden');
-        } else {
-            floatToolbarEl.classList.add('float-toolbar-hidden');
-        }
-    });
-    document.dispatchEvent(new Event('scroll'));
-    var backToTopBtnEl =  document.querySelector('#back-to-top-btn')
-    var goToCommentBtnEl =  document.querySelector('#go-to-comment-btn');
-    if(backToTopBtnEl !== null) {
-        tippy(backToTopBtnEl, {
-            content: '回到顶部',
-            animation: 'shift-away',
-            hideOnClick: false,
-            placement: 'left',
-            touch: 'hold',
-            appendTo: floatToolbarEl,
-            arrow: false,
-        });
-        backToTopBtnEl.addEventListener('click', function(event) {
-            anime({
-                targets: document.documentElement,
-                scrollTop: 0,
-                easing: 'easeOutCubic',
-                duration: 1000,
-            });
-        });
-    }
-    if(goToCommentBtnEl !== null) {
-        tippy(goToCommentBtnEl, {
-            content: '评论区直达',
-            animation: 'shift-away',
-            hideOnClick: false,
-            placement: 'left',
-            touch: 'hold',
-            appendTo: floatToolbarEl,
-            arrow: false,
-        });
-        goToCommentBtnEl.addEventListener('click', function(event) {
-            anime({
-                targets: document.documentElement,
-                scrollTop: commentsEl.offsetTop - 64,
-                easing: 'easeOutCubic',
-                duration: 1000,
-            });
-        });
-    }
-}
-initFloatToolbar();
-
-
-// var pjax = new Pjax({
-//     selectors: [
-//         'title',
-//         'meta[name=description]',
-//         '#header',
-//         '#content',
-//         '#sidebar',
-//     ]
-// });
-// document.addEventListener("pjax:success", function() {
-//     initNavbar();
-//     initCategoryTree();
-//     initSidebarToc();
-//     initSidebarTabs();
-//     anchorSmoothScroll();
-//     intiHeader();
-//     initPostCover();
-//     initLazyLoad();
-//     initTooltip();
-//     initFloatToolbar();
-// })
-
-

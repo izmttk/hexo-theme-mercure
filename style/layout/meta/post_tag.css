@@ -5,8 +5,15 @@
         @apply flex-none;
         @apply text-black px-2 py-0 bg-white/50 rounded-full;
         @apply inline-flex items-center;
+        @apply hover:bg-white hover:shadow transition duration-100 active:scale-90;
+
         /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */
         @apply dark:text-white dark:bg-black/50;
         text-shadow: none;
+    }
+}
+#header .post-tag {
+    a {
+        @apply py-0.5;
     }
 }

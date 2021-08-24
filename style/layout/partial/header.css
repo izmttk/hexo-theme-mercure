@@ -1,6 +1,5 @@
 #header {
-    @apply md:mb-8;
-    position: relative;
+    @apply relative md:mb-8;
     .cover {
         @apply flex justify-center items-center;
         position: relative;

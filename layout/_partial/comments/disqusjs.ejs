@@ -1,18 +1,32 @@
 <script id="dsq-count-scr" src="//<%= theme.comments.disqusjs.shortname %>.disqus.com/count.js" async></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqusjs.min.css" media="all">
-<script src="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.min.js" defer onload="
-var dsqjs = new DisqusJS({
-    shortname: '<%= theme.comments.disqusjs.shortname %>',
-    siteName: '<%= theme.comments.disqusjs.sitename %>',
-    identifier: '<%= decodeURI(page.permalink) %>',
-    url: '<%= decodeURI(page.permalink) %>',
-    title: '<%= page.title %>',
-    api: '<%= theme.comments.disqusjs.api %>',
-    apikey: '<%= theme.comments.disqusjs.apikey %>',
-    admin: '<%= theme.comments.disqusjs.admin %>',
-    adminLabel: '<%= theme.comments.disqusjs.adminLabel %>'
-})
-"></script>
+<script src="https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.min.js" async></script>
+<script>
+  function loadComments() {
+    var dsqjs = new DisqusJS({
+        shortname: '<%= theme.comments.disqusjs.shortname %>',
+        siteName: '<%= theme.comments.disqusjs.sitename %>',
+        identifier: '<%= decodeURI(page.permalink) %>',
+        url: '<%= decodeURI(page.permalink) %>',
+        title: '<%= page.title %>',
+        api: '<%= theme.comments.disqusjs.api %>',
+        apikey: '<%= theme.comments.disqusjs.apikey %>',
+        admin: '<%= theme.comments.disqusjs.admin %>',
+        adminLabel: '<%= theme.comments.disqusjs.adminLabel %>'
+    })
+  }
+  var commentLoadCounter = 0;
+  var commentloadTimer = setInterval(function() {
+    if(window.DisqusJS) {
+      loadComments();
+      clearInterval(commentloadTimer);
+    }
+    if(commentLoadCounter > 10000) {
+      clearInterval(commentloadTimer);
+    }
+    commentLoadCounter += 500;
+  }, 500);
+</script>
 <div id="disqus_thread"></div>
 <style>
     #dsqjs footer {

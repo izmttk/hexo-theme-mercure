@@ -1,18 +1,41 @@
 <% 
     // 不同模板的页面有不同的配置
     let headerConfig = theme.header.default;
-    if(is_home()) headerConfig = theme.header.index;
-    else if(is_category() || page.layout === 'category') headerConfig = theme.header.category;
-    else if(is_tag() || page.layout === 'tag') headerConfig = theme.header.tag;
-    else if(is_post()) headerConfig = theme.header.post;
-    else if(is_page()) headerConfig = theme.header.page;
-    else if(is_archive()) headerConfig = theme.header.archive;
-%>
-<script type="text/javascript">
-    window.blog = {
-        header: <%-headerConfig.enable %>,
-        darkmode: <%- theme.darkmode %>,
-        lazyload: <%- theme.plugins.lazyload.enable %>,
-        post_card: <%- JSON.stringify(theme.post_card) %>,
+    let layout = null;
+
+    if(is_home()) {
+        headerConfig = theme.header.index;
+        layout = 'index';
+    } else if(is_category() || page.layout === 'category') {
+        headerConfig = theme.header.category;
+        layout = 'category';
+    } else if(is_tag() || page.layout === 'tag') {
+        headerConfig = theme.header.tag;
+        layout = 'tag';
+    } else if(is_post()) {
+        headerConfig = theme.header.post;
+        layout = 'post';
+    } else if(is_page()) {
+        headerConfig = theme.header.page;
+        layout = 'page';
+    } else if(is_archive()) {
+        headerConfig = theme.header.archive;
+        layout = 'archive';
     }
+
+    let config = {
+        layout: layout,
+        header:  headerConfig,
+        navigator: theme.navigator,
+        sidebar: theme.sidebar,
+        footer: theme.footer,
+        post_card: theme.post_card,
+        darkmode: theme.darkmode,
+        lazyload: theme.plugins.lazyload,
+        katex: theme.plugins.katex,
+        pjax: theme.plugins.pjax,
+    }
+%>
+<script type="text/javascript" id="script_blog_config">
+    window.BLOG_CONFIG = <%-JSON.stringify(config) %>
 </script>

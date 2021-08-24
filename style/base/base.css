@@ -119,3 +119,82 @@ body *::-webkit-scrollbar-thumb:hover {
 .bg-gradient-9 {
     background-image: linear-gradient(135deg, #fec163 10%, #de4313 100%);
 }
+
+@keyframes slideUpIn {
+    from {
+        transform: translateY(100px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes slideDownIn {
+    from {
+        transform: translateY(-100px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes slideUpOut {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100px);
+    }
+}
+@keyframes slideDownOut {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(100px);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+.fade-in {
+    animation: fadeIn .5s both;
+}
+.slide-up-in {
+    animation: slideUpIn .8s both;
+}
+.slide-down-in {
+    animation: slideDownIn .8s both;
+}
+.slide-up-fade-in {
+    animation: slideUpIn .8s, fadeIn .8s;
+}
+.slide-down-fade-in {
+    animation: slideDownIn .8s, fadeIn .8s;
+}
+.fade-out {
+    animation: fadeOut .5s both;
+}
+.slide-up-out {
+    animation: slideUpOut .8s both;
+}
+.slide-down-out {
+    animation: slideDownOut .8s both;
+}
+.slide-up-fade-out {
+    animation: slideUpOut .8s, fadeOut .8s;
+}
+.slide-down-fade-out {
+    animation: slideDownOut .8s, fadeOut .8s;
+}

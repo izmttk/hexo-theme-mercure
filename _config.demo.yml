@@ -132,6 +132,7 @@ navigator:
     darkmode: true
 
 sidebar:
+    enable: true
     show_profile: true
     show_tag_cloud: true
     show_category_tree: true
@@ -226,3 +227,4 @@ plugins:
         enable: true
         loading_img: /assets/loading.svg
         error_img: /assets/loading.svg
+    pjax: true

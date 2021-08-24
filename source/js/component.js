@@ -96,48 +96,46 @@ class Collapse {
         if (this.isOpen(item)) this.close(item, duration);
         else this.open(item, duration);
     }
+    destroy() {
+        this.items.children('.collapse-item-title').off('click');
+    }
 }
 //菜单
 class Menu {
     DEFAULT_OPTIONS = {
-        position: 'bottom-start',
+        placement: 'bottom-start',
         arrow: false,
         animation: 'shift-away',
         theme: 'light-border',
         trigger: 'click',
         appendTo: () => document.body,
+        interactive: true,
+        interactiveDebounce: 50,
+        // hideOnClick: false,
+        offset: [-6, -6],
+        role: 'menu',
+        popperOptions: {
+            modifiers: [
+                {
+                    name: 'flip',
+                    options: {
+                        boundary: 'viewport',
+                    },
+                },
+                {
+                    name: 'preventOverflow',
+                    options: {
+                        boundary: 'viewport'
+                    },
+                },
+            ],
+        },
     }
     constructor (toggle, content, options = {}) {
         options = Object.assign(this.DEFAULT_OPTIONS, options);
         this.instance = tippy($(toggle).get(0), {
             content: $(content).get(0),
-            theme: options.theme,
-            animation: options.animation,
-            trigger: options.trigger=='hover' ? 'mouseenter focus' : 'click',
-            interactive: true,
-            interactiveDebounce: 50,
-            placement: options.position,
-            arrow: options.arrow,
-            appendTo: options.appendTo,
-            // hideOnClick: false,
-            offset: [-6, -6],
-            role: 'menu',
-            popperOptions: {
-                modifiers: [
-                    {
-                        name: 'flip',
-                        options: {
-                            boundary: 'viewport',
-                        },
-                    },
-                    {
-                        name: 'preventOverflow',
-                        options: {
-                            boundary: 'viewport'
-                        },
-                    },
-                ],
-            },
+            ...options,
         });
     }
     open () {
@@ -150,6 +148,9 @@ class Menu {
         if(this.instance.state.isShown)
         this.close();
         else this.open();
+    }
+    destroy() {
+        this.instance.destroy();
     }
 }
 //目录
@@ -173,9 +174,10 @@ class Toc {
         //         scrollTop: $header.offset().top - 76
         //     },400);
         // });
-        $(window).on('scroll', $.throttle(function (event) {
+        this._scrollHandler = $.throttle(function (event) {
             that.updateView();
-        }, 50));
+        }, 50);
+        $(window).on('scroll', this._scrollHandler);
         
         this.updateView();
     }
@@ -216,6 +218,9 @@ class Toc {
         $container.stop().animate({
             scrollTop: $item.offset().top - this.element.offset().top - $container.height() / 2
         }, 200);
+    }
+    destroy() {
+        $(window).off('scroll');
     }
 }
 //标签页
@@ -326,6 +331,9 @@ class Tabs {
             return $(this).hasClass('tab-activated');
         });
     }
+    destroy() {
+        this.tabs.off('click');
+    }
 }
 //模态框
 class Modal {
@@ -370,7 +378,7 @@ class Modal {
         this.overlay.show();
         this.overlay.addClass('modal-open');
         this.overlay.addClass('fade-in');
-        this.context.addClass('slide-up');
+        this.context.addClass('slide-up-in');
 
         // anime({
         //     targets: this.context.get(0),
@@ -392,9 +400,9 @@ class Modal {
         var that = this;
         $('body').css('overflow', 'auto');
         this.overlay.removeClass('fade-in');
-        this.context.removeClass('slide-up');
+        this.context.removeClass('slide-up-in');
         this.overlay.addClass('fade-out');
-        this.context.addClass('slide-down');
+        this.context.addClass('slide-down-out');
         setTimeout(function(){
             that.overlay.remove();
         }, 800);
@@ -420,6 +428,10 @@ class Modal {
     toggle () {
         if (this.isOpen()) this.close();
         else this.open();
+    }
+    destroy() {
+        this.close();
+        this.closeBtn.off('click');
     }
 }
 // 抽屉
@@ -483,5 +495,10 @@ class Drawer {
         if(this.element.hasClass('drawer-opening')||this.element.hasClass('drawer-opened'))
         this.close();
         else this.open();
+    }
+    destroy() {
+        var $overlay = this.element.children('.overlay');
+        $overlay.off('click');
+        $overlay.off('transitionend');
     }
 }

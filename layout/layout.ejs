@@ -51,15 +51,7 @@
     <% if(theme.plugins.katex.enable) { %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" media="all">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body, {
-        delimiters: [
-            {left: '$$', right: '$$', display: true},
-            {left: '$', right: '$', display: false},
-            {left: '\\(', right: '\\)', display: false},
-            {left: '\\[', right: '\\]', display: true}
-        ]
-    });" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" defer></script>
     <style>.katex *{color:currentColor;border-color:currentColor}.katex{overflow-x:auto;overflow-y:hidden}</style>
     <% } %>
     <link rel="preconnect" href="https://fonts.gstatic.com" media="all">
@@ -76,11 +68,14 @@
     <% if(theme.plugins.lazyload.enable) { %>
     <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script>
     <% } %> 
+    <% if(theme.plugins.pjax.enable) { %>
+    <script src="https://cdn.jsdelivr.net/npm/topbar@1/topbar.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
+    <% } %> 
     <%- partial('./_partial/jsbridge') %>
     <%# 提前判断深色模式防止闪烁 %>
     <script type="text/javascript" defer>
     (function() {
-        if(!window.blog.darkmode) return;
         function getOsPreference() {
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
@@ -100,10 +95,10 @@
         }
     })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
 </head>
 
 <body>
+    <%- partial('./_partial/loading') %>
     <%- partial('./_partial/header') %>
     <div id="main">
         <div id="content">

@@ -11,6 +11,7 @@
 @import "./layout/partial/comments";
 @import "./layout/partial/navigator";
 @import "./layout/partial/paginator";
+@import "./layout/partial/loading";
 
 @import "./layout/widget/post_item";
 @import "./layout/widget/profile";

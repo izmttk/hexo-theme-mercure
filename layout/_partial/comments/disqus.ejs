@@ -7,14 +7,32 @@
     };
 </script>
 <script id="disqus-thread-script">
-    (function() { // DON'T EDIT BELOW THIS LINE
+  function loadComments() {
+    // here we will only load the disqus <script> if not already loaded
+    if (!window.DISQUS) {
+      (function() {
         var d = document;
         var s = d.createElement('script');
         s.src = '//<%= theme.comments.disqus.shortname %>.disqus.com/embed.js';
         s.setAttribute('data-timestamp', + new Date());
         (d.head || d.body).appendChild(s);
-    })();
+      })();
+    }
+    // if disqus <script> is already loaded, we just reset disqus the right way
+    // see https://help.disqus.com/developer/using-disqus-on-ajax-sites
+    else {
+      DISQUS.reset({
+        reload: true,
+        config: function () {
+        this.page.identifier = disqus_identifier
+        this.page.url = disqus_url
+        }
+      })
+    }
+  }
+  loadComments();
 </script>
+
 <style>
     /* 隐藏disqus的广告 */
     #disqus_thread iframe {

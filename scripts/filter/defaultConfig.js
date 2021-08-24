@@ -113,6 +113,9 @@ function pluginsConfig(config) {
             enable: false,
             loading_img: null,
             error_img: null,
+        },
+        pjax: {
+            enable: true,
         }
     }
     let configCopy = Object.assign({}, config.plugins);
