@@ -126,7 +126,7 @@ class Sidebar {
         }
     }
     _initWidgets() {
-        this.categoryTreeWidget = new CategoryTreeWidget();
+        this.categoryTreeWidget = new CategoryTreeWidget(this.rootElement.querySelector('.category-tree'));
     }
     destroy() {
         this.tabIns?.destroy();
@@ -235,6 +235,7 @@ class Navbar {
                                         '#header',
                                         '#content',
                                         '#sidebar',
+                                        '.nav-sidebar-drawer',
                                         '.float-toolbar'
                                     ],
                                     cacheBust: false,
@@ -379,7 +380,7 @@ class MenuDrawer extends Drawer {
         let rootElement = document.querySelector('.nav-menu-drawer');
         super(rootElement, {
             position: 'left',
-            width: 272
+            width: 250
         });
         this.rootElement = rootElement;
 
@@ -407,19 +408,24 @@ class SideDrawer extends Drawer {
             width: 278
         });
         this.rootElement = rootElement;
-        this.drawerContainer = document.querySelector('#sidebar-drawer');
-        this.sidebarContainer = document.querySelector('#sidebar');
+        this.sidebarIns = new Sidebar(document.querySelector('#sidebar-drawer'));
+        // this.drawerContainer = document.querySelector('#sidebar-drawer');
+        // this.sidebarContainer = document.querySelector('#sidebar');
     }
     open() {
-        this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
+        // this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
         super.open();
     }
     close() {
-        this.sidebarContainer.appendChild(this.drawerContainer.querySelector('.sidebar-content'));
+        let self = this;
+        // setTimeout(function(){
+        //     self.sidebarContainer.appendChild(self.drawerContainer.querySelector('.sidebar-content'));
+        // }, 350);
         super.close();
     }
     destroy() {
         super.destroy();
+        this.sidebarIns?.destroy();
         delete this.rootElement;
         delete this.drawerContainer;
         delete this.sidebarContainer;
@@ -710,6 +716,7 @@ class BlogUiManager {
                 '#header',
                 '#content',
                 '#sidebar',
+                '.nav-sidebar-drawer',
                 '.float-toolbar'
             ],
             cacheBust: false,
@@ -723,13 +730,20 @@ class BlogUiManager {
         document.addEventListener("pjax:send", function() {
             topbar?.show();
             loading?.show();
+            // self.navbar?.destroy();
             self.header?.destroy();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
+            self.navbar?.sideDrawerIns?.destroy();
+
             window.loadComments = null;
         });
         document.addEventListener("pjax:success", function() {
             self.navbar?.updateMenuIndicator();
+            if(self.navbar?.sideDrawerIns) {
+                self.navbar.sideDrawerIns = new SideDrawer();
+            }
+            // self.initNavbar();
             self.initHeader();
             self.initSidebar();
             self.anchorSmoothScroll();

@@ -1,23 +1,11 @@
 .loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: rgba(132, 146, 166, 70%);
+    @apply fixed inset-0 z-[9999] bg-gray-200/50 dark:bg-gray-800/50;
 }
 .spinner {
     animation: rotate 2s linear infinite;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
-
+    @apply absolute top-1/2 left-1/2 mt-[-25px] ml-[-25px] w-[50px] h-[50px];
     & .path {
-        stroke: rgb(71,154,248);
+        @apply stroke-current text-blue-600 dark:text-blue-400;
         stroke-linecap: round;
         animation: dash 1.5s ease-in-out infinite;
     }

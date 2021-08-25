@@ -1,5 +1,5 @@
 .navigator {
-    @apply fixed w-full h-16 z-40 translate-y-0 text-gray-900;
+    @apply fixed w-full h-14 md:h-16 z-40 translate-y-0 text-gray-900;
     @apply dark:text-gray-100;
     @apply transition duration-500;
     /* transition-property: top, height, background-color, color,
@@ -63,11 +63,11 @@
             }
         }
         .nav-toolkit {
-            @apply mr-0 px-2 lg:-mr-4 md:px-5 space-x-2;
+            @apply mr-0 px-1 lg:-mr-4 md:px-5 space-x-0.5 md:space-x-2;
             >button {
-                @apply w-10 h-10 rounded-full text-current outline-none bg-gray-400/30;
+                @apply w-9 h-9 md:w-10 md:h-10 rounded-full text-current outline-none bg-gray-400/30;
                 i {
-                    @apply text-lg leading-10;
+                    @apply text-lg leading-9 md:leading-10;
                 }
             }
         }
@@ -115,6 +115,9 @@
     .profile {
         @apply shadow-none rounded-none border-0 overflow-hidden;
         @apply dark:bg-gray-900;
+        .head {
+            @apply h-32;
+        }
         .body {
             .author-info {
                 .avatar {

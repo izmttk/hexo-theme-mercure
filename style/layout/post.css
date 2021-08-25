@@ -4,7 +4,7 @@
     @apply dark:bg-gray-800  dark:prose-dark;
 }
 .prev-next {
-    @apply flex flex-nowrap space-x-4 mb-4;
+    @apply flex flex-nowrap space-x-0 space-y-2 mb-4 flex-col md:flex-row md:space-x-4 md:space-y-0;
     .prev, .next {
         @apply relative flex flex-col flex-1 p-4;
         @apply text-white;
@@ -29,7 +29,7 @@
         @apply z-0 absolute inset-0 bg-black bg-opacity-30;
     }
     .blank {
-        @apply flex-1 flex justify-center items-center shadow-none;
+        @apply flex-1 hidden md:flex justify-center items-center shadow-none;
     }
     .no-cover {
         @apply text-gray-700 bg-white;
