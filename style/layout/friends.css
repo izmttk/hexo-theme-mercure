@@ -18,7 +18,7 @@
             }
         }
         .group-body {
-            @apply grid grid-cols-2 lg:grid-cols-3 gap-4 m-4;
+            @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4;
             .friend {
                 @apply flex flex-row flex-nowrap no-underline;
                 @apply rounded-md overflow-hidden shadow-md bg-white;
