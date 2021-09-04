@@ -20,41 +20,44 @@
 <%_ } _%>
 
 <%_  let flatNavCollapse = (menu, depth = 0) => { %>
-    <ul class="collapse">
     <%_ menu.forEach((item) => { _%>
         <%_ if(item === 'divider') { _%> 
-        <li class="collapse-divider"></li>
         <%_ } else { _%>
-        <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
-        <li class="collapse-item">
-            <div class="collapse-item-title">
-                <% for(let i=0; i<depth; i++) { %><span class="blank"></span><% } %> 
-                <span class="arrow">
-                    <% if(cascade) { %><i class="iconfont icon-arrow-down"></i><% } %>
-                </span>
-                <span class="name">
-                    <%_ if(item.url) { _%> 
-                    <a class="link" href="<%= item.url %>"><%- item.name %></a>
-                    <%_ } else { _%>
-                    <a class="link" href="javascript:void(0)"><%- item.name %></a>
-                    <%_ } _%>
-                </span>
-            </div>
-            <%# 递归展开子菜单 _%>
+            <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
             <%_ if(cascade) { _%>
-                <ul class="collapse-item-content">
+            <app-list-group>
+                <app-list-item slot="toggle">
+                    <div slot="prefix">
+                        <% for(let i=0; i<depth; i++) { %><span class="blank px-2"></span><% } %> 
+                        <i class="iconfont icon-arrow-down inline-block w-4"></i>
+                    </div>
+                    <div slot="title">
+                        <a class="link" href="<%= item.url %>"><%- item.name %></a>
+                    </div>
+                </app-list-item>
+                <%# 递归展开子菜单 _%>
+                <%_ if(cascade) { _%>
                 <%_ flatNavCollapse(item.submenu, depth + 1) _%>
-                </ul>
-            <%_ } _%> 
-        </li>
+                <%_ } _%> 
+            </app-list-group>
+            <%_ } else { _%> 
+            <app-list-item>
+                <div slot="prefix">
+                    <% for(let i=0; i<depth; i++) { %><span class="blank px-2"></span><% } %>
+                    <span class="px-2"></span>
+                </div>
+                <div slot="title">
+                    <a class="link" href="<%= item.url %>"><%- item.name %></a>
+                </div>
+            </app-list-item>
+            <%_ } _%>
         <%_ } _%>
     <%_ }) _%>
-    </ul>
 <%_ } _%>
 <div class="navigator nav-hide">
     <div class="content">
         <div class="nav-left-drawer">
-            <button class="drawer-toggle"><i class="ri-menu-line"></i></button>
+            <button class="drawer-toggle" onclick="document.querySelector('#drawer-left').setAttribute('open','')"><i class="ri-menu-line"></i></button>
         </div>
         <div class="nav-logo">
             <a href="/"><%- theme.navigator.logo %></a>
@@ -90,14 +93,21 @@
         <%_ } _%>
         </div>
         <div class="nav-right-drawer">
-            <button class="drawer-toggle"><i class="ri-layout-right-line"></i></button>
+            <button class="drawer-toggle" onclick="document.querySelector('#drawer-right').setAttribute('open','')"><i class="ri-layout-right-line"></i></button>
         </div>
     </div>
 </div>
-<div class="nav-menu-drawer drawer drawer-closed">
+<!-- <div class="nav-menu-drawer drawer drawer-closed">
+    <#%- partial('../_widget/profile') %>
+    <#%_ flatNavCollapse(theme.navigator.menu) _%>
+</div> -->
+<!-- <div class="nav-sidebar-drawer drawer drawer-closed">
+    <div id="sidebar-drawer"><#%- partial('./sidebar') %></div>
+</div> -->
+<app-drawer id="drawer-left" placement="left" position="fixed">
     <%- partial('../_widget/profile') %>
     <%_ flatNavCollapse(theme.navigator.menu) _%>
-</div>
-<div class="nav-sidebar-drawer drawer drawer-closed">
+</app-drawer>
+<app-drawer id="drawer-right" placement="right" position="fixed">
     <div id="sidebar-drawer"><%- partial('./sidebar') %></div>
-</div>
+</app-drawer>

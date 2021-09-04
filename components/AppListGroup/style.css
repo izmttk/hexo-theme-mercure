@@ -1,0 +1,14 @@
+:host {
+    display: block;
+    background-color: #fff;
+}
+:host([hidden]),[hidden]  { display: none!important; }
+* { box-sizing: border-box; }
+.header {
+    cursor: pointer;
+}
+.body {
+    overflow: hidden;
+    transition: height .3s cubic-bezier(.25,.8,.5,1);
+    will-change: height;
+}

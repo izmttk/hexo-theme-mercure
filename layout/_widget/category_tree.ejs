@@ -2,40 +2,60 @@
     <% let isMaxDepth = maxDepth>=0 && depth>=maxDepth %> 
     <% let cur_cats = site.categories.find({parent:parent}).sort({length: -1,name:1}).filter(cat=>cat.length); %>
     <% if(cur_cats.length!=0) { %>
-        <ul class="collapse">
         <% cur_cats.each(cat => { %>
             <% let isCascade = site.categories.find({parent:cat._id}).length!=0; %>
-            <%# 默认展开第一层 增加collapse-item-open类 %> 
-            <li class="collapse-item <% if(!isMaxDepth && isCascade && depth==0) { %>collapse-item-open<% } %>">
-                <div class="collapse-item-title">
+            <% if(!isCascade) { %> 
+            <app-list-item>
+                <div slot="prefix">
                     <% for(let i=0; i<depth; i++) { %> 
-                    <span class="blank"></span>
-                    <% } %> 
-                    <span class="arrow">
-                        <% if(!isMaxDepth && isCascade) { %>
-                        <i class="iconfont icon-arrow-down"></i>
-                        <% } %> 
-                    </span>
-                    <span class="name">
-                        <a class="link" href="<%= url_for(cat.path) %>"><%= cat.name %></a>
-                    </span>
+                    <span class="blank px-2"></span>
+                    <% } %>
+                    <i class="ri-quill-pen-fill"></i>
+                </div>
+                <div slot="title">
+                    <a class="link" href="<%= url_for(cat.path) %>"><%= cat.name %></a>
+                </div>
+                <div slot="suffix">
                     <span class="count"><%= cat.length %></span>
                 </div>
+            </app-list-item>
+            <% } else { %> 
+            <app-list-group <% if(!isMaxDepth && isCascade && depth==0) { %>open<% } %>>
+                <app-list-item slot="toggle">
+                    <div slot="prefix">
+                        <% for(let i=0; i<depth; i++) { %> 
+                        <span class="blank px-2"></span>
+                        <% } %>
+                        <i class="ri-folder-fill"></i>
+                    </div>
+                    <div slot="actived-prefix">
+                        <% for(let i=0; i<depth; i++) { %> 
+                        <span class="blank px-2"></span>
+                        <% } %>
+                        <i class="ri-folder-open-fill"></i>
+                    </div>
+                    <div slot="title">
+                        <span class="name">
+                            <a class="link" href="<%= url_for(cat.path) %>"><%= cat.name %></a>
+                        </span>
+                    </div>
+                    <div slot="suffix">
+                        <span class="count"><%= cat.length %></span>
+                    </div>
+                </app-list-item>
                 <% if(!isMaxDepth && isCascade) { %>
-                    <ul class="collapse-item-content">
-                    <% flatCategories(depth+1, cat._id); %>
-                    </ul>
+                <% flatCategories(depth+1, cat._id); %>
                 <% } %> 
-            </li>
+            </app-list-group>
+            <% } %> 
         <% }) %>
-        </ul>
     <% }
 }%>
 
 <div class="category-tree card">
     <div class="title"><span>分类</span></div>
     <div class="content">
-        <% flatCategories() %>
+        <app-list dense><% flatCategories() %></app-list>
     </div>
 </div>
 

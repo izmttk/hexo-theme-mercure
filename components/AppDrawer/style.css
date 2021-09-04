@@ -1,0 +1,39 @@
+:host {
+    display: block;
+}
+:host([hidden]),[hidden]  { display: none!important; }
+* { box-sizing: border-box; }
+.body {
+    z-index: 50;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.body .container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 16rem;
+    height: 100%;
+    background: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 
+        0 0.1875rem 0.4375rem 0.1875rem rgba(3,3,3,.13),
+        0 0.6875rem 1.5rem 1rem rgba(3,3,3,.12);
+}
+.body.left .container {
+    left: 0;
+}
+.body.right .container {
+    right: 0;
+}
+.body.closed.left .container {
+    transform: translateX(-100%);
+}
+.body.closed.right .container {
+    transform: translateX(100%);
+}

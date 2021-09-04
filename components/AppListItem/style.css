@@ -1,0 +1,89 @@
+:host {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: color .3s cubic-bezier(.25,.8,.5,1);
+}
+:host([hidden]),[hidden]  { display: none!important; }
+* { box-sizing: border-box; }
+:host::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: .12;
+    pointer-events: none;
+    background-color: transparent;
+    transition: background .3s cubic-bezier(.25,.8,.5,1);
+}
+:host(:hover)::before {
+    background-color: currentColor;
+}
+
+.prefix, .suffix {
+    display: flex;
+    align-items: center;
+}
+.prefix {
+    margin-right: 1rem;
+}
+.suffix {
+    margin-left: 1rem;
+}
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    padding:.75rem 0;
+    flex-grow: 1;
+}
+.content .title {
+    font-size: 1rem;
+    line-height: 1.2;
+}
+.content .subtitle {
+    font-size: .875rem;
+    line-height: 1.2;
+    opacity: .6;
+}
+
+:host([dense]) .content {
+    padding:.5rem 0;
+}
+:host([active]) {
+    color: #1867c0;
+}
+:host([active]):hover::before {
+    background-color: currentColor;
+}
+:host .content {
+    min-width: 0;
+}
+:host .title,
+:host .subtitle  {
+    overflow: hidden;
+}
+:host .title ::slotted(*) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+:host([two-line]) .subtitle ::slotted(*) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+:host([three-line]) .subtitle ::slotted(*) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+:host(:not([active])) slot[name^="actived-"]::slotted(*) {
+    display: none;
+}

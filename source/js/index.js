@@ -109,31 +109,31 @@ class Header {
 class Sidebar {
     constructor(element) {
         this.rootElement = element ?? document.querySelector('#sidebar');
-        this.tabElement = this.rootElement.querySelector('.tabs');
+        // this.tabElement = this.rootElement.querySelector('.tabs');
         this.tocWidgetElement = this.rootElement.querySelector('.toc');
-        this._initTabs();
+        // this._initTabs();
         this._initToc();
         this._initWidgets();
     }
-    _initTabs() {
-        if(this.tabElement !== null) {
-            this.tabIns = new Tabs(this.tabElement);
-        }
-    }
+    // _initTabs() {
+    //     if(this.tabElement !== null) {
+    //         this.tabIns = new Tabs(this.tabElement);
+    //     }
+    // }
     _initToc() {
         if(this.tocWidgetElement !== null) {
             this.tocWidgetIns = new Toc(this.tocWidgetElement);
         }
     }
     _initWidgets() {
-        this.categoryTreeWidget = new CategoryTreeWidget(this.rootElement.querySelector('.category-tree'));
+        // this.categoryTreeWidget = new CategoryTreeWidget(this.rootElement.querySelector('.category-tree'));
     }
     destroy() {
-        this.tabIns?.destroy();
+        // this.tabIns?.destroy();
         this.tocWidgetIns?.destroy();
-        this.categoryTreeWidget?.destroy();
+        // this.categoryTreeWidget?.destroy();
         delete this.rootElement;
-        delete this.tabElement;
+        // delete this.tabElement;
         delete this.tocWidgetElement;
     }
 }
@@ -145,8 +145,8 @@ class Navbar {
         this.logoElement = this.rootElement.querySelector('.nav-logo');
         this.toolElement = this.rootElement.querySelector('.nav-toolkit');
         this.searchElement = this.toolElement.querySelector('.search-toggle');
-        this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
-        this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
+        // this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
+        // this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
 
         this._initMenu();
         this._initTool();
@@ -235,7 +235,7 @@ class Navbar {
                                         '#header',
                                         '#content',
                                         '#sidebar',
-                                        '.nav-sidebar-drawer',
+                                        // '.nav-sidebar-drawer',
                                         '.float-toolbar'
                                     ],
                                     cacheBust: false,
@@ -249,23 +249,23 @@ class Navbar {
     }
     _initTool() {
         this.searchIns = new Search();
-        this.menuDrawerIns = new MenuDrawer();
-        this.sideDrawerIns = new SideDrawer();
+        // this.menuDrawerIns = new MenuDrawer();
+        // this.sideDrawerIns = new SideDrawer();
 
         let self = this;
 
         this._searchListener = function(event) {
             self.searchIns.toggle();
         }
-        this._menuDrawerListener = function(event) {
-            self.menuDrawerIns.toggle();
-        }
-        this._sideDrawerListener = function(event) {
-            self.sideDrawerIns.toggle();
-        }
+        // this._menuDrawerListener = function(event) {
+        //     self.menuDrawerIns.toggle();
+        // }
+        // this._sideDrawerListener = function(event) {
+        //     self.sideDrawerIns.toggle();
+        // }
         this.searchElement.addEventListener('click', this._searchListener);
-        this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
-        this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
+        // this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
+        // this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
 
     }
     isShown() {
@@ -284,11 +284,11 @@ class Navbar {
             element?.destroy();
         });
         this.searchIns?.destroy();
-        this.menuDrawerIns?.destroy();
-        this.sideDrawerIns?.destroy();
+        // this.menuDrawerIns?.destroy();
+        // this.sideDrawerIns?.destroy();
         this.searchElement?.removeEventListener('click', this._searchListener);
-        this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
-        this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
+        // this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
+        // this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
         scrollManager.unregister('nav');
 
         delete this.rootElement;
@@ -296,141 +296,141 @@ class Navbar {
         delete this.logoElement;
         delete this.toolElement;
         delete this.searchElement;
-        delete this.menuDrawerElement;
-        delete this.sideDrawerElement;
+        // delete this.menuDrawerElement;
+        // delete this.sideDrawerElement;
     }
 }
 
-class CategoryTreeWidget {
-    constructor(element) {
-        this.rootElement = element ?? document.querySelector('.category-tree');
-        // 初始化多级菜单
-        let collapseElementList = Array.from(this.rootElement.querySelectorAll('.collapse'));
-        this.collapseInsList = collapseElementList.map(element => {
-            return new Collapse(element);
-        });
-        //替换叶子节点图标
-        this.toggleList = Array.from(this.rootElement.querySelectorAll('.collapse-item'));
-        this.toggleList.forEach(element => {
-            let titleEl = element.querySelector('.collapse-item-title');
-            titleEl.querySelector('.prefix')?.remove();
-            if(element.querySelector('.collapse') !== null) {
-                if(element.classList.contains('collapse-item-open')) {
-                    titleEl.querySelector('.name').insertAdjacentHTML(
-                        'beforebegin',
-                        '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
-                    );
-                } else {
-                    titleEl.querySelector('.name').insertAdjacentHTML(
-                        'beforebegin',
-                        '<span class="prefix"><i class="ri-folder-fill"></i></span>'
-                    );
-                }
-            } else {
-                titleEl.querySelector('.name').insertAdjacentHTML(
-                    'beforebegin',
-                    '<span class="prefix"><i class="ri-bookmark-fill"></i></span>'
-                );
-            }
-        });
-        this._initToggle();
-    }
-    _initToggle() {
-        let self = this;
-        this._toggleListener = function(...args) {
-            Reflect.apply(self._handleUnfoldCategory, self, args);
-        }
-        this.toggleList.forEach(element => {
-            element.addEventListener('collapse:open', this._toggleListener);
-            element.addEventListener('collapse:close', this._toggleListener);
-        });
-    }
-    _handleUnfoldCategory(event) {
-        event.stopPropagation();
-        let titleEl = event.target.querySelector('.collapse-item-title');
-        titleEl.querySelector('.prefix')?.remove();
-        if (event.type === 'collapse:open') {
-            titleEl.querySelector('.name').insertAdjacentHTML(
-                'beforebegin',
-                '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
-            );
-        } else {
-            titleEl.querySelector('.name').insertAdjacentHTML(
-                'beforebegin',
-                '<span class="prefix"><i class="ri-folder-fill"></i></span>'
-            );
-        }
-    }
-    destroy() {
-        this.collapseInsList?.forEach(element => {
-            element.destroy();
-        });
-        this.toggleList?.forEach(element => {
-            element.removeEventListener('collapse:open', this._toggleListener);
-            element.removeEventListener('collapse:close', this._toggleListener);
-        });
-        delete this.rootElement;
-        delete this.collapseInsList;
-        delete this.toggleList;
-    }
-}
+// class CategoryTreeWidget {
+//     constructor(element) {
+//         this.rootElement = element ?? document.querySelector('.category-tree');
+//         // 初始化多级菜单
+//         let collapseElementList = Array.from(this.rootElement.querySelectorAll('.collapse'));
+//         this.collapseInsList = collapseElementList.map(element => {
+//             return new Collapse(element);
+//         });
+//         //替换叶子节点图标
+//         this.toggleList = Array.from(this.rootElement.querySelectorAll('.collapse-item'));
+//         this.toggleList.forEach(element => {
+//             let titleEl = element.querySelector('.collapse-item-title');
+//             titleEl.querySelector('.prefix')?.remove();
+//             if(element.querySelector('.collapse') !== null) {
+//                 if(element.classList.contains('collapse-item-open')) {
+//                     titleEl.querySelector('.name').insertAdjacentHTML(
+//                         'beforebegin',
+//                         '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
+//                     );
+//                 } else {
+//                     titleEl.querySelector('.name').insertAdjacentHTML(
+//                         'beforebegin',
+//                         '<span class="prefix"><i class="ri-folder-fill"></i></span>'
+//                     );
+//                 }
+//             } else {
+//                 titleEl.querySelector('.name').insertAdjacentHTML(
+//                     'beforebegin',
+//                     '<span class="prefix"><i class="ri-bookmark-fill"></i></span>'
+//                 );
+//             }
+//         });
+//         this._initToggle();
+//     }
+//     _initToggle() {
+//         let self = this;
+//         this._toggleListener = function(...args) {
+//             Reflect.apply(self._handleUnfoldCategory, self, args);
+//         }
+//         this.toggleList.forEach(element => {
+//             element.addEventListener('collapse:open', this._toggleListener);
+//             element.addEventListener('collapse:close', this._toggleListener);
+//         });
+//     }
+//     _handleUnfoldCategory(event) {
+//         event.stopPropagation();
+//         let titleEl = event.target.querySelector('.collapse-item-title');
+//         titleEl.querySelector('.prefix')?.remove();
+//         if (event.type === 'collapse:open') {
+//             titleEl.querySelector('.name').insertAdjacentHTML(
+//                 'beforebegin',
+//                 '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
+//             );
+//         } else {
+//             titleEl.querySelector('.name').insertAdjacentHTML(
+//                 'beforebegin',
+//                 '<span class="prefix"><i class="ri-folder-fill"></i></span>'
+//             );
+//         }
+//     }
+//     destroy() {
+//         this.collapseInsList?.forEach(element => {
+//             element.destroy();
+//         });
+//         this.toggleList?.forEach(element => {
+//             element.removeEventListener('collapse:open', this._toggleListener);
+//             element.removeEventListener('collapse:close', this._toggleListener);
+//         });
+//         delete this.rootElement;
+//         delete this.collapseInsList;
+//         delete this.toggleList;
+//     }
+// }
 
-class MenuDrawer extends Drawer {
-    constructor() {
-        let rootElement = document.querySelector('.nav-menu-drawer');
-        super(rootElement, {
-            position: 'left',
-            width: 250
-        });
-        this.rootElement = rootElement;
+// class MenuDrawer extends Drawer {
+//     constructor() {
+//         let rootElement = document.querySelector('.nav-menu-drawer');
+//         super(rootElement, {
+//             position: 'left',
+//             width: 250
+//         });
+//         this.rootElement = rootElement;
 
-        let menuToggleList = Array.from(this.rootElement.querySelectorAll('.collapse'));
-        this.menuInsList = menuToggleList.map(element => {
-            return new Collapse(element);
-        });
-    }
-    destroy() {
-        this.menuInsList?.forEach(element => {
-            element.destroy();
-        });
-        super.destroy();
-        delete this.rootElement;
-        delete this.menuInsList;
-    }
-}
+//         let menuToggleList = Array.from(this.rootElement.querySelectorAll('.collapse'));
+//         this.menuInsList = menuToggleList.map(element => {
+//             return new Collapse(element);
+//         });
+//     }
+//     destroy() {
+//         this.menuInsList?.forEach(element => {
+//             element.destroy();
+//         });
+//         super.destroy();
+//         delete this.rootElement;
+//         delete this.menuInsList;
+//     }
+// }
 
-class SideDrawer extends Drawer {
-    constructor() {
-        let rootElement = document.querySelector('.nav-sidebar-drawer');
+// class SideDrawer extends Drawer {
+//     constructor() {
+//         let rootElement = document.querySelector('.nav-sidebar-drawer');
 
-        super(rootElement, {
-            position: 'right',
-            width: 278
-        });
-        this.rootElement = rootElement;
-        this.sidebarIns = new Sidebar(document.querySelector('#sidebar-drawer'));
-        // this.drawerContainer = document.querySelector('#sidebar-drawer');
-        // this.sidebarContainer = document.querySelector('#sidebar');
-    }
-    open() {
-        // this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
-        super.open();
-    }
-    close() {
-        let self = this;
-        // setTimeout(function(){
-        //     self.sidebarContainer.appendChild(self.drawerContainer.querySelector('.sidebar-content'));
-        // }, 350);
-        super.close();
-    }
-    destroy() {
-        super.destroy();
-        this.sidebarIns?.destroy();
-        delete this.rootElement;
-        delete this.drawerContainer;
-        delete this.sidebarContainer;
-    }
-}
+//         super(rootElement, {
+//             position: 'right',
+//             width: 278
+//         });
+//         this.rootElement = rootElement;
+//         this.sidebarIns = new Sidebar(document.querySelector('#sidebar-drawer'));
+//         // this.drawerContainer = document.querySelector('#sidebar-drawer');
+//         // this.sidebarContainer = document.querySelector('#sidebar');
+//     }
+//     open() {
+//         // this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
+//         super.open();
+//     }
+//     close() {
+//         let self = this;
+//         // setTimeout(function(){
+//         //     self.sidebarContainer.appendChild(self.drawerContainer.querySelector('.sidebar-content'));
+//         // }, 350);
+//         super.close();
+//     }
+//     destroy() {
+//         super.destroy();
+//         this.sidebarIns?.destroy();
+//         delete this.rootElement;
+//         delete this.drawerContainer;
+//         delete this.sidebarContainer;
+//     }
+// }
 
 class Search {
     constructor() {
@@ -716,7 +716,7 @@ class BlogUiManager {
                 '#header',
                 '#content',
                 '#sidebar',
-                '.nav-sidebar-drawer',
+                // '.nav-sidebar-drawer',
                 '.float-toolbar'
             ],
             cacheBust: false,
@@ -734,15 +734,15 @@ class BlogUiManager {
             self.header?.destroy();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
-            self.navbar?.sideDrawerIns?.destroy();
+            // self.navbar?.sideDrawerIns?.destroy();
 
             window.loadComments = null;
         });
         document.addEventListener("pjax:success", function() {
             self.navbar?.updateMenuIndicator();
-            if(self.navbar?.sideDrawerIns) {
-                self.navbar.sideDrawerIns = new SideDrawer();
-            }
+            // if(self.navbar?.sideDrawerIns) {
+            //     self.navbar.sideDrawerIns = new SideDrawer();
+            // }
             // self.initNavbar();
             self.initHeader();
             self.initSidebar();
