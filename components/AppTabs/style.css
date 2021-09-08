@@ -52,6 +52,13 @@
     cursor: pointer;
     transition: background .15s cubic-bezier(.4, 0, .2, 1);
 }
+.header .tablist .tab:focus {
+    outline: none !important;
+}
+.header .tablist .tab:focus-visible {
+    outline: none !important;
+    box-shadow: rgb(96, 165, 250) 0px 0px 0px 2px;
+}
 @media (max-width: 768px) {
     .header .tablist .tab {
         min-width: 4rem;

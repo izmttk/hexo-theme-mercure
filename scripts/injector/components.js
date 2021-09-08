@@ -79,6 +79,7 @@ function renderAllComponentString(srcPath) {
 hexo.extend.injector.register('body_begin', () => {
     const basePath = path.join(hexo.theme_dir, 'components'); 
     const prefixScript = `
+    <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
     <script type="text/javascript">
     HTMLElement.prototype.upgradeProperty = function (prop) {
         if (this.hasOwnProperty(prop)) {

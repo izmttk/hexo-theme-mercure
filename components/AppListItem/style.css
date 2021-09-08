@@ -44,7 +44,13 @@
 :host(:hover)::before {
     background: var(--list--item-hover-background, currentColor);
 }
-
+:host(:focus) {
+    outline: none !important;
+}
+:host(:focus-visible) {
+    outline: none !important;
+    box-shadow: inset rgb(96, 165, 250) 0px 0px 0px 2px;
+}
 .prefix, .suffix {
     display: flex;
     align-items: center;

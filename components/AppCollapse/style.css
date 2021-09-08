@@ -36,6 +36,14 @@
     box-shadow:     var(--collapse--header-box-shadow, none);
     opacity:        var(--collapse--header-opacity, 1);
 }
+
+.header:focus {
+    outline: none !important;
+}
+.header:focus-visible {
+    outline: none !important;
+    box-shadow: inset rgb(96, 165, 250) 0px 0px 0px 2px;
+}
 .header .prefix, .header .title, .header .suffix {
     display: flex;
     align-items: center;

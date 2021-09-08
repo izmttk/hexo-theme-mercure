@@ -1,16 +1,24 @@
 :root {
-    --tabs--header-background: #D1D5DB;
+    --tabs--header-background: rgba(117,147,189,.14);
     --tabs--tab-hover-background: rgba(255,255,255,.35);
     --tabs--content-background: #fff;
-
+    --tabs--slider-box-shadow: rgba(0, 16, 46, 0.15) 0px 2px 3px;
     --list--item-active-text-color: #3B82F6;
 
     --collapse--header-background: #fff;
     --collapse--content-background: #fff;
-
+    app-collapse-group {
+        >app-collapse:first-child {
+            --collapse--header-border-radius: .5rem .5rem 0 0;
+        }
+        >app-collapse:last-child:not([open]) {
+            --collapse--header-border-radius: 0 0 .5rem .5rem;
+        }
+    }
     --drawer--background: #fff;
 
     #sidebar, #drawer-right {
+        --tabs--header-background: rgba(117,147,189,.2);
         --tabs--header-height: 2.5rem;
         --tabs--header-margin: 0.75rem;
         --tabs--slider-height: 2rem;

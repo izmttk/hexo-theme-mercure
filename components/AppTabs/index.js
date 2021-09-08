@@ -27,7 +27,9 @@ class AppTabs extends HTMLElement {
         let template = document.querySelector('#template-app-tabs');
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
-
+        // const styleSheet = new CSSStyleSheet();
+        // styleSheet.replace(``);
+        // this.shadowRoot.adoptedStyleSheets = [styleSheet];
         this.tabEl = this.shadowRoot.querySelector('.header');
         this.panelEl = this.shadowRoot.querySelector('.body');
         this.sliderEl = this.shadowRoot.querySelector('.slider');
