@@ -1,0 +1,59 @@
+:root {
+    --tabs--header-background: #D1D5DB;
+    --tabs--tab-hover-background: rgba(255,255,255,.35);
+    --tabs--content-background: #fff;
+
+    --list--item-active-text-color: #3B82F6;
+
+    --collapse--header-background: #fff;
+    --collapse--content-background: #fff;
+
+    --drawer--background: #fff;
+
+    #sidebar, #drawer-right {
+        --tabs--header-height: 2.5rem;
+        --tabs--header-margin: 0.75rem;
+        --tabs--slider-height: 2rem;
+        --tabs--content-padding: 0 0.75rem 0.75rem 0.75rem;
+        --tabs--content-margin: 0;
+        --tabs--content-background: transparent;
+
+        --list--item-active-text-color: #3B82F6;
+    }
+}
+
+.dark:root {
+    --tabs--header-background: #374151;
+    --tabs--tab-hover-background: rgba(255,255,255,.05);
+    --tabs--slider-background: #4B5563;
+    --tabs--content-background: #374151;
+
+    --list--item-background: #374151;
+    --list--item-active-text-color: #93C5FD;
+
+    --collapse--header-background: #374151;
+    --collapse--border-color: #4B5563;
+    --collapse--content-background: #374151;
+
+    --drawer--background: #111827;
+
+    #drawer-left {
+        --list--item-background: #111827;
+        --drawer-overlay-background: rgba(21,21,21,.7);
+    }
+
+    #sidebar, #drawer-right {
+        --tabs--header-background: #1F2937;
+        --tabs--slider-background: #374151;
+
+        --list--item-background: #1F2937;
+        --list--item-active-text-color: #93C5FD;
+
+        --drawer-overlay-background: rgba(21,21,21,.7);
+    }
+}
+
+
+#drawer-left, #drawer-right {
+    @apply text-gray-900 dark:text-gray-100;
+}

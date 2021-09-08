@@ -4,6 +4,7 @@
 @import "tailwindcss/screens";
 
 @import "./base/base";
+@import "./base/components";
 
 @import "./layout/partial/header";
 @import "./layout/partial/footer";
@@ -30,6 +31,4 @@
 @import "./layout/friends";
 @import "./layout/post";
 
-@import "./components/drawer";
-@import "./components/collapse";
 @import "./components/menu";

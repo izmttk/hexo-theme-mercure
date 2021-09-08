@@ -9,7 +9,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(21,21,21,.5);
+    background-color: var(--overlay-background, rgba(21,21,21,.5));
     transition: opacity .3s cubic-bezier(.4, 0, .2, 1);
 }
 .overlay.closed {

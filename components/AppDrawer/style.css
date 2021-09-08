@@ -17,13 +17,15 @@
     bottom: 0;
     width: 16rem;
     height: 100%;
-    background: #fff;
+    background: var(--drawer--background, #fff);
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: auto contain;
     transition: transform .3s cubic-bezier(.4, 0, .2, 1);
-    box-shadow: 
+    box-shadow: var(--drawer-box-shadow, 
         0 0.1875rem 0.4375rem 0.1875rem rgba(3,3,3,.13),
-        0 0.6875rem 1.5rem 1rem rgba(3,3,3,.12);
+        0 0.6875rem 1.5rem 1rem rgba(3,3,3,.12)
+    );
 }
 .body.left .container {
     left: 0;
@@ -36,4 +38,7 @@
 }
 .body.closed.right .container {
     transform: translateX(100%);
+}
+app-overlay {
+    --overlay-background: var(--drawer-overlay-background);
 }

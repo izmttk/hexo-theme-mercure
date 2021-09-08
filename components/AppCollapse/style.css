@@ -2,22 +2,39 @@
     display: block;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    background-color: #fff;
+    /* background-color: #fff; */
     border-radius: .5rem;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 :host([hidden]),[hidden]  { display: none!important; }
 * { box-sizing: border-box; }
 .header {
-    padding: 0 1.5rem;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    height: 3rem;
-    line-height: 1;
     user-select: none;
     cursor: pointer;
+
+    margin:         var(--collapse--header-margin, 0);
+    padding:        var(--collapse--header-padding, 0 1.5rem);
+    width:          var(--collapse--header-width, auto);
+    height:         var(--collapse--header-height, 3rem);
+    max-width:      var(--collapse--header-max-width, initial);
+    min-width:      var(--collapse--header-max-width, initial);
+    max-height:     var(--collapse--header-max-width, initial);
+    min-height:     var(--collapse--header-max-width, initial);
+    font-family:    var(--collapse--header-font-family, inherit);
+    font-size:      var(--collapse--header-font-size, inherit);
+    font-style:     var(--collapse--header-font-style, inherit);
+    font-weight:    var(--collapse--header-font-weight, inherit);
+    letter-spacing: var(--collapse--header-letter-spacing, inherit);
+    line-height:    var(--collapse--header-line-height, 1);
+    color:          var(--collapse--header-text-color, inherit);
+    background:     var(--collapse--header-background, none);
+    border-radius:  var(--collapse--header-border-radius, none);
+    box-shadow:     var(--collapse--header-box-shadow, none);
+    opacity:        var(--collapse--header-opacity, 1);
 }
 .header .prefix, .header .title, .header .suffix {
     display: flex;
@@ -32,8 +49,27 @@
     will-change: height;
 }
 .container {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid rgba(0,0,0,.12);
+    border-top: 1px solid var(--collapse--border-color, rgba(0,0,0,.12));
+
+    margin:         var(--collapse--content-margin, 0);
+    padding:        var(--collapse--content-padding, 1rem 1.5rem);
+    width:          var(--collapse--content-width, auto);
+    height:         var(--collapse--content-height, auto);
+    max-width:      var(--collapse--content-max-width, initial);
+    min-width:      var(--collapse--content-max-width, initial);
+    max-height:     var(--collapse--content-max-width, initial);
+    min-height:     var(--collapse--content-max-width, initial);
+    font-family:    var(--collapse--content-font-family, inherit);
+    font-size:      var(--collapse--content-font-size, inherit);
+    font-style:     var(--collapse--content-font-style, inherit);
+    font-weight:    var(--collapse--content-font-weight, inherit);
+    letter-spacing: var(--collapse--content-letter-spacing, inherit);
+    line-height:    var(--collapse--content-line-height, inherit);
+    color:          var(--collapse--content-text-color, inherit);
+    background:     var(--collapse--content-background, none);
+    border-radius:  var(--collapse--content-border-radius, none);
+    box-shadow:     var(--collapse--content-box-shadow, none);
+    opacity:        var(--collapse--content-opacity, 1);
 }
 
 .preset-suffix-icon {

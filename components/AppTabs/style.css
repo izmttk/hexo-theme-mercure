@@ -10,10 +10,27 @@
 .header .tablist {
     position: relative;
     display: flex;
-    padding: .25rem;
-    margin: 0 auto;
-    border-radius: .75rem;;
-    background-color: rgba(30,58,138,.2);
+    justify-content: center;
+    align-items: center;
+    margin:         var(--tabs--header-margin, 0 auto);
+    padding:        var(--tabs--header-padding, .25rem);
+    width:          var(--tabs--header-width, auto);
+    height:         var(--tabs--header-height, 2.75rem);
+    max-width:      var(--tabs--header-max-width, initial);
+    min-width:      var(--tabs--header-max-width, initial);
+    max-height:     var(--tabs--header-max-width, initial);
+    min-height:     var(--tabs--header-max-width, initial);
+    font-family:    var(--tabs--header-font-family, inherit);
+    font-size:      var(--tabs--header-font-size, .875rem);
+    font-style:     var(--tabs--header-font-style, inherit);
+    font-weight:    var(--tabs--header-font-weight, 500);
+    letter-spacing: var(--tabs--header-letter-spacing, inherit);
+    line-height:    var(--tabs--header-line-height, inherit);
+    color:          var(--tabs--header-text-color, inherit);
+    background:     var(--tabs--header-background, rgba(30,58,138,.2));
+    border-radius:  var(--tabs--header-border-radius, .75rem);
+    box-shadow:     var(--tabs--header-box-shadow, none);
+    opacity:        var(--tabs--header-opacity, 1);
 }
 
 .header.stretch .tablist{
@@ -24,20 +41,21 @@
     z-index: 1;
     flex: 0 1;
     min-width: 6rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    padding-left: .75rem;
-    padding-right: .75rem;
-    line-height: 1.25rem;
-    height: 2.25rem;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: .875rem;
-    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     border-radius: .5rem;
     cursor: pointer;
     transition: background .15s cubic-bezier(.4, 0, .2, 1);
+}
+@media (max-width: 768px) {
+    .header .tablist .tab {
+        min-width: 4rem;
+    }
 }
 
 .header.stretch .tablist .tab {
@@ -50,7 +68,7 @@
 }
 
 .header .tablist .tab:hover {
-    background-color: rgba(255,255,255,.35);
+    background: var(--tabs--tab-hover-background, rgba(255,255,255,.35));
 }
 
 /* .header .tablist .tab[active] {
@@ -61,23 +79,49 @@
 .header .slider {
     z-index: 0;
     position: absolute;
-    height: 2.25rem;
-    background-color: #fff;
-    border-radius: .5rem;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.06);
     transition: left .3s cubic-bezier(.4, 0, .2, 1);
+
+    margin:         var(--tabs--slider-margin, 0);
+    padding:        var(--tabs--slider-padding, 0);
+    width:          var(--tabs--slider-width, auto);
+    height:         var(--tabs--slider-height, 2.25rem);
+    font-family:    var(--tabs--slider-font-family, inherit);
+    font-size:      var(--tabs--slider-font-size, inherit);
+    font-style:     var(--tabs--slider-font-style, inherit);
+    font-weight:    var(--tabs--slider-font-weight, inherit);
+    letter-spacing: var(--tabs--slider-letter-spacing, inherit);
+    line-height:    var(--tabs--slider-line-height, inherit);
+    color:          var(--tabs--slider-text-color, inherit);
+    background:     var(--tabs--slider-background, #fff);
+    border-radius:  var(--tabs--slider-border-radius, .5rem);
+    box-shadow:     var(--tabs--slider-box-shadow, 0 1px 3px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.06));
+    opacity:        var(--tabs--slider-opacity, 1);
 }
 
 .body {
-    margin-top: .5rem;
-    height: auto;
     overflow-x: hidden;
+    overscroll-behavior: auto contain;
+    height: auto;
     position: relative;
-    /* background-color: #fff; */
-    /* border-radius: .75rem; */
     transition: height .3s cubic-bezier(.4, 0, .2, 1);
+    scrollbar-width: none; /* FireFox Hide ScrollBar */
+    margin:         var(--tabs--content-margin, .5rem 0 0 0);
+    font-family:    var(--tabs--content-font-family, inherit);
+    font-size:      var(--tabs--content-font-size, inherit);
+    font-style:     var(--tabs--content-font-style, inherit);
+    font-weight:    var(--tabs--content-font-weight, inherit);
+    letter-spacing: var(--tabs--content-letter-spacing, inherit);
+    line-height:    var(--tabs--content-line-height, inherit);
+    color:          var(--tabs--content-text-color, inherit);
+    background:     var(--tabs--content-background, #fff);
+    border-radius:  var(--tabs--content-border-radius, .75rem);
+    box-shadow:     var(--tabs--content-box-shadow, none);
+    opacity:        var(--tabs--content-opacity, 1);
 }
 
+.body::-webkit-scrollbar {
+    display: none;/* CHrome Safari Hide ScrollBar */
+}
 :slotted(app-tab-item) {
     max-height: calc(100% - 3.25rem);
 }

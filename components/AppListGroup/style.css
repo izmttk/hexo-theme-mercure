@@ -1,6 +1,6 @@
 :host {
     display: block;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 :host([hidden]),[hidden]  { display: none!important; }
 * { box-sizing: border-box; }

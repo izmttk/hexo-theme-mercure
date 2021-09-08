@@ -138,6 +138,7 @@ class AppTabs extends HTMLElement {
             tab.setAttribute('aria-selected', false);
             this.panelEl.style.height =
                 this.items[oldTab].getBoundingClientRect().height + 'px';
+            this.panelEl.style.overflow = 'hidden';
             this.items[oldTab].style.position = 'absolute';
             this.items[newTab].style.position = 'absolute';
             if (newTab > oldTab) {
@@ -207,6 +208,7 @@ class AppTabs extends HTMLElement {
         if (target.tagName.toLowerCase() === 'app-tab-item' && 
             target.getAttribute('index') === this.activeTab) {
             this.panelEl.style.height = 'auto';
+            this.panelEl.style.overflow = null;
             for (let index = 0; index < this.items.length; index++) {
                 const element = this.items[index];
                 element.style.position = null;
