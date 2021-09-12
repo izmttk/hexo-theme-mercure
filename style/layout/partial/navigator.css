@@ -33,7 +33,7 @@
             font-family: "Noto Serif SC", ui-serif, serif;
             /* font-weight: bold; */
             .nav-menu-list {
-                @apply hidden md:flex overflow-x-auto overflow-y-hidden;
+                @apply hidden md:flex;
                 @apply flex-nowrap items-center;
                 .nav-menu-item {
                     @apply relative flex-none;
@@ -111,7 +111,7 @@
     @apply shadow-sm backdrop-blur-md bg-white/70 border-b border-gray-200;
     @apply dark:bg-gray-800/50 dark:border-gray-700;
 }
-.nav-menu-drawer {
+#drawer-left {
     .profile {
         @apply shadow-none rounded-none border-0 overflow-hidden;
         @apply dark:bg-gray-900;

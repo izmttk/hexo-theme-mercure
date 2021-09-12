@@ -2,6 +2,7 @@ class AppListItem extends HTMLElement {
     static observedAttributes = [
         'active',
         'disabled',
+        'href',
     ];
     static mutationConfig = {
         childList: true,
@@ -67,6 +68,9 @@ class AppListItem extends HTMLElement {
             this.removeAttribute('dense');
         }
     }
+    get href() {
+        return this.getAttribute('href');
+    }
     constructor() {
         super();
         let template = document.querySelector('#template-app-list-item');
@@ -101,26 +105,54 @@ class AppListItem extends HTMLElement {
         switch (name) {
             case 'disabled':
                 if (this.disabled) {
-                    this.setAttribute('aria-disabled', true);
+                    wrapperEl.setAttribute('aria-disabled', true);
                 } else {
-                    this.setAttribute('aria-disabled', false);
+                    wrapperEl.setAttribute('aria-disabled', false);
                 }
                 break;
             case 'active':
                 this._handleActive();
                 break;
+            case 'href':
+                if (this.href) {
+                    let wrapperEl = this.shadowRoot.querySelector('.wrapper');
+                    let linkEl = document.createElement('a');
+                    [...wrapperEl.attributes].forEach(attr => {
+                        linkEl.attributes.setNamedItem(attr.cloneNode());
+                    });
+                    linkEl.href = this.href;
+                    [...wrapperEl.children].forEach(el => linkEl.appendChild(el));
+                    wrapperEl.remove();
+                    this.shadowRoot.appendChild(linkEl);
+                }
+                break;
         }
     }
     _init() {
         this._handleActive();
+        let wrapperEl = this.shadowRoot.querySelector('.wrapper');
         this.setAttribute('role', 'listitem');
         if (this.disabled) {
-            this.setAttribute('aria-disabled', true);
-            this.setAttribute('tabindex', -1);
+            wrapperEl.setAttribute('aria-disabled', true);
+            wrapperEl.setAttribute('tabindex', -1);
         } else {
-            this.setAttribute('aria-disabled', false);
-            this.setAttribute('tabindex', 0);
+            wrapperEl.setAttribute('aria-disabled', false);
+            wrapperEl.setAttribute('tabindex', 0);
         }
+        let prefixEl = this.shadowRoot.querySelector('.prefix');
+        let suffixEl = this.shadowRoot.querySelector('.suffix');
+        prefixEl.hidden = true;
+        suffixEl.hidden = true;
+        [...prefixEl.querySelectorAll('slot')].forEach(slot => {
+            if (slot.assignedNodes().length !== 0) {
+                prefixEl.hidden = false;
+            }
+        });
+        [...suffixEl.querySelectorAll('slot')].forEach(slot => {
+            if (slot.assignedNodes().length !== 0) {
+                suffixEl.hidden = false;
+            }
+        });
     }
     _handleActive() {
         if (this.active) {

@@ -28,13 +28,11 @@ class ScrollManager {
     getScrollLeft() {
         return this.element === document ? document.documentElement.scrollLeft : this.element.scrollLeft;
     }
-    scrollTo(xCoord, yCoord = 0, duration = 1000) {
-        anime({
-            targets: this.element === document ? document.documentElement : this.element,
-            scrollTop: xCoord,
-            scrollLeft: yCoord,
-            easing: 'easeOutCubic',
-            duration: duration,
+    scrollTo(xCoord, yCoord = 0) {
+        window.scroll({
+            top: xCoord,
+            left: yCoord,
+            behavior: 'smooth'
         });
     }
     triggerEvent() {
@@ -64,6 +62,90 @@ const animateCSS = (element, animation, prefix = '') =>
 
     node.addEventListener('animationend', handleAnimationEnd, {once: true});
 });
+
+class Toc {
+    constructor(postElement, tocElement) {
+        let post = postElement;
+        let toc = tocElement;
+
+        let observedTitle = [...post.querySelectorAll('h2,h3,h4,h5,h6')];
+        this.tocItem = new Map();
+
+        let tocItem = [...toc.querySelectorAll('.toc a[href]')];
+        for (let index = 0; index < tocItem.length; index++) {
+            const element = tocItem[index];
+            let name = element.getAttribute('href').substr(1); // remove # characters
+            name = decodeURI(name);
+            if(name.length > 0) {
+                this.tocItem.set(name, {
+                    index: index,
+                    element: element,
+                });
+            }
+        }
+        this._handleIntersect = this._handleIntersect.bind(this);
+        this.tocObserver = new IntersectionObserver(this._handleIntersect, {
+            threshold: 1,
+        });
+        observedTitle.forEach(item => {
+            this.tocObserver.observe(item);
+        });
+        this.activedTocItem = new Set();
+    }
+    _activateTocItem(name) {
+        name = decodeURI(name);
+        let item = this.tocItem.get(name);
+        if (item) {
+            this.activedTocItem.add(item);
+            this._clearActiveClass();
+            this._setActiveClass();
+        }
+    }
+    _deactivateTocItem(name) {
+        name = decodeURI(name);
+        let item = this.tocItem.get(name);
+        if (item) {
+            if (this.activedTocItem.size > 1) {
+                this._clearActiveClass();
+            }
+            this.activedTocItem.delete(item);
+            this._setActiveClass();
+        }
+    }
+    _clearActiveClass() {
+        this.tocItem.forEach(item => {
+            item.element.classList.remove('toc-active');
+        });
+    }
+    _setActiveClass() {
+        let minIndexItem = null;
+        this.activedTocItem.forEach(item => {
+            if (minIndexItem === null) {
+                minIndexItem = item;
+            } else {
+                minIndexItem = minIndexItem.index < item.index ? minIndexItem : item;
+            }
+        });
+        if (minIndexItem !== null) {
+            minIndexItem.element.classList.add('toc-active');
+        }
+    }
+    _handleIntersect(entries, observer) {
+        entries.forEach(entry => {
+            let name = entry.target.id;
+            if (entry.intersectionRatio == 1) {
+                this._activateTocItem(name);
+            } else {
+                this._deactivateTocItem(name);
+            }
+        });
+    }
+    destroy() {
+        this.tocObserver.disconnect();
+        this.tocItem.clear();
+        this.activedTocItem.clear();
+    }
+}
 
 class Header {
     constructor() {
@@ -106,49 +188,13 @@ class Header {
     }
 }
 
-class Sidebar {
-    constructor(element) {
-        this.rootElement = element ?? document.querySelector('#sidebar');
-        // this.tabElement = this.rootElement.querySelector('.tabs');
-        this.tocWidgetElement = this.rootElement.querySelector('.toc');
-        // this._initTabs();
-        this._initToc();
-        this._initWidgets();
-    }
-    // _initTabs() {
-    //     if(this.tabElement !== null) {
-    //         this.tabIns = new Tabs(this.tabElement);
-    //     }
-    // }
-    _initToc() {
-        if(this.tocWidgetElement !== null) {
-            this.tocWidgetIns = new Toc(this.tocWidgetElement);
-        }
-    }
-    _initWidgets() {
-        // this.categoryTreeWidget = new CategoryTreeWidget(this.rootElement.querySelector('.category-tree'));
-    }
-    destroy() {
-        // this.tabIns?.destroy();
-        this.tocWidgetIns?.destroy();
-        // this.categoryTreeWidget?.destroy();
-        delete this.rootElement;
-        // delete this.tabElement;
-        delete this.tocWidgetElement;
-    }
-}
-
 class Navbar {
     constructor() {
         this.rootElement = document.querySelector('.navigator');
-        this.menuElement = this.rootElement.querySelector('.nav-menu');
         this.logoElement = this.rootElement.querySelector('.nav-logo');
         this.toolElement = this.rootElement.querySelector('.nav-toolkit');
         this.searchElement = this.toolElement.querySelector('.search-toggle');
-        // this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
-        // this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
 
-        this._initMenu();
         this._initTool();
         this._bindScrollListener();
         this.updateMenuIndicator();
@@ -207,66 +253,8 @@ class Navbar {
             }
         });
     }
-    _initMenu() {
-        // 初始化多级菜单
-        let menuToggleList = Array.from(this.menuElement.querySelectorAll('.menu-toggle'));
-        this.menuInsList = menuToggleList.map(element => {
-            let isRootToggle = element.parentElement.classList.contains('nav-menu-item');
-            if(!isRootToggle) {
-                element.insertAdjacentHTML('beforeend','<i class="ri-arrow-right-s-fill"></i>');
-            }
-            element.nextElementSibling.style.display = 'block';
-            return new Menu(element, element.nextElementSibling, {
-                placement: isRootToggle ? 'bottom-start' : 'right-start',
-                trigger: 'mouseenter focus',
-                appendTo: isRootToggle ? () => this.rootElement : 'parent',
-                onCreate(instance) {
-                    if(window.BLOG_CONFIG.pjax.enable === true) {
-                        instance.popper.querySelectorAll('a[href]')?.forEach(element => {
-                            let url = element.getAttribute('href');
-                            if(url === 'javascript:void(0)') return;
-                            element.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                new Pjax({
-                                    selectors: [
-                                        'title',
-                                        'meta[name=description]',
-                                        '#script_blog_config',
-                                        '#header',
-                                        '#content',
-                                        '#sidebar',
-                                        // '.nav-sidebar-drawer',
-                                        '.float-toolbar'
-                                    ],
-                                    cacheBust: false,
-                                }).loadUrl(url);
-                            });  
-                        });
-                    }
-                }
-            });
-        });
-    }
     _initTool() {
-        this.searchIns = new Search();
-        // this.menuDrawerIns = new MenuDrawer();
-        // this.sideDrawerIns = new SideDrawer();
-
-        let self = this;
-
-        this._searchListener = function(event) {
-            self.searchIns.toggle();
-        }
-        // this._menuDrawerListener = function(event) {
-        //     self.menuDrawerIns.toggle();
-        // }
-        // this._sideDrawerListener = function(event) {
-        //     self.sideDrawerIns.toggle();
-        // }
-        this.searchElement.addEventListener('click', this._searchListener);
-        // this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
-        // this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
-
+        this.search = new Search();
     }
     isShown() {
         return !this.rootElement.classList.contains('nav-hide');
@@ -283,222 +271,77 @@ class Navbar {
         this.menuInsList.forEach(element => {
             element?.destroy();
         });
-        this.searchIns?.destroy();
-        // this.menuDrawerIns?.destroy();
-        // this.sideDrawerIns?.destroy();
-        this.searchElement?.removeEventListener('click', this._searchListener);
-        // this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
-        // this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
+        this.search?.destroy();
         scrollManager.unregister('nav');
 
         delete this.rootElement;
-        delete this.menuElement;
         delete this.logoElement;
         delete this.toolElement;
         delete this.searchElement;
-        // delete this.menuDrawerElement;
-        // delete this.sideDrawerElement;
     }
 }
 
-// class CategoryTreeWidget {
-//     constructor(element) {
-//         this.rootElement = element ?? document.querySelector('.category-tree');
-//         // 初始化多级菜单
-//         let collapseElementList = Array.from(this.rootElement.querySelectorAll('.collapse'));
-//         this.collapseInsList = collapseElementList.map(element => {
-//             return new Collapse(element);
-//         });
-//         //替换叶子节点图标
-//         this.toggleList = Array.from(this.rootElement.querySelectorAll('.collapse-item'));
-//         this.toggleList.forEach(element => {
-//             let titleEl = element.querySelector('.collapse-item-title');
-//             titleEl.querySelector('.prefix')?.remove();
-//             if(element.querySelector('.collapse') !== null) {
-//                 if(element.classList.contains('collapse-item-open')) {
-//                     titleEl.querySelector('.name').insertAdjacentHTML(
-//                         'beforebegin',
-//                         '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
-//                     );
-//                 } else {
-//                     titleEl.querySelector('.name').insertAdjacentHTML(
-//                         'beforebegin',
-//                         '<span class="prefix"><i class="ri-folder-fill"></i></span>'
-//                     );
-//                 }
-//             } else {
-//                 titleEl.querySelector('.name').insertAdjacentHTML(
-//                     'beforebegin',
-//                     '<span class="prefix"><i class="ri-bookmark-fill"></i></span>'
-//                 );
-//             }
-//         });
-//         this._initToggle();
-//     }
-//     _initToggle() {
-//         let self = this;
-//         this._toggleListener = function(...args) {
-//             Reflect.apply(self._handleUnfoldCategory, self, args);
-//         }
-//         this.toggleList.forEach(element => {
-//             element.addEventListener('collapse:open', this._toggleListener);
-//             element.addEventListener('collapse:close', this._toggleListener);
-//         });
-//     }
-//     _handleUnfoldCategory(event) {
-//         event.stopPropagation();
-//         let titleEl = event.target.querySelector('.collapse-item-title');
-//         titleEl.querySelector('.prefix')?.remove();
-//         if (event.type === 'collapse:open') {
-//             titleEl.querySelector('.name').insertAdjacentHTML(
-//                 'beforebegin',
-//                 '<span class="prefix"><i class="ri-folder-open-fill"></i></span>'
-//             );
-//         } else {
-//             titleEl.querySelector('.name').insertAdjacentHTML(
-//                 'beforebegin',
-//                 '<span class="prefix"><i class="ri-folder-fill"></i></span>'
-//             );
-//         }
-//     }
-//     destroy() {
-//         this.collapseInsList?.forEach(element => {
-//             element.destroy();
-//         });
-//         this.toggleList?.forEach(element => {
-//             element.removeEventListener('collapse:open', this._toggleListener);
-//             element.removeEventListener('collapse:close', this._toggleListener);
-//         });
-//         delete this.rootElement;
-//         delete this.collapseInsList;
-//         delete this.toggleList;
-//     }
-// }
+class Sidebar {
+    constructor(element) {
+        this.widgets = [];
+        this._initWidgets();
+    }
+    _initWidgets() {
+        if(window.BLOG_CONFIG.layout === 'post') {
+            let toc1 = document.querySelector('#sidebar .toc');
+            if (toc1 !== null) {
+                this.widgets.push(new Toc(
+                    document.querySelector('#main .post'),
+                    document.querySelector('#sidebar .toc')
+                ));
+            }
+            let toc2 = document.querySelector('#sidebar-drawer .toc');
+            if (toc2 !== null) {
+                this.widgets.push(new Toc(
+                    document.querySelector('#main .post'),
+                    document.querySelector('#sidebar-drawer .toc')
+                ));
+            }
+        }
+    }
+    destroy() {
+        this.widgets.forEach(w => w.destroy());
+        delete this.widgets;
+    }
+}
 
-// class MenuDrawer extends Drawer {
-//     constructor() {
-//         let rootElement = document.querySelector('.nav-menu-drawer');
-//         super(rootElement, {
-//             position: 'left',
-//             width: 250
-//         });
-//         this.rootElement = rootElement;
-
-//         let menuToggleList = Array.from(this.rootElement.querySelectorAll('.collapse'));
-//         this.menuInsList = menuToggleList.map(element => {
-//             return new Collapse(element);
-//         });
-//     }
-//     destroy() {
-//         this.menuInsList?.forEach(element => {
-//             element.destroy();
-//         });
-//         super.destroy();
-//         delete this.rootElement;
-//         delete this.menuInsList;
-//     }
-// }
-
-// class SideDrawer extends Drawer {
-//     constructor() {
-//         let rootElement = document.querySelector('.nav-sidebar-drawer');
-
-//         super(rootElement, {
-//             position: 'right',
-//             width: 278
-//         });
-//         this.rootElement = rootElement;
-//         this.sidebarIns = new Sidebar(document.querySelector('#sidebar-drawer'));
-//         // this.drawerContainer = document.querySelector('#sidebar-drawer');
-//         // this.sidebarContainer = document.querySelector('#sidebar');
-//     }
-//     open() {
-//         // this.drawerContainer.appendChild(this.sidebarContainer.querySelector('.sidebar-content'));
-//         super.open();
-//     }
-//     close() {
-//         let self = this;
-//         // setTimeout(function(){
-//         //     self.sidebarContainer.appendChild(self.drawerContainer.querySelector('.sidebar-content'));
-//         // }, 350);
-//         super.close();
-//     }
-//     destroy() {
-//         super.destroy();
-//         this.sidebarIns?.destroy();
-//         delete this.rootElement;
-//         delete this.drawerContainer;
-//         delete this.sidebarContainer;
-//     }
-// }
 
 class Search {
     constructor() {
-        this.init();
-    }
-    init() {
-        this.templateElement = document.querySelector('#site_search_template');
-    }
-    _handleSearch(event) {
-        if(event.type === 'keydown' && event.key !== 'Enter') {
-            return;
-        }
-        if (!this.searchApi.isKeywordsChanged()) return;
-        this.rootElement.classList.add('searched');
-        anime({
-            targets: '#site_search .form-group',
-            marginTop: '4rem',
-            easing: 'easeOutCubic',
-            duration: 500
-        });
-        this.searchApi.query();
-    }
-    isOpen() {
-        return this.modalIns?.isOpen();
-    }
-    open() {
         let self = this;
-
-        let context = this.templateElement.content.cloneNode(true);
-        this.modalIns = new Modal(context);
-        this.modalIns.open();
-
         this.searchApi = new LocalSearch('search-input', 'search-result-wrap');
-        this.modalElement = document.querySelector('.modal-layout');
-        this.rootElement = this.modalElement.querySelector('#site_search');
+        this.rootElement = document.querySelector('#site_search');
         this.inputElement = this.rootElement.querySelector('#search-input');
         this.buttonElement = this.rootElement.querySelector('#search-btn');
-
         // 改变焦点到输入框
         this.inputElement.focus();
         this._eventListener = function(...args) {
             Reflect.apply(self._handleSearch, self, args);
         }
-        this.inputElement.addEventListener('keydown', this._eventListener);
+        this.inputElement.addEventListener('input', this._eventListener);
         this.buttonElement.addEventListener('click', this._eventListener);
     }
-    close() {
-        this.inputElement.removeEventListener('keydown', this._eventListener);
-        this.buttonElement.removeEventListener('click', this._eventListener);
-        this.modalIns?.close();
-        this.modalIns?.destroy();
-        delete this.rootElement;
-        delete this.modalIns;
-        delete this.searchApi;
-        delete this.modalElement;
-        delete this.inputElement;
-        delete this.buttonElement;
-    }
-    toggle() {
-        if(!this.isOpen()) {
-            this.open();
-        } else {
-            this.close();
+    _handleSearch(event) {
+        // if(event.type === 'keydown' && event.key !== 'Enter') {
+        //     return;
+        // }
+        // if (!this.searchApi.isKeywordsChanged()) return;
+        if (this.searchApi.isEmpty()) {
+            this.rootElement.querySelector('#search-result')?.remove();
+            this.rootElement.classList.remove('searched');
+            return;
         }
+        this.rootElement.classList.add('searched');
+        this.searchApi.query();
     }
     destroy() {
-        this.modalIns?.destroy();
-        delete this.templateElement;
+        this.inputElement.removeEventListener('input', this._eventListener);
+        this.buttonElement.removeEventListener('click', this._eventListener);
     }
 }
 
@@ -569,45 +412,53 @@ class FloatToolbar {
 class Loading {
     constructor(element) {
         this.element = element ?? document.querySelector('.loading');
+        NProgress.configure({ 
+            trickleSpeed: 200,
+            showSpinner: false
+        });
     }
     show() {
+        NProgress.start();
         this.element.style.display = 'block';
         animateCSS(this.element, 'fade-in');
+
         // this.element.classList.add('fade-in');
     }
     hide() {
+        NProgress.done();
         animateCSS(this.element, 'fade-out').then(() => {
             this.element.style.display = 'none';
         });
-
-        // this.element.classList.add('fade-out');
-        // setTimeout(() => {
-        //     this.element.style.display = 'none';
-        // }, 500);
     }
 }
-const loading = new Loading();
+// const loading = new Loading();
 
 
-class BlogUiManager {
-    DEFAULT_OPTIONS = {
-
-    }
-    constructor(options) {
-        this.options = Object.assign(this.DEFAULT_OPTIONS, options);
+class Blog {
+    constructor() {
+        this.pjaxSelectors = [
+            'title',
+            'meta[name=description]',
+            '#script_blog_config',
+            '#header',
+            '#content',
+            '#sidebar',
+            '#sidebar-drawer',
+            '.float-toolbar',
+        ];
         this.initNavbar();
         this.initHeader();
         this.initSidebar();
+        this.initLoading();
         this.initFloatToolbar();
-        this.initMaterialPostCover();
+        // this.initMaterialPostCover();
         this.initLazyLoad();
         this.anchorSmoothScroll();
         this.initTooltip();
         this.initKatex();
-        this.initComments();
+        // this.initComments();
         this.initPjax();
         scrollManager.triggerEvent();
-        topbar?.hide();
     }
     initNavbar() {
         if(window.BLOG_CONFIG.navigator.enable) {
@@ -629,6 +480,9 @@ class BlogUiManager {
     initFloatToolbar() {
         this.floatToolbar = new FloatToolbar();
     }
+    initLoading() {
+        this.loading = new Loading();
+    }
     anchorSmoothScroll() {
         let marginTop = 76;
         document.querySelectorAll('.post a, .page a, .toc a').forEach(element => {
@@ -643,38 +497,38 @@ class BlogUiManager {
             })
         });
     }
-    initMaterialPostCover() {
-        if(window.BLOG_CONFIG.post_card.cover.type === 'material'
-            && window.BLOG_CONFIG.post_card.cover.background === 'auto') {
-            document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
-                function setPostBgColor(img) {
-                    Vibrant.from(img, {
-                        quality: 5
-                    }).getPalette().then(function(swatches) {
-                        if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
-                            item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
-                            item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
-                        } else {
-                            item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
-                            item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
-                        }
-                    });
-                }
-                var imgEl = item.querySelector('.cover-img');
-                // if(imgEl.complete) {
-                    // setPostBgColor(imgEl)
-                // } else {
-                    imgEl.addEventListener('load', function() {
-                        var that = this;
-                        setPostBgColor(that);
-                    });
-                    imgEl.addEventListener('error', function() {
-                        this.setAttribute('src', this.getAttribute('data-error-src'));
-                    });
-                // }
-            });
-        }
-    }
+    // initMaterialPostCover() {
+    //     if(window.BLOG_CONFIG.post_card.cover.type === 'material'
+    //         && window.BLOG_CONFIG.post_card.cover.background === 'auto') {
+    //         document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
+    //             function setPostBgColor(img) {
+    //                 Vibrant.from(img, {
+    //                     quality: 5
+    //                 }).getPalette().then(function(swatches) {
+    //                     if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
+    //                         item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
+    //                         item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
+    //                     } else {
+    //                         item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
+    //                         item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
+    //                     }
+    //                 });
+    //             }
+    //             var imgEl = item.querySelector('.cover-img');
+    //             // if(imgEl.complete) {
+    //                 // setPostBgColor(imgEl)
+    //             // } else {
+    //                 imgEl.addEventListener('load', function() {
+    //                     var that = this;
+    //                     setPostBgColor(that);
+    //                 });
+    //                 imgEl.addEventListener('error', function() {
+    //                     this.setAttribute('src', this.getAttribute('data-error-src'));
+    //                 });
+    //             // }
+    //         });
+    //     }
+    // }
     initLazyLoad() {
         if(window.BLOG_CONFIG.lazyload.enable) {
             lazyload();
@@ -699,107 +553,60 @@ class BlogUiManager {
             });
         }
     }
-    initComments() {
-        // if(typeof window.loadComments === 'function') {
-        //     window.loadComments();
-        // }
-    }
     initPjax() {
         if(!window.BLOG_CONFIG.pjax.enable) {
             return;
         }
         this.pjax = new Pjax({
-            selectors: [
-                'title',
-                'meta[name=description]',
-                '#script_blog_config',
-                '#header',
-                '#content',
-                '#sidebar',
-                // '.nav-sidebar-drawer',
-                '.float-toolbar'
-            ],
+            selectors: this.pjaxSelectors,
             cacheBust: false,
         });
         let self = this;
-        topbar.config({
-            barColors: {
-                0: 'rgb(71,154,248)'
-            },
-        });
+        let toBeClosedElementName = [
+            'app-drawer',
+            'app-modal',
+            'app-collapse',
+            'app-popover',
+        ]
         document.addEventListener("pjax:send", function() {
-            topbar?.show();
-            loading?.show();
-            // self.navbar?.destroy();
+            self.loading.show();
             self.header?.destroy();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
-            // self.navbar?.sideDrawerIns?.destroy();
-
             window.loadComments = null;
+
+
+
         });
         document.addEventListener("pjax:success", function() {
             self.navbar?.updateMenuIndicator();
-            // if(self.navbar?.sideDrawerIns) {
-            //     self.navbar.sideDrawerIns = new SideDrawer();
-            // }
-            // self.initNavbar();
             self.initHeader();
             self.initSidebar();
             self.anchorSmoothScroll();
-            self.initMaterialPostCover();
+            // self.initMaterialPostCover();
             self.initFloatToolbar();
             self.initLazyLoad();
             self.initTooltip();
             self.initKatex();
-            self.initComments();
+            // self.initComments();
             scrollManager.triggerEvent();
             animateCSS('#header','slide-down-fade-in');
             animateCSS('#main','slide-up-fade-in');
-            topbar?.hide();
-            loading?.hide();
-        })
+            self.loading.hide();
+            document.querySelectorAll(toBeClosedElementName.join(',')).forEach(item => {
+                item.open = false;
+            });
+        });
+        document.querySelectorAll('app-list-item').forEach(item => {
+            let a = item.shadowRoot.querySelector('a');
+            a?.addEventListener('click', e => {
+                e.preventDefault();
+                self.pjax.loadUrl(a.href);
+            });
+        });
     }
 }
-const blogUiManager = new BlogUiManager();
-
-
-// //初始化导航栏音乐播放器
-// function initNavMusicPlayer() {
-//     var musicPlayerTooltip = tippy(document.querySelector('.music-player-toggle'), {
-//         content: 'test',//document.querySelector('.music-player'),
-//         theme: 'light-border',
-//         animation: 'shift-away',
-//         trigger: 'click',
-//         interactive: true,
-//         interactiveDebounce: 50,
-//         placement: 'bottom-end',
-//         arrow: true,
-//         // hideOnClick: false,
-//         role: 'menu',
-//         popperOptions: {
-//             modifiers: [
-//                 {
-//                     name: 'flip',
-//                     options: {
-//                         boundary: 'viewport',
-//                     },
-//                 },
-//                 {
-//                     name: 'preventOverflow',
-//                     options: {
-//                         boundary: 'viewport'
-//                     },
-//                 },
-//             ],
-//         },
-//     });
-//     // $('.nav-toolkit .music-player-toggle').on('click', function () {
-        
-//     // });
-// }
-
-// initNavMusicPlayer();
+const blog = new Blog();
 
 function initDarkTheme() {
     function getOsPreference() {
@@ -838,5 +645,13 @@ function initDarkTheme() {
             setDarkTheme();
         }
     });
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+        if (e.matches) {
+            setDarkTheme();
+        } else {
+            setLightTheme();
+        }
+    });
 }
+
 initDarkTheme();

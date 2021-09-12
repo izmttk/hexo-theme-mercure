@@ -1,5 +1,5 @@
 .float-toolbar {
-    @apply fixed right-2 md:right-4 bottom-4 z-50;
+    @apply fixed right-2 md:right-4 bottom-4 z-40;
     .toolbar-btn {
         @apply transition duration-100;
         @apply w-10 h-10 rounded-full text-white bg-blue-500 shadow-md text-lg hover:shadow-lg active:scale-[.85];

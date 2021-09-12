@@ -15,33 +15,66 @@
     align-items: center;
 }
 .body .container {
-    position: absolute;
-    max-width: 36rem;
-    background: #fff;
-    border-radius: 1rem;
+    z-index: 50;
+    position: relative;
     transition:
         transform .3s cubic-bezier(.4, 0, .2, 1),
         opacity .3s cubic-bezier(.4, 0, .2, 1);
-    box-shadow: 
+    margin:         var(--modal--margin, 0);
+    padding:        var(--modal--padding, 1.5rem);
+    width:          var(--modal--width, 36rem);
+    height:         var(--modal--height, auto);
+    max-width:      var(--modal--max-width, initial);
+    min-width:      var(--modal--max-width, initial);
+    max-height:     var(--modal--max-width, initial);
+    min-height:     var(--modal--max-width, initial);
+    font-family:    var(--modal--font-family, inherit);
+    font-size:      var(--modal--font-size, inherit);
+    font-style:     var(--modal--font-style, inherit);
+    font-weight:    var(--modal--font-weight, inherit);
+    letter-spacing: var(--modal--letter-spacing, inherit);
+    line-height:    var(--modal--line-height, initial);
+    color:          var(--modal--text-color, inherit);
+    background:     var(--modal--background, #fff);
+    border-radius:  var(--modal--border-radius, 1rem);
+    box-shadow:     var(--modal--box-shadow,  
         0 0.1875rem 0.4375rem 0.1875rem rgba(3,3,3,.13),
-        0 0.6875rem 1.5rem 1rem rgba(3,3,3,.12);
+        0 0.6875rem 1.5rem 1rem rgba(3,3,3,.12));
+    opacity:        var(--modal--opacity, 1);
 }
 .body .container .content {
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
+    width: 100%;
+    height: 100%;
 }
 .body .container .close-btn {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin: 0.5rem;
-    padding: 0;
-    background-color: transparent;
+    top: 1.75rem;
+    right: 1.75rem;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:         var(--modal--close-margin, 0.25rem);
+    padding:        var(--modal--close-padding, 0);
+    width:          var(--modal--close-width, 1.75rem);
+    height:         var(--modal--close-height, 1.75rem);
+    color:          var(--modal--close-text-color, inherit);
+    background:     var(--modal--close-background, #fff);
+    border-radius:  var(--modal--close-border-radius, 0.875rem);
+    box-shadow:     var(--modal--close-box-shadow, none);
+    opacity:        var(--modal--close-opacity, 1);
 }
 .body.closed .container {
     transform: scale(0.5);
     opacity: 0;
+}
+
+.body .container .close-btn:focus {
+    outline: none !important;
+}
+.body .container .close-btn:focus-visible {
+    outline: none !important;
+    box-shadow: inset rgb(96, 165, 250) 0px 0px 0px 2px;
 }

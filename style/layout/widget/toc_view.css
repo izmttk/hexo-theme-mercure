@@ -24,17 +24,17 @@
             @apply dark:bg-gray-800;
             /* @apply transition duration-300; */
         }
-        &:hover::before {
+        &:hover:not(.toc-active)::before {
             @apply bg-gray-300;
             @apply dark:bg-gray-600;
         }
     }
-    .toc-activated > .toc-link {
+    .toc-active {
         @apply text-blue-500;
         @apply bg-blue-400/20;
-        @apply dark:text-blue-300;
+        @apply dark:text-blue-300 dark:bg-gray-700;
         &::before {
-            @apply bg-blue-400;
+            @apply bg-blue-400 dark:bg-blue-400;
         }
     }
     .toc-level-2>.toc-link {

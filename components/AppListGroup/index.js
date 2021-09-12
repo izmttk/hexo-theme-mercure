@@ -197,6 +197,7 @@ class AppListGroup extends HTMLElement {
 
             }
         }
+        this.setAttribute('role', 'listbox');
     }
     _handleClickToggle(e) {
         this.toggleEl.focus();

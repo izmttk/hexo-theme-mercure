@@ -1,14 +1,20 @@
 <% if(theme.sidebar.show_toc && is_post() && page.toc != false) { %>
 <div class="sidebar-content sticky">
-    <app-tabs class="tabs" stretch>
+    <app-tabs class="tabs" stretch active-tab="1">
         <app-tab-item>
             <div slot="label">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z"/></svg>
                 <span>&nbsp;概览</span>
             </div>
-            <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
-            <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
-            <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
+            <% if((typeof show_profile === 'undefined') ? theme.sidebar.show_profile : show_profile) { %>
+                <div class="widget"><%- partial('../_widget/profile') %></div>
+            <% } %> 
+            <% if((typeof show_tag_cloud === 'undefined') ? theme.sidebar.show_category_tree : show_tag_cloud) { %>
+                <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+            <% } %> 
+            <% if((typeof show_category_tree === 'undefined') ? theme.sidebar.show_category_tree : show_category_tree) { %>
+                <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+            <% } %>
         </app-tab-item>
         <app-tab-item>
             <div slot="label">
@@ -18,32 +24,17 @@
             <div class="widget"><%- partial('../_widget/toc_view') %></div>
         </app-tab-item>
     </app-tabs>
-    <!-- <div class="tabs">
-        <div class="tabs-header">
-            <a class="tab" href="#tab-panel-overview"><i class="ri-home-2-line"></i><span>概览</span></a>
-            <a class="tab tab-activated" href="#tab-panel-toc"><i class="ri-file-list-line"></i><span>目录</span></a>
-            <span class="glider"></span>
-        </div>
-        <div class="tabs-content">
-            <div class="tab-panel" id="tab-panel-overview">
-                <div class="tab-panel-content">
-                    <%# if(theme.sidebar.show_profile) { %><div class="widget"><%#- partial('../_widget/profile') %></div><%# } %> 
-                    <%# if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%#- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><%# } %> 
-                    <%# if(theme.sidebar.show_category_tree) { %><div class="widget"><%#- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><%# } %>
-                </div>
-            </div>
-            <div class="tab-panel" id="tab-panel-toc">
-                <div class="tab-panel-content">
-                    <div class="widget"><%#- partial('../_widget/toc_view') %></div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>
 <% } else { %>
 <div class="sidebar-content">
-    <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
-    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
-    <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
+    <% if((typeof show_profile === 'undefined') ? theme.sidebar.show_profile : show_profile) { %>
+        <div class="widget"><%- partial('../_widget/profile') %></div>
+    <% } %> 
+    <% if((typeof show_tag_cloud === 'undefined') ? theme.sidebar.show_category_tree : show_tag_cloud) { %>
+        <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+    <% } %> 
+    <% if((typeof show_category_tree === 'undefined') ? theme.sidebar.show_category_tree : show_category_tree) { %>
+        <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+    <% } %>
 </div>
 <% } %> 

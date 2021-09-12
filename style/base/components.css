@@ -28,6 +28,25 @@
 
         --list--item-active-text-color: #3B82F6;
     }
+
+    .navigator app-popover {
+
+        app-list>*:last-child {
+            --list--item-border-radius: 0 0 .5rem .5rem;
+        }
+        app-list>*:first-child {
+            --list--item-border-radius: .5rem .5rem 0 0;
+        }
+        app-list>*:not(:first-child):not(:last-child) {
+            --list--item-border-radius: 0;
+        }
+    }
+    .navigator .nav-menu-item>app-popover {
+        @apply block px-4 h-16 text-lg font-bold leading-[4rem];
+        position: relative;
+        z-index: 20;
+    }
+
 }
 
 .dark:root {
@@ -45,6 +64,9 @@
 
     --drawer--background: #111827;
 
+    --modal--close-background: #374151;
+    --modal--close-text-color: #E5E7EB;
+
     #drawer-left {
         --list--item-background: #111827;
         --drawer-overlay-background: rgba(21,21,21,.7);
@@ -59,9 +81,14 @@
 
         --drawer-overlay-background: rgba(21,21,21,.7);
     }
+    .navigator app-popover {
+        --list--item-text-color: #E5E7EB;
+    }
 }
 
 
 #drawer-left, #drawer-right {
     @apply text-gray-900 dark:text-gray-100;
 }
+
+

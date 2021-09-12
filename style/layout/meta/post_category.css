@@ -1,5 +1,5 @@
 .post-category {
-    @apply flex-none;
+    @apply flex-none max-w-full;
     @apply text-black text-sm px-2 py-0 bg-white/50 rounded-full;
     @apply inline-flex items-center;
     @apply hover:bg-white hover:shadow transition duration-100 active:scale-90;

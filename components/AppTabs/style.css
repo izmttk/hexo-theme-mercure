@@ -118,7 +118,7 @@
     font-style:     var(--tabs--content-font-style, inherit);
     font-weight:    var(--tabs--content-font-weight, inherit);
     letter-spacing: var(--tabs--content-letter-spacing, inherit);
-    line-height:    var(--tabs--content-line-height, inherit);
+    line-height:    var(--tabs--content-line-height, initial);
     color:          var(--tabs--content-text-color, inherit);
     background:     var(--tabs--content-background, #fff);
     border-radius:  var(--tabs--content-border-radius, .75rem);

@@ -83,6 +83,9 @@ var LocalSearch = (function () {
     LocalSearch.prototype.isKeywordsChanged = function () {
         return this.lastKeywords.trim() != this.getKeywords().trim();
     }
+    LocalSearch.prototype.isEmpty= function () {
+        return this.getKeywords().trim().length === 0;
+    }
     LocalSearch.prototype.query = function () {
         if (!ajax_path) throw new Error('No ajax path specified');
         var that = this;

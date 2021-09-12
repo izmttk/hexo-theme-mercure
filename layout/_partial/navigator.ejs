@@ -1,22 +1,28 @@
 <%_  let flatNavMenu = (menu, depth = 0) => { %>
-    <ul class="menu">
-    <%_ menu.forEach((item) => { _%>
-        <%_ if(item === 'divider') { _%> 
-        <li class="menu-divider"></li>
-        <%_ } else { _%>
+<app-list dense>
+<%_ menu.forEach((item) => { _%>
+    <%_ if(item === 'divider') { _%> 
+    <!-- <li class="menu-divider"></li> -->
+    <%_ } else { _%>
         <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
-        <li class="menu-item">
-            <%_ if(item.url) { _%> 
-            <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>"><%- item.name %></a>
-            <%_ } else { _%>
-            <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)"><%- item.name %></a>
-            <%_ } _%>
-            <%# 递归展开子菜单 _%>
-            <%_ if(cascade) flatNavMenu(item.submenu, depth + 1) _%>
-        </li>
+        <%_ if(cascade) { _%> 
+            <app-popover sub-menu trigger="click" width="140px">
+                <app-list-item dense slot="toggle" href="<%= item.url %>">
+                    <!-- <div slot="prefix">prefix</div> -->
+                    <div slot="title"><%- item.name %></div>
+                    <div slot="suffix"><i class="ri-arrow-drop-right-fill"></i></div>
+                </app-list-item>
+                <%_ flatNavMenu(item.submenu, depth + 1) _%>
+            </app-popover>
+        <%_ } else { _%>
+            <app-list-item dense href="<%= item.url %>">
+                <!-- <div slot="prefix">prefix</div> -->
+                <div slot="title"><%- item.name %></div>
+            </app-list-item>
         <%_ } _%>
-    <%_ }) _%>
-    </ul>
+    <%_ } _%>
+<%_ }) _%>
+</app-list>
 <%_ } _%>
 
 <%_  let flatNavCollapse = (menu, depth = 0) => { %>
@@ -57,7 +63,7 @@
 <div class="navigator nav-hide">
     <div class="content">
         <div class="nav-left-drawer">
-            <button class="drawer-toggle" onclick="document.querySelector('#drawer-left').setAttribute('open','')"><i class="ri-menu-line"></i></button>
+            <button class="drawer-toggle" onclick="document.querySelector('#drawer-left').open=true"><i class="ri-menu-line"></i></button>
         </div>
         <div class="nav-logo">
             <a href="/"><%- theme.navigator.logo %></a>
@@ -67,16 +73,21 @@
             <%_ theme.navigator.menu.forEach((item) => { _%>
                 <%_ let cascade = item.submenu&&item.submenu.length>0 _%> 
                 <li class="nav-menu-item">
-                    <%_ if(item.url) { _%> 
-                    <a class="link <%- cascade?'menu-toggle':'' %>" href="<%= item.url %>">
-                        <%- item.name %><%_ if(cascade) { _%><i class="ri-arrow-drop-down-fill"></i><%_ } _%> 
-                    </a>
+                    <%_ if(cascade) { _%> 
+                    <app-popover trigger="click" width="140px">
+                        <div slot="toggle">
+                            <%_ if(item.url) { _%> 
+                            <a href="<%= item.url %>"><%- item.name %></a>
+                            <%_ } else { _%>
+                            <span><%- item.name %></span>
+                            <%_ } _%>
+                            <i class="ri-arrow-drop-down-fill"></i>
+                        </div>
+                        <%_ if(cascade) flatNavMenu(item.submenu) _%>
+                    </app-popover>
                     <%_ } else { _%>
-                    <a class="link <%- cascade?'menu-toggle':'' %>" href="javascript:void(0)">
-                        <%- item.name %><%_ if(cascade) { _%><i class="ri-arrow-drop-down-fill"></i><%_ } _%> 
-                    </a>
+                        <a class="link" href="<%= item.url %>"><%- item.name %></a>
                     <%_ } _%>
-                    <%_ if(cascade) flatNavMenu(item.submenu) _%>
                 </li>
             <%_ }) _%> 
             </ul>
@@ -88,12 +99,14 @@
             <button class="dark-theme-toggle" data-tippy-content="深色模式"><i class="ri-contrast-2-line"></i></button>
         <%_ } _%>
         <%_ if(theme.navigator.search) { _%>
-            <button class="search-toggle" data-tippy-content="搜索"><i class="ri-search-line"></i></button>
-            <%- partial('../_widget/search') %>
+            <button slot="toggle" class="search-toggle" 
+                data-tippy-content="搜索"
+                onclick="document.querySelector('#search-modal').open=true"
+            ><i class="ri-search-line"></i></button>
         <%_ } _%>
         </div>
         <div class="nav-right-drawer">
-            <button class="drawer-toggle" onclick="document.querySelector('#drawer-right').setAttribute('open','')"><i class="ri-layout-right-line"></i></button>
+            <button class="drawer-toggle" onclick="document.querySelector('#drawer-right').open=true"><i class="ri-layout-right-line"></i></button>
         </div>
     </div>
 </div>
@@ -109,5 +122,11 @@
     <%_ flatNavCollapse(theme.navigator.menu) _%>
 </app-drawer>
 <app-drawer id="drawer-right" placement="right" position="fixed" width="272px">
-    <div id="sidebar-drawer"><%- partial('./sidebar') %></div>
+    <div id="sidebar-drawer"><%- partial('./sidebar', {show_profile: false}) %></div>
 </app-drawer>
+
+<%_ if(theme.navigator.search) { _%>
+<app-modal id="search-modal">
+    <%- partial('../_widget/search') %>
+</app-modal>
+<%_ } _%>

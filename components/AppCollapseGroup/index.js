@@ -52,7 +52,7 @@ class AppCollapseGroup extends HTMLElement {
     }
     disconnectedCallback() {
         this._subdomObserver.disconnect();
-        this.removeListener('click', this._handleClick, true);
+        this.removeEventListener('click', this._handleClick, true);
     }
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === newValue) return;

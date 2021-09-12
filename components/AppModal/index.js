@@ -30,7 +30,8 @@ class AppModal extends HTMLElement {
         let template = document.querySelector('#template-app-modal');
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(template.content.cloneNode(true));
-
+        
+        this.toggleEl = this.shadowRoot.querySelector('.toggle');
         this.bodyEl = this.shadowRoot.querySelector('.body');
         this.overlayEl = this.shadowRoot.querySelector('app-overlay');
         this.closeBtnEl = this.shadowRoot.querySelector('.close-btn');
@@ -96,8 +97,6 @@ class AppModal extends HTMLElement {
         }
     }
     _init() {
-        this.toggleEl = this.querySelector('[slot="toggle"]');
-
         this.bodyEl.setAttribute('hidden', '');
         this.bodyEl.classList.add('closed');
         this.setAttribute('tabindex', -1);

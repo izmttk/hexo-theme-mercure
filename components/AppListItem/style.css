@@ -1,10 +1,14 @@
 :host {
     display: block;
+}
+.wrapper {
     position: relative;
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: color .3s cubic-bezier(.25,.8,.5,1);
+    text-decoration: none;
+    overflow: hidden;
 
     margin:         var(--list--item-margin, 0);
     padding:        var(--list--item-padding, 0 1rem);
@@ -19,7 +23,7 @@
     font-style:     var(--list--item-font-style, inherit);
     font-weight:    var(--list--item-font-weight, inherit);
     letter-spacing: var(--list--item-letter-spacing, inherit);
-    line-height:    var(--list--item-line-height, inherit);
+    line-height:    var(--list--item-line-height, initial);
     color:          var(--list--item-text-color, inherit);
     background:     var(--list--item-background, #fff);
     border-radius:  var(--list--item-border-radius, none);
@@ -28,7 +32,7 @@
 }
 :host([hidden]),[hidden]  { display: none!important; }
 * { box-sizing: border-box; }
-:host::before {
+.wrapper::before {
     content: "";
     position: absolute;
     left: 0;
@@ -41,13 +45,13 @@
     transition: background .3s cubic-bezier(.25,.8,.5,1);
     color: var(--list--item-text-color, inherit);
 }
-:host(:hover)::before {
+.wrapper:hover::before {
     background: var(--list--item-hover-background, currentColor);
 }
-:host(:focus) {
+.wrapper:focus {
     outline: none !important;
 }
-:host(:focus-visible) {
+.wrapper:focus-visible {
     outline: none !important;
     box-shadow: inset rgb(96, 165, 250) 0px 0px 0px 2px;
 }
@@ -91,14 +95,14 @@
 :host([active]):hover::before {
     background: var(--list--item-active-background, currentColor);
 }
-:host .content {
+.wrapper .content {
     min-width: 0;
 }
-:host .title,
-:host .subtitle  {
+.wrapper .title,
+.wrapper .subtitle  {
     overflow: hidden;
 }
-:host .title ::slotted(*) {
+.wrapper .title ::slotted(*) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

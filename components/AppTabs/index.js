@@ -152,10 +152,11 @@ class AppTabs extends HTMLElement {
 
         }
         let tab = this.tabEl.querySelector(`.tab[index='${newTab}']`);
+        if (tab === null) return;
         tab.setAttribute('active', '');
         tab.setAttribute('aria-selected', true);
         this.items[newTab].removeAttribute('hidden');
-        tab.focus();
+        // tab.focus();
 
         this.sliderEl.style.width = tab.offsetWidth + 'px';
         this.sliderEl.style.left = tab.offsetLeft + 'px';

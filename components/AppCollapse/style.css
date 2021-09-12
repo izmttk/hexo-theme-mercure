@@ -72,7 +72,7 @@
     font-style:     var(--collapse--content-font-style, inherit);
     font-weight:    var(--collapse--content-font-weight, inherit);
     letter-spacing: var(--collapse--content-letter-spacing, inherit);
-    line-height:    var(--collapse--content-line-height, inherit);
+    line-height:    var(--collapse--content-line-height, initial);
     color:          var(--collapse--content-text-color, inherit);
     background:     var(--collapse--content-background, none);
     border-radius:  var(--collapse--content-border-radius, none);

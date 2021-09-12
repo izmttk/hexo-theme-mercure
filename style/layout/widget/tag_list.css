@@ -15,7 +15,7 @@
                 @apply text-sm font-bold;
             }
             .tag-count {
-                @apply px-1.5 h-5 text-xs leading-5 rounded-full text-center;
+                @apply px-1 h-5 min-w-[1.25rem] text-xs leading-5 rounded-full text-center;
                 @apply text-white bg-blue-500;
                 @apply dark:text-black dark:font-bold;
             }

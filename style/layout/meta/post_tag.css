@@ -1,5 +1,5 @@
 .post-tag {
-    @apply flex-none flex gap-x-2 gap-y-1 flex-wrap;
+    @apply flex-none flex gap-x-2 gap-y-1 flex-wrap max-w-full;
     @apply text-sm;
     a {
         @apply flex-none;

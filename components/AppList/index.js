@@ -152,7 +152,7 @@ class AppList extends HTMLElement {
     _handleKeydown(e) {
         if (e.key === 'Enter') {
             if (this.disabled) return;
-            e.target.click();
+            this._handleClick(e);
         }
     }
     _handleTransitionEnd(e) {
