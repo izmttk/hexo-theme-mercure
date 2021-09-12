@@ -604,6 +604,28 @@ class Blog {
                 self.pjax.loadUrl(a.href);
             });
         });
+        this._handlePjaxLoad = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            self.pjax.loadUrl(e.currentTarget.href);
+        }
+        this.pjaxMutationObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node.querySelectorAll('a[href]')].forEach(item => {
+                        item.addEventListener('click', this._handlePjaxLoad, true);
+                    });
+                });
+                mutation.removedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node?.querySelectorAll('a[href]')].forEach(item => {
+                        item.removeEventListener('click', this._handlePjaxLoad, true);
+                    });
+                });
+            });
+        });
+        this.pjaxMutationObserver.observe(document.documentElement, {childList: true, subtree: true});
     }
 }
 const blog = new Blog();
