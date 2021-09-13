@@ -1,9 +1,9 @@
 <% if(!(page.year||page.month)) { %>
 <article class="page">
 <h1>归档</h1>
-<%- partial('./_widget/timeline') %>
+<%- partial('./_widget/timeline', {}, {cache: true}) %>
 </article>
 <% } else { %>
-<%-partial('./_partial/recent-posts')%>
+<%-partial('./_partial/recent-posts', {}, {cache: true})%>
 <%-partial('./_partial/paginator')%>
 <% } %>

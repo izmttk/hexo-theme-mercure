@@ -54,8 +54,6 @@ class AppModal extends HTMLElement {
             'transitionend',
             this._handleTransitionEnd
         );
-
-        console.log('connected');
     }
     disconnectedCallback() {
         this.toggleEl?.removeEventListener('click', this._handleClickToggle);
@@ -65,10 +63,8 @@ class AppModal extends HTMLElement {
             this._handleTransitionEnd
         );
         document.removeEventListener('keydown', this._handleKeydown);
-        console.log('disconnected');
     }
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('attribute changed', name, oldValue, newValue);
         switch (name) {
             case 'open':
                 if (this.open) {
@@ -108,19 +104,16 @@ class AppModal extends HTMLElement {
         }
         let target = e.target;
         this.open = !this.open;
-        console.log('click', target);
     }
     _handleClickClose(e) {
         let target = e.target;
         this.open = false;
-        console.log('click', target);
     }
     _handleKeydown(e) {
         let key = e.key;
         if (key === 'Escape') {
             this.open = false;
         }
-        console.log('keydown', key);
     }
     _handleTransitionEnd(e) {
         if (!this.open) {

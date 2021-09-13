@@ -95,7 +95,7 @@
 </head>
 
 <body>
-    <%- partial('./_partial/loading') %>
+    <%- partial('./_partial/loading', {}, {cache: true}) %>
     <%- partial('./_partial/header') %>
     <div id="main">
         <div id="content">
@@ -106,7 +106,7 @@
         </div>
     </div>
     <div id="footer">
-        <%- partial('./_partial/footer') %>
+        <%- partial('./_partial/footer', {}, {cache: true}) %>
     </div>
     <%- partial('./_widget/float_toolbar') %>
     <%- js({src: url_for('/js/index.js'), defer:true}) %>

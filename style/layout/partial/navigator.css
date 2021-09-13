@@ -42,7 +42,12 @@
                         position: relative;
                         z-index: 20;
                     }
-                    &:hover > .link {
+                    &:hover>.link, &:hover>app-popover>div[slot] {
+                         /* css抖动元素 */
+                        display: inline-block;
+                        will-change: transform;
+                        transform-origin: center center;
+                        animation: Pshake_Crazy 1s ease-in-out infinite;
                     }
                 }
                 .nav-menu-item::after {
@@ -126,5 +131,20 @@
             }
         }
     }
+}
+.dark #drawer-left .profile .body {
+    box-shadow: 0px -6px 20px 20px rgb(17, 24, 39);
+}
 
+@keyframes Pshake_Crazy{
+    10%{transform:translate(-0.5px,-0.5px) rotate(0.5deg);}
+    20%{transform:translate(-0.5px,1.5px) rotate(0.5deg);}
+    30%{transform:translate(1.5px,0.5px) rotate(0.5deg);}
+    40%{transform:translate(1.5px,-0.5px) rotate(-0.5deg);}
+    50%{transform:translate(2.5px,1.5px) rotate(1.5deg);}
+    60%{transform:translate(-0.5px,-0.5px) rotate(-0.5deg);}
+    70%{transform:translate(-0.5px,2.5px) rotate(1.5deg);}
+    80%{transform:translate(2.5px,-1.5px) rotate(-0.5deg);}
+    90%{transform:translate(1.5px,-0.5px) rotate(1.5deg);}
+    0%,100%{transform:translate(0,0) rotate(0);}
 }

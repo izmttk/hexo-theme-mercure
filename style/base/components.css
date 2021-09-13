@@ -82,7 +82,8 @@
         --drawer-overlay-background: rgba(21,21,21,.7);
     }
     .navigator app-popover {
-        --list--item-text-color: #E5E7EB;
+        --list--item-text-color: #D1D5DB;
+        --list--item-background: #1F2937;
     }
 }
 

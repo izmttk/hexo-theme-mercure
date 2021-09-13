@@ -1,6 +1,6 @@
 <% if (page.posts.length > 0) { %>
 <div class="recent-posts">
-    <%# console.log(page.posts.length) %> 
+    <%# console.log(page.posts.length) %>
     <% page.posts.sort('date', -1).each((post, index) => { %>
       <%- partial('../_widget/post_item',{post,index}) %>
     <% }); %>

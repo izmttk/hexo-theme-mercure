@@ -118,7 +118,7 @@
     <div id="sidebar-drawer"><#%- partial('./sidebar') %></div>
 </div> -->
 <app-drawer id="drawer-left" placement="left" position="fixed">
-    <%- partial('../_widget/profile') %>
+    <%- partial('../_widget/profile', {}, {cache: true}) %>
     <%_ flatNavCollapse(theme.navigator.menu) _%>
 </app-drawer>
 <app-drawer id="drawer-right" placement="right" position="fixed" width="272px">
@@ -127,6 +127,6 @@
 
 <%_ if(theme.navigator.search) { _%>
 <app-modal id="search-modal">
-    <%- partial('../_widget/search') %>
+    <%- partial('../_widget/search', {}, {cache: true}) %>
 </app-modal>
 <%_ } _%>

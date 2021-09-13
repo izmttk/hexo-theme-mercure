@@ -282,7 +282,7 @@ class Navbar {
 }
 
 class Sidebar {
-    constructor(element) {
+    constructor() {
         this.widgets = [];
         this._initWidgets();
     }
@@ -606,7 +606,6 @@ class Blog {
         });
         this._handlePjaxLoad = function(e) {
             e.preventDefault();
-            e.stopPropagation();
             self.pjax.loadUrl(e.currentTarget.href);
         }
         this.pjaxMutationObserver = new MutationObserver(mutations => {
@@ -625,7 +624,7 @@ class Blog {
                 });
             });
         });
-        this.pjaxMutationObserver.observe(document.documentElement, {childList: true, subtree: true});
+        this.pjaxMutationObserver.observe(document.querySelector('#site_search'), {childList: true, subtree: true});
     }
 }
 const blog = new Blog();

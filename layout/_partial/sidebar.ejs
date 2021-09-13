@@ -7,13 +7,13 @@
                 <span>&nbsp;概览</span>
             </div>
             <% if((typeof show_profile === 'undefined') ? theme.sidebar.show_profile : show_profile) { %>
-                <div class="widget"><%- partial('../_widget/profile') %></div>
+                <div class="widget"><%- partial('../_widget/profile', {}, {cache: true}) %></div>
             <% } %> 
             <% if((typeof show_tag_cloud === 'undefined') ? theme.sidebar.show_category_tree : show_tag_cloud) { %>
-                <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+                <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}, {cache: true}) %></div>
             <% } %> 
             <% if((typeof show_category_tree === 'undefined') ? theme.sidebar.show_category_tree : show_category_tree) { %>
-                <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+                <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}, {cache: true}) %></div>
             <% } %>
         </app-tab-item>
         <app-tab-item>
@@ -28,13 +28,13 @@
 <% } else { %>
 <div class="sidebar-content">
     <% if((typeof show_profile === 'undefined') ? theme.sidebar.show_profile : show_profile) { %>
-        <div class="widget"><%- partial('../_widget/profile') %></div>
+        <div class="widget"><%- partial('../_widget/profile', {}, {cache: true}) %></div>
     <% } %> 
     <% if((typeof show_tag_cloud === 'undefined') ? theme.sidebar.show_category_tree : show_tag_cloud) { %>
-        <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div>
+        <div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}, {cache: true}) %></div>
     <% } %> 
     <% if((typeof show_category_tree === 'undefined') ? theme.sidebar.show_category_tree : show_category_tree) { %>
-        <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div>
+        <div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}, {cache: true}) %></div>
     <% } %>
 </div>
 <% } %> 
