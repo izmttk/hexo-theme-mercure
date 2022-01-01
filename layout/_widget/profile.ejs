@@ -1,10 +1,8 @@
 <div class="profile">
     <div class="head">
-        <div class="background" style="background-image:url('<%- url_for(theme.author.background) %>')"></div>
-        <!-- <img class="head-img" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>"> -->
+        <img class="head-img" src="<%= url_for(theme.author.background) %>" alt="<%= theme.author.name %>">
     </div>
     <div class="body">
-        <div class="body-shadow-wrap"><div class="body-shadow"></div></div>
         <div class="author-info">
             <div class="avatar">
                 <%# 凹角效果，使用透明背景和白色阴影实现，外层包裹用来裁剪凹角 %>

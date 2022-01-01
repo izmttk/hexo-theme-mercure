@@ -242,9 +242,9 @@ class Tabs {
         // $glider.height(this.tabs.outerHeight());
         // $glider.width($activeTab.outerWidth());
         $glider.height(28);
-        $glider.width(114);
+        $glider.width(116);
         // var tabOffsetLeft = $($activeTab).offset().left - this.tabs.offset().left;
-        var tabOffsetLeft = 114 * this.getTabIndex(this.getActiveTab());
+        var tabOffsetLeft = 116 * this.getTabIndex(this.getActiveTab());
         // console.log(tabOffsetLeft)
         $glider.css('transform', 'translateX(' + tabOffsetLeft + 'px)');
     }
@@ -261,7 +261,7 @@ class Tabs {
                 targets: $glider.get(0),
                 translateX: tabOffsetLeft,
                 width: tabWidth,
-                duration: 500,
+                duration: 300,
                 easing: 'easeOutCubic',
             });
         });
@@ -284,7 +284,7 @@ class Tabs {
             targets: $activePanel.get(0),
             translateX: slideLeft ? [0, '-100%'] : [0, '100%'],
             opacity: [1, 0],
-            duration: 700,
+            duration: 300,
             easing: 'easeOutCubic',
         }).finished.then(function () {
             $activePanel.hide();
@@ -297,7 +297,7 @@ class Tabs {
             targets: $panel.get(0),
             translateX: slideLeft ? ['100%', 0] : ['-100%', 0],
             opacity: [0, 1],
-            duration: 700,
+            duration: 300,
             easing: 'easeOutCubic',
         });
 
