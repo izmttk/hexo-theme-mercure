@@ -26,9 +26,9 @@
         }
     }
     .collapse-item .arrow {
-        @apply transition transform -rotate-90;
+        @apply transition -rotate-90;
     }
     .collapse-item.collapse-item-open > .collapse-item-title > .arrow {
-        @apply transform rotate-0;
+        @apply rotate-0;
     }
 }

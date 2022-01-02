@@ -15,15 +15,15 @@
             .log {
                 @apply relative px-4 py-3 border-l-4;
                 a {
-                    @apply relative inline-block p-2.5 bg-gray-400 rounded text-white no-underline transition transform hover:translate-x-4;
+                    @apply relative inline-block p-2.5 bg-gray-400 rounded text-white no-underline transition hover:translate-x-4;
                     &:before {
                         content: "";
-                        @apply absolute w-3 h-3 bg-gray-400 left-0 top-1/2 transform rotate-45 -translate-y-1/2 -translate-x-1/2;
+                        @apply absolute w-3 h-3 bg-gray-400 left-0 top-1/2 rotate-45 -translate-y-1/2 -translate-x-1/2;
                     }
                 }
                 &:before {
                     content: "";
-                    @apply absolute w-2 h-2 rounded-full ring-[6px] ring-white bg-gray-400 left-0 top-1/2 transform -translate-x-1.5 -translate-y-1/2;
+                    @apply absolute w-2 h-2 rounded-full ring-[6px] ring-white bg-gray-400 left-0 top-1/2 -translate-x-1.5 -translate-y-1/2;
                 }
             }
         }

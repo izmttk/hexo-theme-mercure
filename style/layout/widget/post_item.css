@@ -2,7 +2,7 @@
     @apply relative h-44 md:h-56;
     @apply shadow-lg rounded-xl;
     @apply flex flex-row flex-nowrap;
-    @apply overflow-hidden overflow-ellipsis;
+    @apply overflow-hidden text-ellipsis;
     @apply transition duration-300 scale-100 md:hover:scale-105 md:hover:shadow-2xl; 
     /* transform: scale(1); 解决background层叠上下文的问题 */
     @apply bg-white;
@@ -38,7 +38,7 @@
             }
             .post-wordcount,
             .post-readtime {
-                @apply flex-shrink truncate mr-3;
+                @apply shrink truncate mr-3;
                 @apply inline-flex items-center;
             }
             .post-wordcount,
@@ -51,7 +51,7 @@
         .post-meta-line-1 {
             @apply justify-start;
             .post-date {
-                @apply flex-none md:flex-grow;
+                @apply flex-none md:grow;
             }
         }
         .post-meta-line-2 {
@@ -62,7 +62,7 @@
         }
         .post-excerpt {
             @apply hidden md:line-clamp-2;
-            @apply break-all overflow-ellipsis overflow-hidden text-sm;
+            @apply break-all text-ellipsis overflow-hidden text-sm;
         }
     }
     &.left-cover {

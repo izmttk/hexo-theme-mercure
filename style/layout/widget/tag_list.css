@@ -7,7 +7,7 @@
         @apply flex flex-wrap flex-row gap-2;
         a {
             @apply block bg-gray-200 rounded-full px-2.5 py-0.5;
-            @apply text-gray-600 no-underline transform hover:scale-105 hover:bg-gray-300;
+            @apply text-gray-600 no-underline hover:scale-105 hover:bg-gray-300;
             @apply transition-transform;
             @apply dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600;
             @apply inline-flex items-center gap-1;

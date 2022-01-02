@@ -4,7 +4,7 @@
         @apply absolute z-50 top-0 bottom-0;
         @apply w-96;
         @apply overflow-y-auto;
-        @apply bg-white shadow-lg transform;
+        @apply bg-white shadow-lg;
         @apply dark:bg-gray-900 dark:text-gray-200;
         @apply transition duration-300;
 
