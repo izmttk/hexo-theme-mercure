@@ -30,6 +30,7 @@
     }
     .blank {
         @apply flex-1 hidden md:flex justify-center items-center shadow-none;
+        @apply text-gray-500 dark:text-gray-200;
     }
     .no-cover {
         @apply text-gray-700 bg-white;

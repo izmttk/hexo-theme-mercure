@@ -28,13 +28,11 @@ class ScrollManager {
     getScrollLeft() {
         return this.element === document ? document.documentElement.scrollLeft : this.element.scrollLeft;
     }
-    scrollTo(xCoord, yCoord = 0, duration = 1000) {
-        anime({
-            targets: this.element === document ? document.documentElement : this.element,
-            scrollTop: xCoord,
-            scrollLeft: yCoord,
-            easing: 'easeOutCubic',
-            duration: duration,
+    scrollTo(xCoord, yCoord = 0) {
+        window.scroll({
+            top: xCoord,
+            left: yCoord,
+            behavior: 'smooth'
         });
     }
     triggerEvent() {
@@ -65,6 +63,90 @@ const animateCSS = (element, animation, prefix = '') =>
     node.addEventListener('animationend', handleAnimationEnd, {once: true});
 });
 
+class Toc {
+    constructor(postElement, tocElement) {
+        let post = postElement;
+        let toc = tocElement;
+
+        let observedTitle = [...post.querySelectorAll('h2,h3,h4,h5,h6')];
+        this.tocItem = new Map();
+
+        let tocItem = [...toc.querySelectorAll('.toc a[href]')];
+        for (let index = 0; index < tocItem.length; index++) {
+            const element = tocItem[index];
+            let name = element.getAttribute('href').substr(1); // remove # characters
+            name = decodeURI(name);
+            if(name.length > 0) {
+                this.tocItem.set(name, {
+                    index: index,
+                    element: element,
+                });
+            }
+        }
+        this._handleIntersect = this._handleIntersect.bind(this);
+        this.tocObserver = new IntersectionObserver(this._handleIntersect, {
+            threshold: 1,
+        });
+        observedTitle.forEach(item => {
+            this.tocObserver.observe(item);
+        });
+        this.activedTocItem = new Set();
+    }
+    _activateTocItem(name) {
+        name = decodeURI(name);
+        let item = this.tocItem.get(name);
+        if (item) {
+            this.activedTocItem.add(item);
+            this._clearActiveClass();
+            this._setActiveClass();
+        }
+    }
+    _deactivateTocItem(name) {
+        name = decodeURI(name);
+        let item = this.tocItem.get(name);
+        if (item) {
+            if (this.activedTocItem.size > 1) {
+                this._clearActiveClass();
+            }
+            this.activedTocItem.delete(item);
+            this._setActiveClass();
+        }
+    }
+    _clearActiveClass() {
+        this.tocItem.forEach(item => {
+            item.element.classList.remove('toc-active');
+        });
+    }
+    _setActiveClass() {
+        let minIndexItem = null;
+        this.activedTocItem.forEach(item => {
+            if (minIndexItem === null) {
+                minIndexItem = item;
+            } else {
+                minIndexItem = minIndexItem.index < item.index ? minIndexItem : item;
+            }
+        });
+        if (minIndexItem !== null) {
+            minIndexItem.element.classList.add('toc-active');
+        }
+    }
+    _handleIntersect(entries, observer) {
+        entries.forEach(entry => {
+            let name = entry.target.id;
+            if (entry.intersectionRatio == 1) {
+                this._activateTocItem(name);
+            } else {
+                this._deactivateTocItem(name);
+            }
+        });
+    }
+    destroy() {
+        this.tocObserver.disconnect();
+        this.tocItem.clear();
+        this.activedTocItem.clear();
+    }
+}
+
 class Header {
     constructor() {
         this.init();
@@ -87,11 +169,8 @@ class Header {
             });
         }
         this.indicatorElement = this.rootElement.querySelector('.indicator');
-        let self = this;
-        this._indicatorListener = function(...args) {
-            Reflect.apply(self._handleIndicatorClick, self, args);
-        }
-        this.indicatorElement?.addEventListener('click', this._indicatorListener);
+        this._handleIndicatorClick = this._handleIndicatorClick.bind(this);
+        this.indicatorElement?.addEventListener('click', this._handleIndicatorClick);
 
     }
     _handleIndicatorClick(event) {
@@ -99,7 +178,7 @@ class Header {
     }
     destroy() {
         this.parallax?.destroy();
-        this.indicatorElement?.removeEventListener('click', this._indicatorListener);
+        this.indicatorElement?.removeEventListener('click', this._handleIndicatorClick);
         delete this.rootElement;
         delete this.indicatorElement;
         delete this.parallax;
@@ -122,7 +201,10 @@ class Sidebar {
     }
     _initToc() {
         if(this.tocWidgetElement !== null) {
-            this.tocWidgetIns = new Toc(this.tocWidgetElement);
+            this.tocWidgetIns = new Toc(
+                document.querySelector('#main .post'),
+                this.rootElement.querySelector('.toc')
+            );
         }
     }
     _initWidgets() {
@@ -207,6 +289,26 @@ class Navbar {
             }
         });
     }
+    initSideDrawer() {
+        this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
+        this.sideDrawerIns = new SideDrawer();
+        this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
+    }
+    initMenuDrawer() {
+        this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
+        this.menuDrawerIns = new MenuDrawer();
+        this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
+    }
+    destorySideDrawer() {
+        this.sideDrawerIns?.destroy();
+        this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
+        delete this.sideDrawerElement;
+    }
+    destoryMenuDrawer() {
+        this.menuDrawerIns?.destroy();
+        this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
+        delete this.menuDrawerElement;
+    }
     _initMenu() {
         // 初始化多级菜单
         let menuToggleList = Array.from(this.menuElement.querySelectorAll('.menu-toggle'));
@@ -219,54 +321,27 @@ class Navbar {
             return new Menu(element, element.nextElementSibling, {
                 placement: isRootToggle ? 'bottom-start' : 'right-start',
                 trigger: 'mouseenter focus',
-                appendTo: isRootToggle ? () => this.rootElement : 'parent',
-                onCreate(instance) {
-                    if(window.BLOG_CONFIG.pjax.enable === true) {
-                        instance.popper.querySelectorAll('a[href]')?.forEach(element => {
-                            let url = element.getAttribute('href');
-                            if(url === 'javascript:void(0)') return;
-                            element.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                new Pjax({
-                                    selectors: [
-                                        'title',
-                                        'meta[name=description]',
-                                        '#script_blog_config',
-                                        '#header',
-                                        '#content',
-                                        '#sidebar',
-                                        '.nav-sidebar-drawer',
-                                        '.float-toolbar'
-                                    ],
-                                    cacheBust: false,
-                                }).loadUrl(url);
-                            });  
-                        });
-                    }
-                }
+                appendTo: isRootToggle ? () => this.rootElement : 'parent'
             });
         });
     }
     _initTool() {
         this.searchIns = new Search();
-        this.menuDrawerIns = new MenuDrawer();
-        this.sideDrawerIns = new SideDrawer();
-
-        let self = this;
-
-        this._searchListener = function(event) {
-            self.searchIns.toggle();
-        }
-        this._menuDrawerListener = function(event) {
-            self.menuDrawerIns.toggle();
-        }
-        this._sideDrawerListener = function(event) {
-            self.sideDrawerIns.toggle();
-        }
+        this._searchListener = this._searchListener.bind(this);
+        this._menuDrawerListener = this._menuDrawerListener.bind(this);
+        this._sideDrawerListener = this._sideDrawerListener.bind(this);
         this.searchElement.addEventListener('click', this._searchListener);
-        this.menuDrawerElement.addEventListener('click', this._menuDrawerListener);
-        this.sideDrawerElement.addEventListener('click', this._sideDrawerListener);
-
+        this.initMenuDrawer();
+        this.initSideDrawer();
+    }
+    _searchListener (event) {
+        this.searchIns.toggle();
+    }
+    _menuDrawerListener (event) {
+        this.menuDrawerIns.toggle();
+    }
+    _sideDrawerListener (event) {
+        this.sideDrawerIns.toggle();
     }
     isShown() {
         return !this.rootElement.classList.contains('nav-hide');
@@ -284,20 +359,17 @@ class Navbar {
             element?.destroy();
         });
         this.searchIns?.destroy();
-        this.menuDrawerIns?.destroy();
-        this.sideDrawerIns?.destroy();
         this.searchElement?.removeEventListener('click', this._searchListener);
-        this.menuDrawerElement?.removeEventListener('click', this._menuDrawerListener);
-        this.sideDrawerElement?.removeEventListener('click', this._sideDrawerListener);
         scrollManager.unregister('nav');
-
+        this.destoryMenuDrawer();
+        this.destorySideDrawer();
         delete this.rootElement;
         delete this.menuElement;
         delete this.logoElement;
         delete this.toolElement;
         delete this.searchElement;
-        delete this.menuDrawerElement;
-        delete this.sideDrawerElement;
+        this.urlMutationObserver.disconnect();
+        delete this.urlMutationObserver;
     }
 }
 
@@ -449,7 +521,7 @@ class Search {
             targets: '#site_search .form-group',
             marginTop: '4rem',
             easing: 'easeOutCubic',
-            duration: 500
+            duration: 300
         });
         this.searchApi.query();
     }
@@ -457,37 +529,40 @@ class Search {
         return this.modalIns?.isOpen();
     }
     open() {
-        let self = this;
+        if(!this.isOpen()) {
+            let self = this;
+            let context = this.templateElement.content.cloneNode(true);
+            this.modalIns = new Modal(context);
+            this.modalIns.open();
 
-        let context = this.templateElement.content.cloneNode(true);
-        this.modalIns = new Modal(context);
-        this.modalIns.open();
+            this.searchApi = new LocalSearch('search-input', 'search-result-wrap');
+            this.modalElement = document.querySelector('.modal-layout');
+            this.rootElement = this.modalElement.querySelector('#site_search');
+            this.inputElement = this.rootElement.querySelector('#search-input');
+            this.buttonElement = this.rootElement.querySelector('#search-btn');
 
-        this.searchApi = new LocalSearch('search-input', 'search-result-wrap');
-        this.modalElement = document.querySelector('.modal-layout');
-        this.rootElement = this.modalElement.querySelector('#site_search');
-        this.inputElement = this.rootElement.querySelector('#search-input');
-        this.buttonElement = this.rootElement.querySelector('#search-btn');
-
-        // 改变焦点到输入框
-        this.inputElement.focus();
-        this._eventListener = function(...args) {
-            Reflect.apply(self._handleSearch, self, args);
+            // 改变焦点到输入框
+            this.inputElement.focus();
+            this._eventListener = function(...args) {
+                Reflect.apply(self._handleSearch, self, args);
+            }
+            this.inputElement.addEventListener('keydown', this._eventListener);
+            this.buttonElement.addEventListener('click', this._eventListener);
         }
-        this.inputElement.addEventListener('keydown', this._eventListener);
-        this.buttonElement.addEventListener('click', this._eventListener);
     }
     close() {
-        this.inputElement.removeEventListener('keydown', this._eventListener);
-        this.buttonElement.removeEventListener('click', this._eventListener);
-        this.modalIns?.close();
-        this.modalIns?.destroy();
-        delete this.rootElement;
-        delete this.modalIns;
-        delete this.searchApi;
-        delete this.modalElement;
-        delete this.inputElement;
-        delete this.buttonElement;
+        if(this.isOpen()) {
+            this.inputElement.removeEventListener('keydown', this._eventListener);
+            this.buttonElement.removeEventListener('click', this._eventListener);
+            this.modalIns?.close();
+            this.modalIns?.destroy();
+            delete this.rootElement;
+            delete this.modalIns;
+            delete this.searchApi;
+            delete this.modalElement;
+            delete this.inputElement;
+            delete this.buttonElement;
+        }
     }
     toggle() {
         if(!this.isOpen()) {
@@ -569,45 +644,52 @@ class FloatToolbar {
 class Loading {
     constructor(element) {
         this.element = element ?? document.querySelector('.loading');
+        NProgress.configure({ 
+            trickleSpeed: 200,
+            showSpinner: false
+        });
     }
     show() {
+        NProgress.start();
         this.element.style.display = 'block';
         animateCSS(this.element, 'fade-in');
+
         // this.element.classList.add('fade-in');
     }
     hide() {
+        NProgress.done();
         animateCSS(this.element, 'fade-out').then(() => {
             this.element.style.display = 'none';
         });
-
-        // this.element.classList.add('fade-out');
-        // setTimeout(() => {
-        //     this.element.style.display = 'none';
-        // }, 500);
     }
 }
-const loading = new Loading();
+// const loading = new Loading();
 
 
-class BlogUiManager {
-    DEFAULT_OPTIONS = {
-
-    }
-    constructor(options) {
-        this.options = Object.assign(this.DEFAULT_OPTIONS, options);
+class Blog {
+    constructor() {
+        this.pjaxSelectors = [
+            'title',
+            'meta[name=description]',
+            '#script_blog_config',
+            '#header',
+            '#content',
+            '#sidebar',
+            '.nav-menu-drawer',
+            '.nav-sidebar-drawer',
+            '.float-toolbar',
+        ];
         this.initNavbar();
         this.initHeader();
         this.initSidebar();
+        this.initLoading();
         this.initFloatToolbar();
-        this.initMaterialPostCover();
         this.initLazyLoad();
         this.anchorSmoothScroll();
         this.initTooltip();
         this.initKatex();
-        this.initComments();
         this.initPjax();
         scrollManager.triggerEvent();
-        topbar?.hide();
     }
     initNavbar() {
         if(window.BLOG_CONFIG.navigator.enable) {
@@ -629,6 +711,9 @@ class BlogUiManager {
     initFloatToolbar() {
         this.floatToolbar = new FloatToolbar();
     }
+    initLoading() {
+        this.loading = new Loading();
+    }
     anchorSmoothScroll() {
         let marginTop = 76;
         document.querySelectorAll('.post a, .page a, .toc a').forEach(element => {
@@ -642,38 +727,6 @@ class BlogUiManager {
                 scrollManager.scrollTo(target.offsetTop - marginTop);
             })
         });
-    }
-    initMaterialPostCover() {
-        if(window.BLOG_CONFIG.post_card.cover.type === 'material'
-            && window.BLOG_CONFIG.post_card.cover.background === 'auto') {
-            document.querySelectorAll('.post-item.material-cover').forEach(function(item) {
-                function setPostBgColor(img) {
-                    Vibrant.from(img, {
-                        quality: 5
-                    }).getPalette().then(function(swatches) {
-                        if(swatches.DarkVibrant.getPopulation() < swatches.LightVibrant.getPopulation()) {
-                            item.querySelector('.background').style.backgroundColor = swatches.LightVibrant.getHex();
-                            item.querySelector('.post-info').style.color = swatches.DarkVibrant.getHex();
-                        } else {
-                            item.querySelector('.background').style.backgroundColor = swatches.DarkVibrant.getHex();
-                            item.querySelector('.post-info').style.color = swatches.LightVibrant.getHex();
-                        }
-                    });
-                }
-                var imgEl = item.querySelector('.cover-img');
-                // if(imgEl.complete) {
-                    // setPostBgColor(imgEl)
-                // } else {
-                    imgEl.addEventListener('load', function() {
-                        var that = this;
-                        setPostBgColor(that);
-                    });
-                    imgEl.addEventListener('error', function() {
-                        this.setAttribute('src', this.getAttribute('data-error-src'));
-                    });
-                // }
-            });
-        }
     }
     initLazyLoad() {
         if(window.BLOG_CONFIG.lazyload.enable) {
@@ -699,107 +752,66 @@ class BlogUiManager {
             });
         }
     }
-    initComments() {
-        // if(typeof window.loadComments === 'function') {
-        //     window.loadComments();
-        // }
-    }
     initPjax() {
         if(!window.BLOG_CONFIG.pjax.enable) {
             return;
         }
         this.pjax = new Pjax({
-            selectors: [
-                'title',
-                'meta[name=description]',
-                '#script_blog_config',
-                '#header',
-                '#content',
-                '#sidebar',
-                '.nav-sidebar-drawer',
-                '.float-toolbar'
-            ],
+            selectors: this.pjaxSelectors,
             cacheBust: false,
         });
         let self = this;
-        topbar.config({
-            barColors: {
-                0: 'rgb(71,154,248)'
-            },
-        });
         document.addEventListener("pjax:send", function() {
-            topbar?.show();
-            loading?.show();
-            // self.navbar?.destroy();
+            self.loading.show();
             self.header?.destroy();
+            self.navbar?.destoryMenuDrawer();
+            self.navbar?.destorySideDrawer();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
-            self.navbar?.sideDrawerIns?.destroy();
-
             window.loadComments = null;
         });
         document.addEventListener("pjax:success", function() {
-            self.navbar?.updateMenuIndicator();
-            if(self.navbar?.sideDrawerIns) {
-                self.navbar.sideDrawerIns = new SideDrawer();
-            }
-            // self.initNavbar();
             self.initHeader();
+            self.navbar?.searchIns.close();
+            self.navbar?.initMenuDrawer();
+            self.navbar?.initSideDrawer();
+            self.navbar?.updateMenuIndicator();
             self.initSidebar();
             self.anchorSmoothScroll();
-            self.initMaterialPostCover();
             self.initFloatToolbar();
             self.initLazyLoad();
             self.initTooltip();
             self.initKatex();
-            self.initComments();
             scrollManager.triggerEvent();
             animateCSS('#header','slide-down-fade-in');
             animateCSS('#main','slide-up-fade-in');
-            topbar?.hide();
-            loading?.hide();
-        })
+            self.loading.hide();
+        });
+        // 监视搜索页面和弹窗中的链接
+        this._handlePjaxLoad = function(e) {
+            e.preventDefault();
+            self.pjax.loadUrl(e.currentTarget.href);
+        }
+        this.pjaxMutationObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node.querySelectorAll('a[href]')].forEach(item => {
+                        item.addEventListener('click', this._handlePjaxLoad, true);
+                    });
+                });
+                mutation.removedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node?.querySelectorAll('a[href]')].forEach(item => {
+                        item.removeEventListener('click', this._handlePjaxLoad, true);
+                    });
+                });
+            });
+        });
+        this.pjaxMutationObserver.observe(document, {childList: true, subtree: true});
     }
 }
-const blogUiManager = new BlogUiManager();
-
-
-// //初始化导航栏音乐播放器
-// function initNavMusicPlayer() {
-//     var musicPlayerTooltip = tippy(document.querySelector('.music-player-toggle'), {
-//         content: 'test',//document.querySelector('.music-player'),
-//         theme: 'light-border',
-//         animation: 'shift-away',
-//         trigger: 'click',
-//         interactive: true,
-//         interactiveDebounce: 50,
-//         placement: 'bottom-end',
-//         arrow: true,
-//         // hideOnClick: false,
-//         role: 'menu',
-//         popperOptions: {
-//             modifiers: [
-//                 {
-//                     name: 'flip',
-//                     options: {
-//                         boundary: 'viewport',
-//                     },
-//                 },
-//                 {
-//                     name: 'preventOverflow',
-//                     options: {
-//                         boundary: 'viewport'
-//                     },
-//                 },
-//             ],
-//         },
-//     });
-//     // $('.nav-toolkit .music-player-toggle').on('click', function () {
-        
-//     // });
-// }
-
-// initNavMusicPlayer();
+const blog = new Blog();
 
 function initDarkTheme() {
     function getOsPreference() {
@@ -838,5 +850,13 @@ function initDarkTheme() {
             setDarkTheme();
         }
     });
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+        if (e.matches) {
+            setDarkTheme();
+        } else {
+            setLightTheme();
+        }
+    });
 }
+
 initDarkTheme();

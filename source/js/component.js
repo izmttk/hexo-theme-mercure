@@ -153,76 +153,7 @@ class Menu {
         this.instance.destroy();
     }
 }
-//目录
-class Toc {
-    constructor (selector, options = {}) {
-        var that = this;
-        this.element = $(selector).first();
-        var $container = this.element.parent();
-        $container.css('position', 'relative');
-        this.items = this.element.find('.toc-item');
-        this.bindEvents();
-    }
-    bindEvents () {
-        var that = this;
-        // this.items.children('.toc-link').on('click', function (event) {
-        //     event.preventDefault();
-        //     var $item = $(this).parent();
-        //     // that.activateTocItem($item);
-        //     var $header = that.getHeader($item);
-        //     $('html,body').animate({
-        //         scrollTop: $header.offset().top - 76
-        //     },400);
-        // });
-        this._scrollHandler = $.throttle(function (event) {
-            that.updateView();
-        }, 50);
-        $(window).on('scroll', this._scrollHandler);
-        
-        this.updateView();
-    }
-    updateView () {
-        var scrollTop = $(window, document).scrollTop();
-        for (var i = 0; i < this.items.length; i++) {
-            var $curItem = this.items.eq(i);
-            var $curHeader = this.getHeader($curItem);
-            var curOffsetTop = $curHeader.offset().top;
-            //检测最后一个标题
-            if (i == this.items.length - 1) {
-                if (curOffsetTop - scrollTop <= 80)
-                    this.activateTocItem($curItem);
-                break;
-            }
-            var $nextItem = this.items.eq(i + 1);
-            var $nextHeader = this.getHeader($nextItem);
-            var nextOffsetTop = $nextHeader.offset().top;
-            //检测是否处于当前标题下内容里
-            if (curOffsetTop - scrollTop <= 80 && nextOffsetTop - scrollTop > 80) {
-                this.activateTocItem($curItem);
-                break;
-            }
-        }
-    }
-    getHeader (item) {
-        var id = decodeURI(item.children('.toc-link').attr('href'));
-        var $target = $(id);
-        return $target;
-    }
-    activateTocItem (item) {
-        var $item = $(item).first();
-        if ($item.hasClass('toc-activated')) return;
 
-        this.items.removeClass('toc-activated');
-        var $container = this.element.parent();
-        $item.addClass('toc-activated');
-        $container.stop().animate({
-            scrollTop: $item.offset().top - this.element.offset().top - $container.height() / 2
-        }, 200);
-    }
-    destroy() {
-        $(window).off('scroll');
-    }
-}
 //标签页
 class Tabs {
     constructor (selector, options = {}) {
@@ -315,10 +246,10 @@ class Tabs {
     }
     getPanel (tab) {
         var $tab = this.getTab(tab);
-        var id = $tab.attr('href');
-        var $panel = this.panels.filter(id);
+        var id = $tab.attr('ref-id');
+        var $panel = this.panels.filter('#'+id);
         if (this.panels.filter($panel).length == 0) {
-            throw new Error('Tab Panel is not found');
+            throw new Error('Tab Panel ' + id + ' is not found');
         }
         return $panel;
     }

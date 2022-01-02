@@ -56,15 +56,15 @@ function loadDisqus() {
 
 // 加载错误
 function showError() {
-    $('#loading-comments').hide();
-    $('#notShowDisqus').show();
+    document.querySelector('#loading-comments').style.display = 'none';
+    document.querySelector('#notShowDisqus').style.display = null;
 }
 
 // 点击了加载
 function needLoadDisqus() {
     checkDisqus();
-    $('#load-btns').hide();
-    $('#loading-comments').show();
+    document.querySelector('#load-btns').style.display = 'none';
+    document.querySelector('#loading-comments').style.display = null;
 }
 
 if (autoload == 'true') {

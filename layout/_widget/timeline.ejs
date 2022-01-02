@@ -17,7 +17,10 @@
                 <div class="archive-post">
                     <span class="date"><%= post.date.day() %>日</span>
                     <span class="log">
-                        <a href="<%- url_for(post.path) %>"><%= post.title||'无标题' %></a>
+                        <a href="<%- url_for(post.path) %>">
+                            <div><%= post.title||'无标题' %></div>
+                            <!-- <div><%= post.excerpt %></div> -->
+                        </a>
                     </span>
                 </div>
             <% }) %>

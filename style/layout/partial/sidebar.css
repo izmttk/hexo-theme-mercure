@@ -23,6 +23,7 @@
             .tab {
                 @apply flex-auto text-sm font-bold p-1 z-10;
                 @apply inline-flex justify-center;
+                @apply cursor-pointer;
                 i {
                     @apply font-normal mr-1;
                 }

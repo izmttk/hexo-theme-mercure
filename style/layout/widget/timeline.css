@@ -3,7 +3,8 @@
     .timestamp {
         @apply ml-0.5 w-40 text-center;
         a {
-            @apply inline-block bg-gray-500 rounded-full px-3 py-2 text-white no-underline;
+            @apply inline-block bg-gray-500 rounded-full px-3 py-2 text-gray-100 no-underline;
+            @apply dark:text-gray-100;
         }
     }
     .month-archive {
@@ -11,9 +12,11 @@
             @apply flex flex-row flex-nowrap items-center;
             .date {
                 @apply flex-none w-20 text-center text-gray-500;
+                @apply dark:text-gray-400;
             }
             .log {
-                @apply relative px-4 py-3 border-l-4;
+                @apply relative px-4 py-3 border-l-4 border-gray-200;
+                @apply dark:border-gray-600;
                 a {
                     @apply relative inline-block p-2.5 bg-gray-400 rounded text-white no-underline transition hover:translate-x-4;
                     &:before {
@@ -23,7 +26,8 @@
                 }
                 &:before {
                     content: "";
-                    @apply absolute w-2 h-2 rounded-full ring-[6px] ring-white bg-gray-400 left-0 top-1/2 -translate-x-1.5 -translate-y-1/2;
+                    @apply absolute w-2 h-2 rounded-full ring-[6px] ring-white bg-gray-400 left-0 top-1/2 transform -translate-x-1.5 -translate-y-1/2;
+                    @apply dark:ring-gray-800 bg-gray-400;
                 }
             }
         }

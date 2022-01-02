@@ -1,4 +1,3 @@
-<% if (theme.navigator.search&&config.search) { %>
 <% 
     let search_path = config.search.path;
     if (search_path.length == 0) {
@@ -16,4 +15,3 @@
     </div>
 </template>
 <script src="<%= url_for('/js/search.js') %>" onload="LocalSearch.setPath('<%= search_path %>')" defer></script>
-<% } %>

@@ -41,7 +41,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/lib/theme-chalk/index.css"> -->
 
-
+    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
     <%- css({href: url_for('/css/style.css'), media: 'all'}) %>
     <%- css({href: url_for('/css/iconfont.css'), media: 'all'}) %>
@@ -69,7 +69,6 @@
     <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script>
     <% } %> 
     <% if(theme.plugins.pjax.enable) { %>
-    <script src="https://cdn.jsdelivr.net/npm/topbar@1/topbar.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
     <% } %> 
     <%- partial('./_partial/jsbridge') %>
@@ -98,7 +97,7 @@
 </head>
 
 <body>
-    <%- partial('./_partial/loading') %>
+    <%- partial('./_partial/loading', {}, {cache: true}) %>
     <%- partial('./_partial/header') %>
     <div id="main">
         <div id="content">
@@ -109,7 +108,7 @@
         </div>
     </div>
     <div id="footer">
-        <%- partial('./_partial/footer') %>
+        <%- partial('./_partial/footer', {}, {cache: true}) %>
     </div>
     <%- partial('./_widget/float_toolbar') %>
     <%- js({src: url_for('/js/index.js'), defer:true}) %>

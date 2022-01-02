@@ -1,27 +1,28 @@
-var LocalSearch = (function () {
-    var ajax_path = "";
+let LocalSearch = (function () {
+    let ajax_path = "";
     function LocalSearch(search_id, content_id) {
-        this.inputElement = $('#' + search_id);
-        this.resultElement = $('#' + content_id);
-        this.cache = undefined;
+        this.inputElement = document.querySelector('#' + search_id);
+        this.resultElement = document.querySelector('#' + content_id);
+        this.cache = null;
         this.lastKeywords = '';
     }
     LocalSearch.setPath = function (path) {
         ajax_path = path;
     };
     LocalSearch.prototype.getKeywords = function () {
-        return this.inputElement.val();
+        return this.inputElement.value;
     }
     LocalSearch.prototype.searchContent = function (post, queryText) {
-        var post_title = post.title.trim().toLowerCase();
-        var post_content = post.content.trim().toLowerCase();
-        var keywords = queryText.trim().toLowerCase().split(' ');
-        var foundMatch = false;
-        var index_title = -1;
-        var index_content = -1;
-        var first_occur = -1;
+        let post_title = post.title.trim().toLowerCase();
+        let post_content = post.content.trim().toLowerCase();
+        let keywords = queryText.trim().toLowerCase().split(' ');
+        let foundMatch = false;
+        let index_title = -1;
+        let index_content = -1;
+        let first_occur = -1;
         if (post_title !== '' || post_content !== '') {
-            $.each(keywords, function (index, word) {
+            for (let index = 0; index < keywords.length; index++) {
+                const word = keywords[index];
                 index_title = post_title.indexOf(word);
                 index_content = post_content.indexOf(word);
                 if (index_title < 0 && index_content < 0) {
@@ -37,14 +38,14 @@ var LocalSearch = (function () {
                 }
                 if (foundMatch) {
                     post_content = post.content.trim();
-                    var start = 0;
-                    var end = 0;
+                    let start = 0;
+                    let end = 0;
                     if (first_occur >= 0) {
                         start = Math.max(first_occur - 40, 0);
                         end = start === 0 ? Math.min(200, post_content.length) : Math.min(first_occur + 120, post_content.length);
-                        var match_content = post_content.substring(start, end);
+                        let match_content = post_content.substring(start, end);
                         keywords.forEach(function (keyword) {
-                            var regS = new RegExp(keyword, 'gi');
+                            let regS = new RegExp(keyword, 'gi');
                             match_content = match_content.replace(regS, '<mark>' + keyword + '</mark>');
                             // post.title = post_title.replace(regS, '<b mark>' + keyword + '</b>');
                         });
@@ -54,55 +55,73 @@ var LocalSearch = (function () {
                         post.digest = post_content.trim().substring(0, end);
                     }
                 }
-            });
+            }
         }
         return foundMatch;
     };
     LocalSearch.prototype.updateResult = function (data, queryText) {
         if (queryText.trim().length == 0) return;
-        var that = this;
-        var $resultList = $('<ul class="search-result-list"></ul>');
-        $.each(data, function (index, post) {
+        let that = this;
+        let resultList = document.createElement('ul');
+        resultList.classList.add('search-result-list');
+        data.forEach(post => {
             if (that.searchContent(post, queryText)) {
-                var $listItem = $('<li class="search-result-list-item"></li>');
-                var $link = $('<a href="' + post.url + '" class="search-result-link"></a>');
-                $link.append('<span class="search-result-title">' + post.title + '</span>');
-                $link.append('<span class="search-result-digest">' + post.digest + '</span>');
-                $listItem.append($link);
-                $resultList.append($listItem);
+                let listItem = document.createElement('li');
+                listItem.classList.add('search-result-list-item');
+                let link = document.createElement('a');
+                link.classList.add('search-result-link');
+                link.href = post.url;
+                let title = document.createElement('span');
+                title.classList.add('search-result-title');
+                title.innerHTML = post.title;
+                let digest = document.createElement('span');
+                digest.classList.add('search-result-digest');
+                digest.innerHTML = post.digest;
+                link.appendChild(title);
+                link.appendChild(digest);
+                listItem.appendChild(link);
+                resultList.appendChild(listItem);
             }
-        });
-        var $searchResult = $('<div id="search-result"></div>');
-        if ($resultList.children('li').length > 0) {
-            $searchResult.append($resultList);
+        })
+        let searchResult = document.createElement('div');
+        searchResult.id = 'search-result';
+        if ([...resultList.children].filter(item => {
+            return item.classList.contains('search-result-list-item')
+        }).length > 0) {
+            searchResult.appendChild(resultList);
         } else {
-            $searchResult.append('<span class="no-result">没有找到相关内容~</span>');
+            let resultInfo = document.createElement('span');
+            resultInfo.classList.add('no-result');
+            resultInfo.innerText = '没有找到相关内容~';
+            searchResult.appendChild(resultInfo);
         }
-        this.resultElement.empty().append($searchResult);
+        this.resultElement.innerHTML = null;
+        this.resultElement.appendChild(searchResult);
     }
     LocalSearch.prototype.isKeywordsChanged = function () {
         return this.lastKeywords.trim() != this.getKeywords().trim();
     }
+    LocalSearch.prototype.isEmpty= function () {
+        return this.getKeywords().trim().length === 0;
+    }
     LocalSearch.prototype.query = function () {
         if (!ajax_path) throw new Error('No ajax path specified');
-        var that = this;
-        var keywords = this.getKeywords();
+        let that = this;
+        let keywords = this.getKeywords();
         this.lastKeywords = keywords;
-        if (this.cache === undefined) {
-            $.ajax({
-                url: ajax_path,
-                dataType: "xml",
-                success: function (xmlResponse) {
-                    var datas = $("entry", xmlResponse).map(function () {
-                        return {
-                            title: $("title", this).text(),
-                            content: $('<span></span>').html($("content", this).text()).text(),
-                            url: $("url", this).text()
-                        };
-                    }).get();
-                    that.cache = datas;
-                    that.updateResult(datas, keywords);
-                }
+        if (this.cache === null) {
+            fetch(ajax_path)
+            .then(response => response.json())
+            .then(data => {
+                let res = data.map(item => {
+                    return {
+                        title: item.title ?? '',
+                        content: item.content ?? '',
+                        url: item.url ?? '',
+                    }
+                });
+                that.cache = res;
+                that.updateResult(res, keywords);
             });
         } else {
             that.updateResult(this.cache, keywords);

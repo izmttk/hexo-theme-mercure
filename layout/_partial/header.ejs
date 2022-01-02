@@ -31,9 +31,10 @@
         <%_ } else if(headerConfig.cover.type=='random') { _%>
         <div class="background">
             <script>
-                var bgList = [<%- headerConfig.cover.image.toString() %>];
-                $('#header .cover .background').css('background-image', 'url(<%- url_for(bgList[Math.floor(Math.random()*bgList.length)]) %>)');
-                $('#header .cover .background').empty();
+                let bgList = [<%- headerConfig.cover.image.toString() %>];
+                let bg = document.querySelector('#header .cover .background');
+                bg.style.backgroundImage = 'url(<%- url_for(bgList[Math.floor(Math.random()*bgList.length)]) %>)';
+                bg.innerHTML = null;
             </script>
         </div>
         <%_ } else if(headerConfig.cover.type=='custom') { _%>
@@ -59,16 +60,18 @@
                     <span><%- headerConfig.description.content %></span>
                     <%_ } else if(headerConfig.description.type=='random') { _%>
                     <script>
-                        var descList = [<%- headerConfig.description.content.toString() %>];
-                        $('#header .description').html('<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>');
+                        let descList = [<%- headerConfig.description.content.toString() %>];
+                        let desc = document.querySelector('#header .description');
+                        desc.innerHTML = '<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>';
                     </script>
                     <%_ } else if(headerConfig.description.type=='api') { _%>
                     <script>
-                        $.get('<%- headerConfig.description.url %>',function(data){
-                            var text = $(`<span class="hitokoto-text">${data['<%- headerConfig.description.text_field %>']}</span>`);
-                            var author = $(`<span class="hitokoto-author"> —— ${data['<%- headerConfig.description.from_field %>']}</span>`);
-                            var hitokoto = $('<span class="hotokoto"></span>').append(text, author);
-                            $('#header .description').empty().append(hitokoto);
+                        fetch('<%- headerConfig.description.url %>').then(res=>res.json()).then(data => {
+                            let desc = document.querySelector('#header .description');
+                            desc.innerHTML = `<span class="hotokoto">`
+                                +`<span class="hitokoto-text">${data['<%- headerConfig.description.text_field %>']}</span>`
+                                +`<span class="hitokoto-author"> —— ${data['<%- headerConfig.description.from_field %>']}</span>`
+                                +`</span>`;
                         });
                     </script>
                     <%_ } _%>
