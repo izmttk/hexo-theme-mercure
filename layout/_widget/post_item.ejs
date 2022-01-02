@@ -70,7 +70,9 @@ if(cover.background==='none') {
         </div>
 
         <%# 文章摘要 %>
-        <div class="post-excerpt"><%= post.excerpt %></div>
+        <div class="post-excerpt">
+            <a href="<%= url_for(post.path) %>"><%= post.excerpt %></a>
+        </div>
     </div>
     <%_ if(cover.type !== 'material' && cover.background !== 'none') { _%>
     <div class="background <%- cover.type === 'none' ? 'bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
