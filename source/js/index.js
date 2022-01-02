@@ -1,12 +1,10 @@
+// 滚动事件拦截器
 class ScrollManager {
     constructor(element = document) {
-        let self = this;
         this.store = {};
         this.element = element;
-        this._listenerCallback = function(...args) {
-            self._handleScroll(self, args);
-        }
-        this.element.addEventListener('scroll', this._listenerCallback);
+        this._handleScroll = this._handleScroll.bind(this);
+        this.element.addEventListener('scroll', this._handleScroll);
     }
     register(name, fn) {
         if (!name) throw new TypeError('name is required');
@@ -17,9 +15,9 @@ class ScrollManager {
         if (!name) throw new TypeError('name is required');
         Reflect.deleteProperty(this.store, name);
     }
-    _handleScroll(ctx, args) {
+    _handleScroll() {
         for (let handler in this.store) {
-            Reflect.apply(this.store[handler], ctx, args);
+            Reflect.apply(this.store[handler], this, arguments);
         }
     }
     getScrollTop() {
@@ -39,10 +37,63 @@ class ScrollManager {
         this.element.dispatchEvent(new Event('scroll'));
     }
     destroy() {
-        this.element.removeEventListener('scroll', this._listenerCallback);
+        delete this.store;
+        this.element.removeEventListener('scroll', this._handleScroll);
     }
 }
 const scrollManager = new ScrollManager();
+
+// anchor 点击事件拦截器
+class AnchorManager {
+    constructor(element = document) {
+        this.store = {};
+        this.element = element;
+        this._handleClick = this._handleClick.bind(this);
+        this.mutationObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.removedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node.querySelectorAll('a[href]')].forEach(item => {
+                        item.removeEventListener('click', this._handleClick, true);
+                    });
+                });
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    [...node.querySelectorAll('a[href]')].forEach(item => {
+                        item.addEventListener('click', this._handleClick, true);
+                    });
+                });
+            });
+        });
+        this.mutationObserver.observe(this.element, {childList: true, subtree: true});
+    }
+    // 监视搜索页面和弹窗中的链接
+    _handleClick = function() {
+        for (let handler in this.store) {
+            Reflect.apply(this.store[handler], this, arguments);
+        }
+    }
+    register(name, fn) {
+        if (!name) throw new TypeError('name is required');
+        if (typeof fn !== 'function') throw new TypeError('fn must be a function');
+        this.store[name] = fn;
+        [...this.element.querySelectorAll('a[href]')].forEach(item => {
+            item.addEventListener('click', this._handleClick, true);
+        });
+    }
+    unregister(name) {
+        if (!name) throw new TypeError('name is required');
+        [...this.element.querySelectorAll('a[href]')].forEach(item => {
+            item.removeEventListener('click', this._handleClick, true);
+        });
+        Reflect.deleteProperty(this.store, name);
+    }
+    destroy() {
+        delete this.store;
+        this.mutationObserver.disconnect();
+    }
+}
+const anchorManager = new AnchorManager();
 
 const animateCSS = (element, animation, prefix = '') =>
   new Promise((resolve, reject) => {
@@ -652,6 +703,7 @@ class Loading {
     show() {
         NProgress.start();
         this.element.style.display = 'block';
+        this.element.style.visibility = 'visible';
         animateCSS(this.element, 'fade-in');
 
         // this.element.classList.add('fade-in');
@@ -659,7 +711,7 @@ class Loading {
     hide() {
         NProgress.done();
         animateCSS(this.element, 'fade-out').then(() => {
-            this.element.style.display = 'none';
+            this.element.style.visibility = 'hidden';
         });
     }
 }
@@ -685,7 +737,7 @@ class Blog {
         this.initLoading();
         this.initFloatToolbar();
         this.initLazyLoad();
-        this.anchorSmoothScroll();
+        this.initSmoothScroll();
         this.initTooltip();
         this.initKatex();
         this.initPjax();
@@ -714,18 +766,20 @@ class Blog {
     initLoading() {
         this.loading = new Loading();
     }
-    anchorSmoothScroll() {
-        let marginTop = 76;
-        document.querySelectorAll('.post a, .page a, .toc a').forEach(element => {
-            if(!/^#[^\s]*/g.test(element.getAttribute('href'))) {
-                return;
-            }
-            element.addEventListener('click', function(event) {
+    initSmoothScroll() {
+        anchorManager.register('smoothscroll', function(event) {
+            let marginTop = 76;
+            let url = event.currentTarget;
+            if(url.origin === window.location.origin 
+                && url.pathname === window.location.pathname
+                && url.hash !== window.location.hash) {
                 event.preventDefault();
-                let id = decodeURI(this.getAttribute('href'));
+                let id = decodeURI(url.hash); //decodeURI(this.getAttribute('href'));
                 let target = document.querySelector(id);
-                scrollManager.scrollTo(target.offsetTop - marginTop);
-            })
+                if (target !== null) {
+                    scrollManager.scrollTo(target.offsetTop - marginTop);
+                }
+            }
         });
     }
     initLazyLoad() {
@@ -757,6 +811,7 @@ class Blog {
             return;
         }
         this.pjax = new Pjax({
+            elements: '.pjax',
             selectors: this.pjaxSelectors,
             cacheBust: false,
         });
@@ -777,7 +832,7 @@ class Blog {
             self.navbar?.initSideDrawer();
             self.navbar?.updateMenuIndicator();
             self.initSidebar();
-            self.anchorSmoothScroll();
+            // self.anchorSmoothScroll();
             self.initFloatToolbar();
             self.initLazyLoad();
             self.initTooltip();
@@ -788,27 +843,14 @@ class Blog {
             self.loading.hide();
         });
         // 监视搜索页面和弹窗中的链接
-        this._handlePjaxLoad = function(e) {
-            e.preventDefault();
-            self.pjax.loadUrl(e.currentTarget.href);
-        }
-        this.pjaxMutationObserver = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType !== Node.ELEMENT_NODE) return;
-                    [...node.querySelectorAll('a[href]')].forEach(item => {
-                        item.addEventListener('click', this._handlePjaxLoad, true);
-                    });
-                });
-                mutation.removedNodes.forEach(node => {
-                    if (node.nodeType !== Node.ELEMENT_NODE) return;
-                    [...node?.querySelectorAll('a[href]')].forEach(item => {
-                        item.removeEventListener('click', this._handlePjaxLoad, true);
-                    });
-                });
-            });
+        anchorManager.register('pjax', function(event) {
+            let url = event.currentTarget;
+            // 若网站只有hash部分改变，则不跳转
+            if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
+                event.preventDefault();
+                self.pjax.loadUrl(url.href);
+            }
         });
-        this.pjaxMutationObserver.observe(document, {childList: true, subtree: true});
     }
 }
 const blog = new Blog();
