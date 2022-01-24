@@ -1,10 +1,125 @@
+// 引入工具函数开始
+/**
+ * Underscore.js 1.13.2
+ * https://underscorejs.org
+ * (c) 2009-2021 Jeremy Ashkenas, Julian Gonggrijp, and DocumentCloud and Investigative Reporters & Editors
+ * Underscore may be freely distributed under the MIT license.
+ */
+// A (possibly faster) way to get the current timestamp as an integer.
+function now() {
+    return Date.now() || new Date().getTime();
+}
+// Some functions take a variable number of arguments, or a few expected
+// arguments at the beginning and then a variable number of values to operate
+// on. This helper accumulates all remaining arguments past the function’s
+// argument length (or an explicit `startIndex`), into an array that becomes
+// the last argument. Similar to ES6’s "rest parameter".
+function restArguments(func, startIndex) {
+    startIndex = startIndex == null ? func.length - 1 : +startIndex;
+    return function() {
+        var length = Math.max(arguments.length - startIndex, 0),
+            rest = Array(length),
+            index = 0;
+        for (; index < length; index++) {
+            rest[index] = arguments[index + startIndex];
+        }
+        switch (startIndex) {
+            case 0: return func.call(this, rest);
+            case 1: return func.call(this, arguments[0], rest);
+            case 2: return func.call(this, arguments[0], arguments[1], rest);
+        }
+        var args = Array(startIndex + 1);
+        for (index = 0; index < startIndex; index++) {
+            args[index] = arguments[index];
+        }
+        args[startIndex] = rest;
+        return func.apply(this, args);
+    };
+}
+// When a sequence of calls of the returned function ends, the argument
+// function is triggered. The end of a sequence is defined by the `wait`
+// parameter. If `immediate` is passed, the argument function will be
+// triggered at the beginning of the sequence instead of at the end.
+function debounce(func, wait, immediate) {
+    var timeout, previous, args, result, context;
+    var later = function() {
+        var passed = now() - previous;
+        if (wait > passed) {
+            timeout = setTimeout(later, wait - passed);
+        } else {
+            timeout = null;
+            if (!immediate) result = func.apply(context, args);
+            // This check is needed because `func` can recursively invoke `debounced`.
+            if (!timeout) args = context = null;
+        }
+    };
+    var debounced = restArguments(function(_args) {
+        context = this;
+        args = _args;
+        previous = now();
+        if (!timeout) {
+            timeout = setTimeout(later, wait);
+            if (immediate) result = func.apply(context, args);
+        }
+        return result;
+    });
+    debounced.cancel = function() {
+        clearTimeout(timeout);
+        timeout = args = context = null;
+    };
+    return debounced;
+}
+// Returns a function, that, when invoked, will only be triggered at most once
+// during a given window of time. Normally, the throttled function will run
+// as much as it can, without ever going more than once per `wait` duration;
+// but if you'd like to disable the execution on the leading edge, pass
+// `{leading: false}`. To disable execution on the trailing edge, ditto.
+function throttle(func, wait, options) {
+    var timeout, context, args, result;
+    var previous = 0;
+    if (!options) options = {};
+    var later = function() {
+        previous = options.leading === false ? 0 : now();
+        timeout = null;
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+    };
+    var throttled = function() {
+        var _now = now();
+        if (!previous && options.leading === false) previous = _now;
+        var remaining = wait - (_now - previous);
+        context = this;
+        args = arguments;
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+            }
+            previous = _now;
+            result = func.apply(context, args);
+            if (!timeout) context = args = null;
+        } else if (!timeout && options.trailing !== false) {
+            timeout = setTimeout(later, remaining);
+        }
+        return result;
+    };
+    throttled.cancel = function() {
+        clearTimeout(timeout);
+        previous = 0;
+        timeout = context = args = null;
+    };
+    return throttled;
+}
+//引入工具函数结束
+
+
 // 滚动事件拦截器
 class ScrollManager {
     constructor(element = document) {
         this.store = {};
         this.element = element;
         this._handleScroll = this._handleScroll.bind(this);
-        this.element.addEventListener('scroll', this._handleScroll);
+        this.element.addEventListener('scroll', throttle(this._handleScroll, 200));
     }
     register(name, fn) {
         if (!name) throw new TypeError('name is required');
@@ -419,8 +534,6 @@ class Navbar {
         delete this.logoElement;
         delete this.toolElement;
         delete this.searchElement;
-        this.urlMutationObserver.disconnect();
-        delete this.urlMutationObserver;
     }
 }
 
@@ -811,6 +924,8 @@ class Blog {
             return;
         }
         this.pjax = new Pjax({
+            // anchorManager 中已经对所有 a[href] 进行过事件监听
+            // elements 应当设定一个不会被选中的 css selector
             elements: '.pjax',
             selectors: this.pjaxSelectors,
             cacheBust: false,
@@ -842,7 +957,8 @@ class Blog {
             animateCSS('#main','slide-up-fade-in');
             self.loading.hide();
         });
-        // 监视搜索页面和弹窗中的链接
+        // 对所有 a[href] 绑定 click 事件，此后 DOM 新增的 a[href] 也会自动监听
+        // 只有站内跳转才会用到 pjax ，注意要取消事件的默认行为
         anchorManager.register('pjax', function(event) {
             let url = event.currentTarget;
             // 若网站只有hash部分改变，则不跳转
@@ -856,30 +972,30 @@ class Blog {
 const blog = new Blog();
 
 function initDarkTheme() {
-    function getOsPreference() {
+    function getSystemColorScheme() {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     function setDarkTheme() {
-        localStorage.setItem('theme','dark');
-        localStorage.setItem('osPreference', getOsPreference());
+        localStorage.setItem('user-color-scheme', 'dark');
+        localStorage.setItem('system-color-scheme', getSystemColorScheme());
         document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-sun-fill"></i>';
         document.documentElement.classList.add('dark')
     }
     function setLightTheme() {
-        localStorage.removeItem('theme');
-        localStorage.setItem('osPreference', getOsPreference());
+        localStorage.removeItem('user-color-scheme');
+        localStorage.setItem('system-color-scheme', getSystemColorScheme());
         document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-moon-fill"></i>';
         document.documentElement.classList.remove('dark')
     }
     //维持用户的选择直到下一次OsPreference切换
-    if(localStorage.getItem('osPreference') == getOsPreference()) {
-        if (localStorage.getItem('theme') === 'dark') {
+    if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {
+        if (localStorage.getItem('user-color-scheme') === 'dark') {
             setDarkTheme();
         } else {
             setLightTheme();
         }
     } else {
-        if(getOsPreference() === 'dark') {
+        if(getSystemColorScheme() === 'dark') {
             setDarkTheme();
         } else {
             setLightTheme();

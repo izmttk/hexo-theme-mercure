@@ -38,9 +38,7 @@
                 .nav-menu-item {
                     @apply relative flex-none;
                     >.link {
-                        @apply block px-4 h-16 text-lg font-bold leading-[4rem];
-                        position: relative;
-                        z-index: 20;
+                        @apply relative block z-20 px-4 h-16 text-lg font-bold leading-[4rem];
                     }
                     &:hover > .link {
                     }
@@ -87,6 +85,14 @@
                 }
             }
         } */
+        .nav-logo {
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
+        }
+        .nav-menu {
+            .nav-menu-list .nav-menu-item > .link {
+                text-shadow: 0 2px 2px rgba(0,0,0,.5);
+            }
+        }
         .nav-toolkit {
             >button {
                 /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */

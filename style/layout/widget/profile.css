@@ -12,7 +12,8 @@
     }
     .body {
         @apply relative px-4 pb-4;
-        box-shadow: 0px -6px 20px 20px rgb(255 255 255);
+        @apply shadow-[0_-6px_20px_20px_rgb(255,255,255)];
+        @apply dark:shadow-[0_-6px_20px_20px_rgb(31,41,55)];
         .author-info {
             @apply relative;
             @apply flex flex-col flex-nowrap;
@@ -45,7 +46,4 @@
             }
         }
     }
-}
-.dark .profile .body {
-    box-shadow: 0px -6px 20px 20px rgb(31, 41, 55);
 }
