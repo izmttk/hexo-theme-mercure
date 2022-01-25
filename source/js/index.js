@@ -230,10 +230,10 @@ const animateCSS = (element, animation, prefix = '') =>
 });
 
 class Toc {
-    constructor(postElement, tocElement) {
+    constructor(postElement, tocElement, scrollContainer) {
         let post = postElement;
         let toc = tocElement;
-
+        this.scrollContainer = scrollContainer;
         let observedTitle = [...post.querySelectorAll('h2,h3,h4,h5,h6')];
         this.tocItem = new Map();
 
@@ -265,6 +265,7 @@ class Toc {
             this.activedTocItem.add(item);
             this._clearActiveClass();
             this._setActiveClass();
+            this._scrollIntoView(item);
         }
     }
     _deactivateTocItem(name) {
@@ -305,6 +306,18 @@ class Toc {
                 this._deactivateTocItem(name);
             }
         });
+    }
+    _scrollIntoView(item) {
+        if(this.scrollContainer !== null) {
+            let containerScrollTop = this.scrollContainer.scrollTop;
+            let containerTop = this.scrollContainer.getBoundingClientRect().top;
+            let itemTop = item.element.getBoundingClientRect().top;
+            let containerHeight = this.scrollContainer.offsetHeight;
+            this.scrollContainer.scrollTo({
+                top: containerScrollTop + (itemTop - containerTop - containerHeight / 2),
+                behavior: 'smooth'
+            });
+        }
     }
     destroy() {
         this.tocObserver.disconnect();
@@ -369,7 +382,8 @@ class Sidebar {
         if(this.tocWidgetElement !== null) {
             this.tocWidgetIns = new Toc(
                 document.querySelector('#main .post'),
-                this.rootElement.querySelector('.toc')
+                this.rootElement.querySelector('.toc'),
+                this.rootElement.querySelector('#tab-panel-toc'),
             );
         }
     }

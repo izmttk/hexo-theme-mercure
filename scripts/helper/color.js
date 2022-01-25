@@ -1,2 +1,2 @@
-const color = require("color");
+const color = require("chroma-js");
 hexo.extend.helper.register('color', color);

@@ -21,7 +21,7 @@
         <div class="social-panel">
             <%# const { color } = require('hexo-util'); %>
             <% theme.author.social.forEach((item) =>{ %>
-                <% let bg_color=color(item.color).alpha(0.15); %> 
+                <% let bg_color=color(item.color).alpha(0.15).css(); %> 
                 <a href="<%= item.link %>" title="<%= item.name %>" target="_blank" style="background-color: <%- bg_color %>;color:<%- item.color %>" data-tippy-content="<%= item.name %>">
                     <i class="<%= item.icon %>"></i>
                 </a>

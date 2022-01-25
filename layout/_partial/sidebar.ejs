@@ -9,14 +9,14 @@
         <div class="tabs-content">
             <div class="tab-panel" id="tab-panel-overview" role="tabpanel">
                 <div class="tab-panel-content">
-                    <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
-                    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
-                    <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
+                    <% if(theme.sidebar.show_profile) { %><div class="widget card"><%- partial('../_widget/profile') %></div><% } %> 
+                    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget card-styleless"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
+                    <% if(theme.sidebar.show_category_tree) { %><div class="widget card"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
                 </div>
             </div>
             <div class="tab-panel" id="tab-panel-toc" role="tabpanel">
                 <div class="tab-panel-content">
-                    <div class="widget"><%- partial('../_widget/toc_view') %></div>
+                    <div class="widget card"><%- partial('../_widget/toc_view') %></div>
                 </div>
             </div>
         </div>
@@ -24,8 +24,8 @@
 </div>
 <% } else { %>
 <div class="sidebar-content">
-    <% if(theme.sidebar.show_profile) { %><div class="widget"><%- partial('../_widget/profile') %></div><% } %> 
-    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
-    <% if(theme.sidebar.show_category_tree) { %><div class="widget"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
+    <% if(theme.sidebar.show_profile) { %><div class="widget card"><%- partial('../_widget/profile') %></div><% } %> 
+    <% if(theme.sidebar.show_tag_cloud) { %><div class="widget card-styleless"><%- partial('../_widget/tag_cloud',{maxCount: 30}) %></div><% } %> 
+    <% if(theme.sidebar.show_category_tree) { %><div class="widget card"><%- partial('../_widget/category_tree',{maxDepth: Infinity}) %></div><% } %>
 </div>
 <% } %> 

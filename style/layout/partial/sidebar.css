@@ -36,15 +36,24 @@
         .tabs-content {
             @apply flex-auto relative overflow-hidden;
             .tab-panel {
-                @apply absolute top-0 bottom-0 w-full overflow-x-visible;
+                @apply absolute top-0 bottom-0 w-full overflow-auto;
                 will-change: transform;
-                .tab-panel-content {
-                    /* FireFox Hide ScrollBar */
-                    scrollbar-width: none;
-                    /* CHrome Safari Hide ScrollBar */
-                    &::-webkit-scrollbar {
-                        @apply hidden;
-                    }
+                /* FireFox Hide ScrollBar */
+                scrollbar-width: none;
+                /* CHrome Safari Hide ScrollBar */
+                &::-webkit-scrollbar {
+                    @apply hidden;
+                }
+            }
+            #tab-panel-overview .tab-panel-content {
+                /* @apply flex-none flex-col flex-nowrap; */
+                .widget {
+                    @apply mx-4 mt-0 mb-4;
+                }
+            }
+            #tab-panel-toc .tab-panel-content {
+                .widget {
+                    @apply mx-4 mt-0 mb-4;
                 }
             }
         }
@@ -52,21 +61,8 @@
     .headblank {
         @apply pt-16;
     }
-    #tab-panel-overview .tab-panel-content {
-        @apply flex flex-col flex-nowrap h-full overflow-auto;
-        .widget {
-            @apply mx-4 mt-0 mb-4;
-        }
-    }
-    #tab-panel-toc .tab-panel-content {
-        @apply flex flex-col flex-nowrap h-full overflow-hidden;
-        .widget {
-            @apply h-full;
-            @apply mx-4 mt-0 mb-4;
-        }
-    }
     .card {
-        @apply bg-white rounded-xl shadow-lg;
+        @apply bg-white rounded-xl shadow-lg overflow-hidden;
         @apply dark:bg-gray-800 dark:text-gray-300;
         .title {
             @apply relative text-2xl font-bold p-3 border-b border-gray-200;
@@ -86,10 +82,23 @@
             }
         }
     }
-    .card-noframe {
-        @apply bg-none bg-transparent shadow-none border-none;
+    .card-styleless {
+        @apply dark:text-gray-300;
         .title {
-            @apply border-none;
+            @apply relative text-2xl font-bold p-3;
+            &::after {
+                content: " ";
+                display: block;
+                position: absolute;
+                width: 40px;
+                height: 11px;
+                background: #fa7298;
+                opacity: 0.25;
+                pointer-events: none;
+                border-radius: 15px;
+                left: 0.6rem;
+                bottom: 0.75rem;
+            }
         }
     }
 }
