@@ -10,18 +10,17 @@
     .post-cover {
         @apply absolute md:relative;
         @apply flex-none w-full h-full md:w-72;
-        @apply z-10;
+        @apply z-10 select-none pointer-events-none;
         @apply scale-[1.025];
-        @apply dark:brightness-[.9];
-        @apply select-none;
         .cover-img {
+            @apply brightness-[.8] md:brightness-100 md:dark:brightness-[.8];
             @apply object-cover h-full w-full;
         }
     }
     .post-info {
         @apply flex-auto flex flex-col flex-nowrap justify-between;
         @apply p-6 md:py-8 md:px-8 w-0;
-        @apply z-10;
+        @apply z-10 pointer-events-none;
         @apply md:text-gray-800;
         @apply dark:text-gray-200;
 
@@ -57,7 +56,8 @@
         }
         .post-meta-line-2 {
             @apply justify-start;
-            @apply w-full overflow-x-auto overflow-y-visible;
+            @apply w-full pt-0.5 pb-1.5 overflow-x-auto;
+            @apply pointer-events-auto;
         }
         .post-title {
             @apply truncate text-2xl font-bold;
@@ -65,6 +65,13 @@
         .post-excerpt {
             @apply hidden md:line-clamp-2;
             @apply break-all text-ellipsis overflow-hidden text-sm;
+        }
+    }
+    .background {
+        @apply absolute inset-0 z-0 overflow-hidden select-none;
+        @apply brightness-[.8];
+        .background-img, .post-link {
+            @apply block absolute inset-0;
         }
     }
     &.left-cover {
@@ -83,14 +90,6 @@
             @apply order-first md:pl-9 md:pr-5;
         }
     }
-    @media screen(md) {
-        &.left-cover.blur-cover .post-cover{
-            clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
-        }
-        &.right-cover.blur-cover .post-cover {
-            clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
-        }
-    }
     &.blur-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
 
@@ -98,12 +97,10 @@
             @apply text-white;
         }
         .background {
-            @apply absolute inset-0 z-0 hidden md:block overflow-hidden;
             @apply bg-gray-500 bg-cover bg-center bg-no-repeat;
             @apply dark:bg-gray-800;
             .background-img {
-                filter: blur(1.5em) brightness(0.8);
-                transform: scale(1.2);
+                @apply scale-[1.2] blur-xl;
                 @apply object-cover h-full w-full z-0;
             }
             /* @supports (backdrop-filter: none) {
@@ -122,36 +119,43 @@
                 }
             } */
         }
+        @media screen(md) {
+            &.left-cover .post-cover{
+                clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
+            }
+            &.right-cover .post-cover {
+                clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
+            }
+        }
     }
     &.material-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
         .post-cover {
             @apply md:w-[30rem];
         }
-        &.left-cover .post-cover {
-            @apply md:-mr-52;
-        }
-        &.right-cover .post-cover {
-            @apply md:-ml-52;
-        }
         .post-info {
             @apply transition duration-500;
             @apply text-white;
             @apply md:text-gray-800;
             @apply md:dark:text-gray-200;
-        }
-        .background {
-            @apply absolute inset-0 z-0 hidden md:block;
+            .post-meta-line-2 {
+                .post-category, .post-tag a {
+                    @apply bg-gray-300/50 hover:bg-gray-200;
+                    @apply dark:bg-gray-500/50 dark:hover:hover:bg-white;
+                }
+            }
         }
         @media screen(md) {
-            &.left-cover.material-cover .post-cover {
+            text-shadow: none!important;
+            &.left-cover .post-cover {
+                @apply -mr-48;
                 &::after {
                     content: " ";
                     position: absolute;
-                    top: -4px;
-                    bottom: -4px;
+                    top: 0;
+                    bottom: 0;
                     right: -4px;
-                    width: 80%;
+                    width: 75%;
                     background: linear-gradient(
                         to left,
                         rgba(255, 255, 255, 1),
@@ -169,14 +173,15 @@
                     }
                 }
             }
-            &.right-cover.material-cover .post-cover {
+            &.right-cover .post-cover {
+                @apply -ml-48;
                 &::after {
                     content: " ";
                     position: absolute;
-                    top: -4px;
-                    bottom: -4px;
+                    top: 0;
+                    bottom: 0;
                     left: -4px;
-                    width: 80%;
+                    width: 75%;
                     background: linear-gradient(
                         to right,
                         rgba(255, 255, 255, 1),
@@ -194,9 +199,6 @@
                     }
                 }
             }
-            &.material-cover {
-                text-shadow: none!important;
-            }
         }
     }
     &.full-cover {
@@ -205,24 +207,20 @@
             @apply text-white;
         }
         .background {
-            @apply absolute inset-0 z-0;
             @apply bg-white bg-cover bg-center bg-no-repeat;
             @apply dark:bg-gray-800;
             .background-img {
                 @apply object-cover h-full w-full z-0;
-                @apply brightness-[.8];
             }
         }
     }
     &.no-cover:not(.no-bg) {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
-
         .post-info {
             @apply text-white;
         }
         .background {
-            @apply absolute inset-0 z-0;
-            @apply dark:brightness-[.8];
+            @apply brightness-100 dark:brightness-[.8];
         }
     }
 }

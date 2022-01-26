@@ -48,6 +48,11 @@
                     >* {
                         @apply inline-flex items-center;
                     }
+                    .post-tag, .post-category {
+                        a {
+                            @apply py-0.5;
+                        }
+                    }
                 }
             }
             .mini-cover {

@@ -64,6 +64,8 @@
             @apply mr-0 px-1 lg:-mr-4 md:px-5 space-x-0.5 md:space-x-2;
             >button {
                 @apply w-9 h-9 md:w-10 md:h-10 rounded-full text-current outline-none bg-gray-400/30;
+                @apply text-gray-900 dark:text-gray-100;
+                @apply transition-colors duration-500;
                 i {
                     @apply text-lg leading-9 md:leading-10;
                 }
@@ -115,7 +117,7 @@
 }
 .navigator.nav-fix {
     @apply shadow-sm backdrop-blur-md bg-white/70 border-b border-gray-200;
-    @apply dark:bg-gray-800/50 dark:border-gray-700;
+    @apply dark:bg-gray-800/50 dark:border-gray-800;
 }
 .nav-menu-drawer {
     .profile {

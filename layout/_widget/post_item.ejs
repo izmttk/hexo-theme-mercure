@@ -29,12 +29,11 @@ else if((cover.type === 'blur' || cover.type === 'material') && cover.position =
 <div class="post-item <%= cover_class.join(' ') %>">
     <% if(cover.type !== 'none' && cover.type !== 'full') { %>
     <div class="post-cover">
-        <a href="<%= url_for(post.path) %>">
-            <%- image_tag(url_for(cover.path),{
-                alt: post.title,
-                class: 'cover-img',
-                crossOrigin: ''
-            }) %></a>
+        <%- image_tag(url_for(cover.path),{
+            alt: post.title,
+            class: 'cover-img',
+            crossOrigin: ''
+        }) %>
     </div>
     <% } %>
     <div class="post-info">
@@ -71,14 +70,14 @@ else if((cover.type === 'blur' || cover.type === 'material') && cover.position =
             <a href="<%= url_for(post.path) %>"><%= post.excerpt %></a>
         </div>
     </div>
-    <%_ if(cover.type !== 'material' && cover.type !== 'normal') { _%>
-    <div class="background <%- cover.type === 'none' ? 'bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
-    <%_ if(cover.type === 'blur' || cover.type === 'full') { _%>
-        <%- image_tag(url_for(cover.path),{
-            alt: post.title,
-            class: 'background-img',
-            crossOrigin: 'anonymous'
-        }) _%>
-    <%_ } _%></div>
-    <%_ } _%>
+    <div class="background<%- cover.type === 'none' ? ' bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
+        <%_ if(cover.type === 'blur' || cover.type === 'full') { _%>
+            <%- image_tag(url_for(cover.path),{
+                alt: post.title,
+                class: 'background-img',
+                crossOrigin: 'anonymous'
+            }) _%>
+        <%_ } _%>
+        <a href="<%= url_for(post.path) %>" class="post-link"></a>
+    </div>
 </div>
