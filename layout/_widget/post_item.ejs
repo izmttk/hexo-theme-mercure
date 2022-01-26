@@ -25,12 +25,9 @@ if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'l
 else if((cover.type === 'blur' || cover.type === 'material') && cover.position === 'right') {
     cover_class.push('right-cover');
 }
-if(cover.background==='none') {
-    cover_class.push('no-bg');
-}
 %>
 <div class="post-item <%= cover_class.join(' ') %>">
-    <% if(cover.position === 'left' || cover.position === 'right') { %>
+    <% if(cover.type !== 'none' && cover.type !== 'full') { %>
     <div class="post-cover">
         <a href="<%= url_for(post.path) %>">
             <%- image_tag(url_for(cover.path),{
@@ -74,7 +71,7 @@ if(cover.background==='none') {
             <a href="<%= url_for(post.path) %>"><%= post.excerpt %></a>
         </div>
     </div>
-    <%_ if(cover.type !== 'material' && cover.background !== 'none') { _%>
+    <%_ if(cover.type !== 'material' && cover.type !== 'normal') { _%>
     <div class="background <%- cover.type === 'none' ? 'bg-gradient-'+Math.floor(Math.random()*10) : '' %>">
     <%_ if(cover.type === 'blur' || cover.type === 'full') { _%>
         <%- image_tag(url_for(cover.path),{

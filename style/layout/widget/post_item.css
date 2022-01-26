@@ -1,18 +1,19 @@
 .post-item {
-    @apply relative h-44 md:h-56;
+    @apply relative h-44 md:h-[14.5rem];
     @apply shadow-lg rounded-xl;
     @apply flex flex-row flex-nowrap;
-    @apply overflow-hidden text-ellipsis;
-    @apply transition duration-300 scale-100 md:hover:scale-105 md:hover:shadow-2xl; 
+    @apply overflow-hidden;
+    @apply transition-[box-shadow,transform] duration-300 scale-100 md:hover:scale-105 md:hover:shadow-2xl; 
     /* transform: scale(1); 解决background层叠上下文的问题 */
     @apply bg-white;
     @apply dark:bg-gray-800;
     .post-cover {
-        @apply absolute md:inset-0 md:relative;
-        @apply flex-none;
-        @apply w-full h-full md:w-72;
+        @apply absolute md:relative;
+        @apply flex-none w-full h-full md:w-72;
         @apply z-10;
+        @apply scale-[1.025];
         @apply dark:brightness-[.9];
+        @apply select-none;
         .cover-img {
             @apply object-cover h-full w-full;
         }
@@ -56,7 +57,7 @@
         }
         .post-meta-line-2 {
             @apply justify-start;
-            @apply w-full overflow-auto;
+            @apply w-full overflow-x-auto overflow-y-visible;
         }
         .post-title {
             @apply truncate text-2xl font-bold;
@@ -89,15 +90,6 @@
         &.right-cover.blur-cover .post-cover {
             clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
         }
-        &.left-cover.material-cover .post-cover {
-            mask: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-        }
-        &.right-cover.material-cover .post-cover {
-            mask: linear-gradient(-90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-        }
-        &.material-cover {
-            text-shadow: none!important;
-        }
     }
     &.blur-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
@@ -106,7 +98,7 @@
             @apply text-white;
         }
         .background {
-            @apply absolute inset-0 z-0 hidden md:block;
+            @apply absolute inset-0 z-0 hidden md:block overflow-hidden;
             @apply bg-gray-500 bg-cover bg-center bg-no-repeat;
             @apply dark:bg-gray-800;
             .background-img {
@@ -133,6 +125,15 @@
     }
     &.material-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
+        .post-cover {
+            @apply md:w-[30rem];
+        }
+        &.left-cover .post-cover {
+            @apply md:-mr-52;
+        }
+        &.right-cover .post-cover {
+            @apply md:-ml-52;
+        }
         .post-info {
             @apply transition duration-500;
             @apply text-white;
@@ -141,6 +142,61 @@
         }
         .background {
             @apply absolute inset-0 z-0 hidden md:block;
+        }
+        @media screen(md) {
+            &.left-cover.material-cover .post-cover {
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: -4px;
+                    bottom: -4px;
+                    right: -4px;
+                    width: 80%;
+                    background: linear-gradient(
+                        to left,
+                        rgba(255, 255, 255, 1),
+                        ease-in-out,
+                        rgba(255, 255, 255, 0)
+                    );
+                    pointer-events: none;
+                    .dark & {
+                        background: linear-gradient(
+                            to left,
+                            rgba(31, 41, 55, 1),
+                            ease-in-out,
+                            rgba(31, 41, 55, 0)
+                        );
+                    }
+                }
+            }
+            &.right-cover.material-cover .post-cover {
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: -4px;
+                    bottom: -4px;
+                    left: -4px;
+                    width: 80%;
+                    background: linear-gradient(
+                        to right,
+                        rgba(255, 255, 255, 1),
+                        ease-in-out,
+                        rgba(255, 255, 255, 0)
+                    );
+                    pointer-events: none;
+                    .dark & {
+                        background: linear-gradient(
+                            to right,
+                            rgba(31, 41, 55, 1),
+                            ease-in-out,
+                            rgba(31, 41, 55, 0)
+                        );
+                    }
+                }
+            }
+            &.material-cover {
+                text-shadow: none!important;
+            }
         }
     }
     &.full-cover {

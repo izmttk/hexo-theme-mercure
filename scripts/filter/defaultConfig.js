@@ -93,8 +93,7 @@ function postCardConfig(config) {
     const defaultConfig = {
         cover: {
             type: 'blur',
-            position: 'alter',
-            background: 'auto',
+            position: 'alter'
         }
     }
     let combinedConfig = deepMerge(defaultConfig, config?.post_card ?? {});

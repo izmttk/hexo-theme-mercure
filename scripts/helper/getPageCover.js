@@ -33,8 +33,7 @@ function getPageCover(page) {
     return {
         path: coverPath,
         type: coverType,
-        position: coverPos,
-        background: coverConfig.background,
+        position: coverPos
     }
 }
 
