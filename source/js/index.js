@@ -863,7 +863,7 @@ class Blog {
         this.initSidebar();
         this.initLoading();
         this.initFloatToolbar();
-        this.initLazyLoad();
+        // this.initLazyLoad();
         this.initSmoothScroll();
         this.initTooltip();
         this.initKatex();
@@ -909,11 +909,11 @@ class Blog {
             }
         });
     }
-    initLazyLoad() {
-        if(window.BLOG_CONFIG.lazyload.enable) {
-            lazyload();
-        }
-    }
+    // initLazyLoad() {
+    //     if(window.BLOG_CONFIG.lazyload.enable) {
+    //         lazyload();
+    //     }
+    // }
     initTooltip() {
         tippy('[data-tippy-content]',{
             animation: 'shift-away',
@@ -945,7 +945,7 @@ class Blog {
             cacheBust: false,
         });
         let self = this;
-        document.addEventListener("pjax:send", function() {
+        document.addEventListener('pjax:send', function() {
             self.loading.show();
             self.header?.destroy();
             self.navbar?.destoryMenuDrawer();
@@ -954,7 +954,7 @@ class Blog {
             self.floatToolbar?.destroy();
             window.loadComments = null;
         });
-        document.addEventListener("pjax:success", function() {
+        document.addEventListener('pjax:success', function() {
             self.initHeader();
             self.navbar?.searchIns.close();
             self.navbar?.initMenuDrawer();
@@ -963,7 +963,7 @@ class Blog {
             self.initSidebar();
             // self.anchorSmoothScroll();
             self.initFloatToolbar();
-            self.initLazyLoad();
+            // self.initLazyLoad();
             self.initTooltip();
             self.initKatex();
             scrollManager.triggerEvent();
@@ -1015,14 +1015,14 @@ function initDarkTheme() {
             setLightTheme();
         }
     }
-    document.querySelector('.dark-theme-toggle').addEventListener("click", function() {
+    document.querySelector('.dark-theme-toggle').addEventListener('click', function() {
         if(document.documentElement.classList.contains('dark')) {
             setLightTheme();
         } else {
             setDarkTheme();
         }
     });
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         if (e.matches) {
             setDarkTheme();
         } else {

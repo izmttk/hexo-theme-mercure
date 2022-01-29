@@ -34,7 +34,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all"> -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script> -->
@@ -54,8 +54,8 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" defer></script>
     <style>.katex *{color:currentColor;border-color:currentColor}.katex{overflow-x:auto;overflow-y:hidden}</style>
     <% } %>
-    <link rel="preconnect" href="https://fonts.gstatic.com" media="all">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all">
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" media="all"> -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all"> -->
     <script src="https://cdn.jsdelivr.net/npm/animejs@3/lib/anime.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js" defer></script>
     <%- js({src: url_for('/js/component.js'), defer: true}) %>
@@ -66,7 +66,8 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3/dist/vibrant.min.js" defer></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/rgbaster@2/dist/rgbaster.umd.min.js"></script> -->
     <% if(theme.plugins.lazyload.enable) { %>
-    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script> -->
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5/plugins/print/ls.print.min.js,npm/lazysizes@5/plugins/noscript/ls.noscript.min.js,npm/lazysizes@5/plugins/bgset/ls.bgset.min.js,npm/lazysizes@5/plugins/blur-up/ls.blur-up.min.js,npm/lazysizes@5"></script>
     <% } %> 
     <% if(theme.plugins.pjax.enable) { %>
     <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>

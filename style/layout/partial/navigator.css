@@ -30,7 +30,7 @@
         }
         .nav-menu {
             @apply h-16 flex-1;
-            font-family: "Noto Serif SC", ui-serif, serif;
+            /* font-family: "Noto Serif SC", ui-serif, serif; */
             /* font-weight: bold; */
             .nav-menu-list {
                 @apply hidden md:flex overflow-x-auto overflow-y-hidden;
@@ -38,7 +38,7 @@
                 .nav-menu-item {
                     @apply relative flex-none;
                     >.link {
-                        @apply relative block z-20 px-4 h-16 text-lg font-bold leading-[4rem];
+                        @apply relative block z-20 px-4 h-16 text-lg leading-[4rem];
                     }
                     &:hover > .link {
                     }

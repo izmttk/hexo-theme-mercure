@@ -14,14 +14,12 @@
     .body {
         @apply relative px-4 pb-4;
         .author-info {
-            @apply relative;
-            @apply flex flex-col flex-nowrap;
-
+            @apply relative flex flex-col flex-nowrap;
             .avatar {
                 @apply w-28 h-28 rounded-full mx-auto relative -mt-20;
                 @apply ring-white ring-8;
                 @apply dark:ring-gray-800;
-                .avatar-img {
+                img {
                     @apply object-cover h-full w-full rounded-full;
                 }
             }
