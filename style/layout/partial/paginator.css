@@ -1,29 +1,70 @@
 #paginator {
     @apply w-full flex justify-center mt-10;
     .paginator-group {
-        @apply flex flex-nowrap justify-center  z-0 shadow-sm rounded-md;
-        .page-number, .extend {
-            @apply bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium;
-            @apply dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400;
+        @apply flex flex-wrap justify-center z-0;
+        .page-number, .extend, .space {
+            @apply relative flex justify-center items-center w-9 h-9 md:w-11 md:h-11 m-1 md:m-1.5 rounded-md md:rounded-lg;
+            @apply bg-white hover:bg-gray-50;
+            @apply text-gray-500 text-base md:text-lg leading-none font-medium;
+            @apply dark:text-gray-400;
+            appearance: none;
+            background-color: #fcfcfd;
+            box-shadow: rgba(45, 35, 66, 0.2) 0 2px 4px,rgba(45, 35, 66, 0.15) 0 7px 13px -3px,#D6D6E7 0 -2px 0 inset;
+            color: #36395A;
+            cursor: pointer;
+            transition: box-shadow .15s,transform .15s,background .15s;
+            user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            /* &:focus {
+                box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.2) 0 2px 4px, rgba(45, 35, 66, 0.15) 0 7px 13px -3px, #D6D6E7 0 -2px 0 inset;
+            } */
+            &:hover {
+                box-shadow: rgba(45, 35, 66, 0.2) 0 4px 8px, rgba(45, 35, 66, 0.15) 0 7px 13px -3px, #D6D6E7 0 -2px 0 inset;
+                transform: translateY(-2px);
+            }
+            &:active {
+                box-shadow: #D6D6E7 0 3px 7px inset;
+                transform: translateY(1px);
+            }
+            .dark & {
+                @apply bg-gray-700;
+                box-shadow: rgba(45, 35, 66, 0.2) 0 2px 4px, rgba(45, 35, 66, 0.15) 0 7px 13px -3px, #27272d 0 -2px 0 inset;
+                /* &:focus {
+                    box-shadow: #131320 0 0 0 1.5px inset, rgba(45, 35, 66, 0.2) 0 2px 4px, rgba(45, 35, 66, 0.15) 0 7px 13px -3px, #131320 0 -2px 0 inset;
+                } */
+                &:hover {
+                    box-shadow: rgba(45, 35, 66, 0.2) 0 4px 8px, rgba(45, 35, 66, 0.15) 0 7px 13px -3px, #27272d 0 -2px 0 inset;
+                    transform: translateY(-2px);
+                }
+                &:active {
+                    box-shadow: #131320 0 3px 7px inset;
+                    transform: translateY(1px);
+                }
+            }
         }
         .extend {
-            @apply px-2 py-2 text-xl font-bold;
+            @apply text-xl font-bold;
             i {
                 @apply w-5 h-5 leading-5 text-center;
             }
         }
         .page-number.current {
-            @apply bg-blue-500 border-blue-300 text-white;
-            @apply dark:text-gray-800 dark:border-blue-600;
-        }
-        > :first-child {
-            @apply rounded-tl-md rounded-bl-md;
-        }
-        > :last-child {
-            @apply rounded-tr-md rounded-br-md;
-        }
-        .space {
-            @apply w-12 h-10 leading-10 text-center align-middle;
+            @apply bg-blue-500 text-white;
+            background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+            box-shadow: rgba(45, 35, 66, 0.2) 0 2px 4px,rgba(45, 35, 66, .15) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -2px 0 inset;
+            color: #fff;
+            /* &:focus {
+                box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -2px 0 inset;
+            } */
+            &:hover {
+                box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -2px 0 inset;
+                transform: translateY(-2px);
+            }
+            &:active {
+                box-shadow: #3c4fe0 0 3px 7px inset;
+                transform: translateY(1px);
+            }
         }
     }
 }
