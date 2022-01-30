@@ -11,7 +11,6 @@
         @apply absolute md:relative;
         @apply flex-none w-full h-full md:w-72;
         @apply z-10 select-none pointer-events-none;
-        @apply scale-[1.025];
         .cover-img {
             @apply brightness-[.8] md:brightness-100 md:dark:brightness-[.8];
             @apply object-cover h-full w-full;
@@ -92,7 +91,9 @@
     }
     &.blur-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
-
+        .post-cover {
+            @apply scale-[1.025];
+        }
         .post-info {
             @apply text-white;
         }
@@ -131,12 +132,11 @@
     &.material-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
         .post-cover {
-            @apply md:w-[30rem];
+            @apply md:w-[30rem] overflow-hidden;
         }
         .post-info {
-            @apply transition duration-500;
-            @apply text-white;
-            @apply md:text-gray-800;
+            @apply relative;
+            @apply text-white md:text-gray-800;
             @apply md:dark:text-gray-200;
             .post-meta-line-2 {
                 .post-category, .post-tag a {
@@ -147,15 +147,16 @@
         }
         @media screen(md) {
             text-shadow: none!important;
-            &.left-cover .post-cover {
-                @apply -mr-48;
-                &::after {
+            &.left-cover .post-info {
+                @apply -ml-48;
+                &::before {
                     content: " ";
                     position: absolute;
                     top: 0;
                     bottom: 0;
-                    right: -4px;
-                    width: 75%;
+                    left: -9rem;
+                    width: calc(21rem + 4px);
+                    z-index: -1;
                     background: linear-gradient(
                         to left,
                         rgba(255, 255, 255, 1),
@@ -173,15 +174,16 @@
                     }
                 }
             }
-            &.right-cover .post-cover {
-                @apply -ml-48;
-                &::after {
+            &.right-cover .post-info {
+                @apply -mr-48;
+                &::before {
                     content: " ";
                     position: absolute;
                     top: 0;
                     bottom: 0;
-                    left: -4px;
-                    width: 75%;
+                    right: -9rem;
+                    width: calc(21rem + 4px);
+                    z-index: -1;
                     background: linear-gradient(
                         to right,
                         rgba(255, 255, 255, 1),
