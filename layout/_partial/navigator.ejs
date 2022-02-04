@@ -81,12 +81,11 @@
         <div class="nav-toolkit">
             <!-- <button class="music-player-toggle"><i class="ri-music-2-fill"></i></button> -->
             <%#- partial('../_widget/music_player') %>
-        <%_ if(theme.navigator.darkmode) { _%>
+        <%_ if(theme.navigator.toolkit.darkmode) { _%>
             <button class="dark-theme-toggle" data-tippy-content="深色模式"><i class="ri-contrast-2-line"></i></button>
         <%_ } _%>
-        <%_ if(theme.navigator.search) { _%>
+        <%_ if(theme.navigator.toolkit.search && theme.search.enable) { _%>
             <button class="search-toggle" data-tippy-content="搜索"><i class="ri-search-line"></i></button>
-            <%- partial('../_widget/search') %>
         <%_ } _%>
         </div>
         <div class="nav-right-drawer">

@@ -266,105 +266,7 @@ class Tabs {
         this.tabs.off('click');
     }
 }
-//模态框
-class Modal {
-    constructor (context) {
-        if (typeof context !== 'string') context = $(context);
-        else context = $('<span>' + context + '</span>');
-        this.overlay = $('<div class="modal-layout"></div>');
-        this.overlay.css({
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 50,
-            // backgroundColor: 'rgba(0, 0, 0, 0)',
-            // backdropFilter: 'blur(0px)',
-        });
-        this.closeBtn = $('<button class="close-btn"><i class="ri-close-fill"></i></button>');
-        this.context = $('<div class="content"></div>').append(context);
-        this.context.append(this.closeBtn);
-        // anime.set(this.context.get(0), {
-        //     opacity: 0,
-        //     translateY: 100
-        // });
-        this.overlay.append(this.context);
-        $('body').append(this.overlay);
-        this.overlay.hide();
-        this.bindEvents();
-    }
-    bindEvents () {
-        var that = this;
-        this.closeBtn.on('click', function (event) {
-            that.close();
-        });
-    }
-    isOpen () {
-        return this.overlay.hasClass('modal-open');
-    }
-    open () {
-        $('body').css('overflow', 'hidden');
-        // $('body').append(this.overlay);
-        this.overlay.show();
-        this.overlay.addClass('modal-open');
-        this.overlay.addClass('fade-in');
-        this.context.addClass('slide-up-in');
 
-        // anime({
-        //     targets: this.context.get(0),
-        //     opacity: 1,
-        //     translateY: 0,
-        //     easing: 'easeOutCubic',
-        //     duration: 800
-        // });
-        // anime({
-        //     targets: this.overlay.get(0),
-        //     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        //     // backdropFilter: 'blur(16px)',
-        //     easing: 'easeOutCubic',
-        //     duration: 500
-        // });
-    }
-    close () {
-        this.overlay.removeClass('modal-open');
-        var that = this;
-        $('body').css('overflow', 'auto');
-        this.overlay.removeClass('fade-in');
-        this.context.removeClass('slide-up-in');
-        this.overlay.addClass('fade-out');
-        this.context.addClass('slide-down-out');
-        setTimeout(function(){
-            that.overlay.remove();
-        }, 800);
-        // anime({
-        //     targets: this.context.get(0),
-        //     opacity: 0,
-        //     translateY: 100,
-        //     easing: 'easeOutCubic',
-        //     duration: 800
-        // });
-        // anime({
-        //     targets: this.overlay.get(0),
-        //     backgroundColor: 'rgba(0, 0, 0, 0)',
-        //     // backdropFilter: 'blur(0px)',
-        //     easing: 'easeOutCubic',
-        //     duration: 500
-        // }).finished.then(function () {
-        //     // that.overlay.detach();
-        //     that.overlay.remove();
-        //     delete that;
-        // });
-    }
-    toggle () {
-        if (this.isOpen()) this.close();
-        else this.open();
-    }
-    destroy() {
-        this.close();
-        this.closeBtn.off('click');
-    }
-}
 // 抽屉
 class Drawer {
     DEFAULT_OPTIONS = {
@@ -431,5 +333,124 @@ class Drawer {
         var $overlay = this.element.children('.overlay');
         $overlay.off('click');
         $overlay.off('transitionend');
+    }
+}
+class Modal {
+    static defaultOptions = {
+        width: '32rem',
+        title: '',
+        content: '',
+        html: null,
+        buttons: [],
+        beforeOpen: null,
+        afterOpen: null,
+        beforeClose: null,
+        afterClose: null,
+        swalOptions: {},
+    }
+    static swal = window.Swal.mixin({
+        showConfirmButton: false,
+        showDenyButton: false,
+        showCancelButton: false,
+        showCloseButton: true,
+        confirmButtonText: '确认',
+        denyButtonText: '拒绝',
+        cancelButtonText: '取消',
+        confirmButtonAriaLabel: '确认',
+        denyButtonAriaLabel: '拒绝',
+        cancelButtonAriaLabel: '取消'
+    });
+    constructor(...args) {
+        this.options = Object.assign({}, Modal.defaultOptions);
+        // constructor(content)
+        // constructor(htmlNode)
+        // constructor(options)
+        if (args.length == 1) {
+            let param = args[0];
+            if (typeof param === 'string') {
+                this.options.content = param;
+            } else if (typeof param === 'object') {
+                if (param instanceof Node) {
+                    this.options.html = param.cloneNode(true);
+                } else {
+                    Object.assign(this.options, param);
+                }
+            }
+        }
+        // constructor(title, content)
+        // constructor(content, htmlNode)
+        // constructor(content, options)
+        else if (args.length == 2) {
+            let firstParam = args[0];
+            let secondParam = args[1];
+            if (typeof firstParam === 'string' && typeof secondParam === 'string') {
+                this.options.title = firstParam;
+                this.options.content = secondParam;
+            } else if (typeof firstParam === 'string' && typeof secondParam === 'object') {
+                if (secondParam instanceof Node) {
+                    this.options.title = firstParam;
+                    this.options.html = secondParam.cloneNode(true);
+                } else {
+                    Object.assign(this.options, secondParam);
+                    this.options.content = secondParam;
+                }
+            }
+        }
+        // constructor(title, content, options)
+        // constructor(title, htmlNode, options)
+        else if (args.length == 3) {
+            let firstParam = args[0];
+            let secondParam = args[1];
+            let thirdParam = args[2];
+            this.options = Object.assign(Modal.defaultOptions, thirdParam);
+            this.options.title = firstParam;
+            if (typeof secondParam === 'string') {
+                this.options.content = secondParam;
+            } else if (typeof secondParam === 'object' && secondParam instanceof Node) {
+                this.options.html = secondParam.cloneNode(true);
+            }
+        }
+        this.swalInstance = null;
+        let self = this;
+        this.modalOptions = {
+            title: this.options.title,
+            width: this.options.width,
+            html: this.options.html,
+            text: this.options.content,
+            willOpen: this.options.beforeOpen,
+            didOpen: (...args) => {
+                if (typeof self.options.afterOpen === 'function') {
+                    self.options.afterOpen(...args);
+                }
+                self.opened = true;
+            },
+            willClose: this.options.beforeClose,
+            didClose: (...args) => {
+                if (typeof self.options.afterClose === 'function') {
+                    self.options.afterClose(...args);
+                }
+                self.opened = false;
+            },
+            didDestroy: () => {
+                self.opened = false;
+            },
+            showConfirmButton: this.options.buttons.includes('confirm'),
+            showDenyButton: this.options.buttons.includes('deny'),
+            showCancelButton: this.options.buttons.includes('cancel'),
+        };
+        Object.assign(this.modalOptions, this.options.swalOptions);
+        this.opened = false;
+    }
+    open() {
+        this.swalInstance = Modal.swal.fire(this.modalOptions);
+    }
+    close() {
+        if (this.opened) {
+            this.swalInstance.close();
+            this.swalInstance = null;
+        }
+    }
+    isOpened() {
+        return this.opened;
     }
 }

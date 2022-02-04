@@ -8,6 +8,7 @@ function themeConfig(config) {
         plugins: pluginsConfig(config),
         footer: footerConfig(config),
         navigator: navigatorConfig(config),
+        search: searchConfig(config),
     }
     let configCopy = Object.assign({}, config);
     Object.assign(configCopy, THEME_CONFIG);
@@ -74,8 +75,10 @@ function navigatorConfig(config) {
             {name: '标签', url: '/tags'},
             {name: '归档', url: '/archives'},
         ],
-        search: true,
-        darkmode: true,
+        toolkit: {
+            search: true,
+            darkmode: true,
+        }
     }
     let combinedConfig = deepMerge(defaultConfig, config?.navigator ?? {});
     return combinedConfig;
@@ -128,10 +131,57 @@ function pluginsConfig(config) {
     let combinedConfig = deepMerge(defaultConfig, configCopy);
     return combinedConfig;
 }
+function searchConfig(config) {
+    const defaultConfig = {
+        enable: false,
+        local_search: {
+            enable: false,
+            placeholder: '请输入关键词开始搜索',
+            searchAsYouType: false
+        },
+        algolia_search: {
+            enable: false,
+            configure:{
+                enable: true,
+                hitsPerPage: 8,
+            },
+            searchBox: {
+                enable: true,
+                placeholder: '请输入关键字开始搜索',
+                searchAsYouType: false,
+            },
+            poweredBy: {
+                enable: false,
+            },
+            hits: {
+                enable: false,
+            },
+            infiniteHits: {
+                enable: true,
+            },
+            stats: {
+                enable: false,
+            },
+            pagination: {
+                enable: false,
+            }
+        }
+    }
+    let configCopy = Object.assign({}, config.search);
+    for(let key in configCopy) {
+        if(isBoolean(configCopy[key])) {
+            configCopy[key] = {
+                enable: configCopy[key]
+            }
+        }
+    }
+    let combinedConfig = deepMerge(defaultConfig, configCopy);
+    return combinedConfig;
+}
 hexo.extend.filter.register('template_locals', function (locals) {
     let localsCopy = Object.assign({}, locals);
     localsCopy.theme = themeConfig(localsCopy.theme);
     hexo.theme.config = localsCopy.theme;
     // console.log(hexo.theme.config);
     return localsCopy;
-});
+}, 200);

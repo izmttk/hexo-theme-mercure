@@ -1,6 +1,6 @@
 <%# 引入变量：post对象%> 
 <% 
-let cover = getPageCover(post);
+let cover = post.cover;
 if(cover.type === 'blur' || cover.type === 'material'){
     if(cover.position === 'alter') {
         cover.position= index%2==0 ? 'left' : 'right';

@@ -40,6 +40,8 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/lib/theme-chalk/index.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
@@ -99,6 +101,9 @@
 
 <body>
     <%- partial('./_partial/loading', {}, {cache: true}) %>
+    <% if(theme.search.enable) { %>
+        <%- partial('./_partial/search', {}, {cache: true}) %>
+    <% } %>
     <%- partial('./_partial/header') %>
     <div id="main">
         <div id="content">

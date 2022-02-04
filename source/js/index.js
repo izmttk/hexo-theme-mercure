@@ -684,75 +684,76 @@ class SideDrawer extends Drawer {
 
 class Search {
     constructor() {
+        if(window.BLOG_CONFIG.search.provider === 'local') {
+            this.templateSelector = '#local-search-template';
+            this.rootSelector = '#local-search-panel';
+            this.inputSelector = '.local-SearchBox-input';
+            this.initSearchInstance = window.initLocalSearch;
+        } 
+        else if(window.BLOG_CONFIG.search.provider === 'algolia') {
+            this.templateSelector = '#algolia-search-template';
+            this.rootSelector = '#algolia-search-panel';
+            this.inputSelector = '.ais-SearchBox-input';
+            this.initSearchInstance = window.initAlgoliaSearch;
+        }
         this.init();
     }
     init() {
-        this.templateElement = document.querySelector('#site_search_template');
-    }
-    _handleSearch(event) {
-        if(event.type === 'keydown' && event.key !== 'Enter') {
-            return;
-        }
-        if (!this.searchApi.isKeywordsChanged()) return;
-        this.rootElement.classList.add('searched');
-        anime({
-            targets: '#site_search .form-group',
-            marginTop: '4rem',
-            easing: 'easeOutCubic',
-            duration: 300
+        this.template = document.querySelector(this.templateSelector).content.cloneNode(true);
+        let searchInstance = null;
+        this.modal = new Modal({
+            width: '100%',
+            beforeOpen: (element) => {
+                const el = this.template.querySelector(this.rootSelector).cloneNode(true)
+                element.querySelector('#swal2-html-container').appendChild(el);
+                searchInstance = this.initSearchInstance(el);
+            },
+            afterOpen: (element) => {
+                element.querySelector(this.inputSelector).focus();
+            },
+            afterClose: () => {
+                searchInstance.destroy();
+                searchInstance = null;
+            },
+            swalOptions: {
+                html: ' ',
+                scrollbarPadding: false,
+                // closeButtonHtml: '<i class="ri-close-fill"></i>',
+                closeButtonHtml: '<kbd><span>Esc</span></kbd>',
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                returnFocus: false,
+                showClass: {
+                    popup: 'slide-up-in',
+                    backdrop: 'fade-in'
+                },
+                hideClass: {
+                    popup: 'slide-down-out',
+                    backdrop: 'fade-out'
+                },
+                customClass: {
+                    container: 'search-modal'
+                }
+            }
         });
-        this.searchApi.query();
     }
-    isOpen() {
-        return this.modalIns?.isOpen();
+    isOpened() {
+        return this.modal.isOpened();
     }
     open() {
-        if(!this.isOpen()) {
-            let self = this;
-            let context = this.templateElement.content.cloneNode(true);
-            this.modalIns = new Modal(context);
-            this.modalIns.open();
-
-            this.searchApi = new LocalSearch('search-input', 'search-result-wrap');
-            this.modalElement = document.querySelector('.modal-layout');
-            this.rootElement = this.modalElement.querySelector('#site_search');
-            this.inputElement = this.rootElement.querySelector('#search-input');
-            this.buttonElement = this.rootElement.querySelector('#search-btn');
-
-            // 改变焦点到输入框
-            this.inputElement.focus();
-            this._eventListener = function(...args) {
-                Reflect.apply(self._handleSearch, self, args);
-            }
-            this.inputElement.addEventListener('keydown', this._eventListener);
-            this.buttonElement.addEventListener('click', this._eventListener);
-        }
+        this.modal.open();
     }
     close() {
-        if(this.isOpen()) {
-            this.inputElement.removeEventListener('keydown', this._eventListener);
-            this.buttonElement.removeEventListener('click', this._eventListener);
-            this.modalIns?.close();
-            this.modalIns?.destroy();
-            delete this.rootElement;
-            delete this.modalIns;
-            delete this.searchApi;
-            delete this.modalElement;
-            delete this.inputElement;
-            delete this.buttonElement;
-        }
+        this.modal.close();
     }
     toggle() {
-        if(!this.isOpen()) {
-            this.open();
-        } else {
+        if (this.isOpened()) {
             this.close();
+        } else {
+            this.open();
         }
     }
-    destroy() {
-        this.modalIns?.destroy();
-        delete this.templateElement;
-    }
+    destroy() {}
 }
 
 class FloatToolbar {
@@ -863,7 +864,7 @@ class Blog {
         this.initSidebar();
         this.initLoading();
         this.initFloatToolbar();
-        // this.initLazyLoad();
+        this.initLazyLoad();
         this.initSmoothScroll();
         this.initTooltip();
         this.initKatex();
@@ -909,11 +910,12 @@ class Blog {
             }
         });
     }
-    // initLazyLoad() {
-    //     if(window.BLOG_CONFIG.lazyload.enable) {
-    //         lazyload();
-    //     }
-    // }
+    initLazyLoad() {
+        if(window.BLOG_CONFIG.lazyload.enable) {
+            window.lazySizesConfig = window.lazySizesConfig || {};
+            window.lazySizesConfig.expand = 400;
+        }
+    }
     initTooltip() {
         tippy('[data-tippy-content]',{
             animation: 'shift-away',

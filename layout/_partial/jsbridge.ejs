@@ -23,7 +23,7 @@
         layout = 'archive';
     }
 
-    let config = {
+    const blogConfig = {
         layout: layout,
         header:  headerConfig,
         navigator: theme.navigator,
@@ -34,8 +34,26 @@
         lazyload: theme.plugins.lazyload,
         katex: theme.plugins.katex,
         pjax: theme.plugins.pjax,
+        search: {
+            
+        }
+    }
+    if(theme.search.algolia_search.enable) {
+        blogConfig.search = {
+            ...theme.search.algolia_search,
+            appId: theme.search.algolia_search.appId ?? config.algolia.appId,
+            apiKey: theme.search.algolia_search.apiKey ?? config.algolia.apiKey,
+            indexName: theme.search.algolia_search.indexName ?? config.algolia.indexName,
+            provider: 'algolia'
+        };
+    }
+    if(theme.search.local_search.enable) {
+        blogConfig.search = {
+            ...theme.search.local_search,
+            provider: 'local'
+        };
     }
 %>
 <script type="text/javascript" id="script_blog_config">
-    window.BLOG_CONFIG = <%-JSON.stringify(config) %>
+    window.BLOG_CONFIG = <%-JSON.stringify(blogConfig) %>
 </script>

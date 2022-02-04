@@ -1,225 +1,257 @@
+# 配置网站小图标
 favicon: /favicon.ico
 
+# 配置作者信息
 author:
-    name: 银河渡舟
-    avatar: /assets/avatar.png
-    background: /assets/defalut-profile-bg.jpg
-    signature: 永远相信美好的事情即将发生
-    social:
-        - name: QQ
-          link: #
-          icon: iconfont icon-qq
-          color: "#1a98ff"
-        - name: 哔哩哔哩
-          link: #
-          icon: iconfont icon-bilibili
-          color: "#fc87b2"
-        - name: 网易云音乐
-          link: #
-          icon: iconfont icon-netease-music
-          color: "#ff4e6a"
-        - name: Github
-          link: #
-          icon: iconfont icon-github
-          color: "#7c8690"
-        - name: Telegram
-          link: #
-          icon: iconfont icon-telegram
-          color: "#00dbff"
-        - name: 邮件
-          link: #
-          icon: iconfont icon-mail
-          color: "#15ce05"
-        - name: 知乎
-          link: #
-          icon: iconfont icon-zhihu
-          color: "#1e88e5"
-        - name: 微博
-          link: #
-          icon: iconfont icon-weibo
-          color: "#ff3b00"
+  name: 银河渡舟
+  avatar: /assets/avatar.png
+  background: /assets/defalut-profile-bg.jpg
+  signature: 永远相信美好的事情即将发生
+  social:
+    - name: QQ
+      link: #
+      icon: iconfont icon-qq
+      color: "#1a98ff"
+    - name: 哔哩哔哩
+      link: #
+      icon: iconfont icon-bilibili
+      color: "#fc87b2"
+    - name: 网易云音乐
+      link: #
+      icon: iconfont icon-netease-music
+      color: "#ff4e6a"
+    - name: Github
+      link: #
+      icon: iconfont icon-github
+      color: "#7c8690"
+    - name: Telegram
+      link: #
+      icon: iconfont icon-telegram
+      color: "#00dbff"
+    - name: 邮件
+      link: #
+      icon: iconfont icon-mail
+      color: "#15ce05"
+    - name: 知乎
+      link: #
+      icon: iconfont icon-zhihu
+      color: "#1e88e5"
+    - name: 微博
+      link: #
+      icon: iconfont icon-weibo
+      color: "#ff3b00"
 
+# 配置页头
 header:
-    # 是否显示 header
-    enable: true
-    height: 400px
-    
-    # Header 的底部效果，允许值：
-    #  - none      无过渡效果
-    #  - gradient  从透明到背景色渐变过渡
-    #  - cloud     静态云朵图案
-    #  - waves     动态波浪效果
-    bottom_effect: waves
-    layout:
-        index:
-            # 网页头部的高度，可以为每个模板单独指定，full表示全屏，支持 css 写法
-            height: calc(100vh + 60px)
+  # 是否显示 header
+  enable: true
+  height: 400px
+  
+  # Header 的底部效果，允许值：
+  #  - none      无过渡效果
+  #  - gradient  从透明到背景色渐变过渡
+  #  - cloud     静态云朵图案
+  #  - waves     动态波浪效果
+  bottom_effect: waves
+  layout:
+    index:
+      # 网页头部的高度，可以为每个模板单独指定，full表示全屏，支持 css 写法
+      height: calc(100vh + 60px)
 
-            # 网站封面
-            cover:
-                # 网站封面类型，仅对首页生效，type 允许值：
-                #  - none     无封面图片
-                #  - normal   静态图片，image 域应当为图像路径文本
-                #  - random   随机图片，image 域应当为图像路径列表，每次刷新从中随机一个
-                #  - custom   自定义 css 中 background 后的内容，可以为颜色、渐变、图像等
-                #  - parallax 视差效果，image 域应当为对象列表，列表项包含 url 和 depth 两个属性
-                #             url 属性表示图片路径，depth 属性表示图像视差深度
-                type: parallax
-                # 图像路径、路径列表或配置对象列表
-                image:
-                    - { url: "/assets/layer-1.png", depth: 0.2 }
-                    - { url: "/assets/layer-2.png", depth: 0.4 }
-                    - { url: "/assets/layer-3.png", depth: 1 }
+      # 网站封面
+      cover:
+        # 网站封面类型，仅对首页生效，type 允许值：
+        #  - none     无封面图片
+        #  - normal   静态图片，image 域应当为图像路径文本
+        #  - random   随机图片，image 域应当为图像路径列表，每次刷新从中随机一个
+        #  - custom   自定义 css 中 background 后的内容，可以为颜色、渐变、图像等
+        #  - parallax 视差效果，image 域应当为对象列表，列表项包含 url 和 depth 两个属性
+        #             url 属性表示图片路径，depth 属性表示图像视差深度
+        type: parallax
+        # 图像路径、路径列表或配置对象列表
+        image:
+          - { url: "/assets/layer-1.png", depth: 0.2 }
+          - { url: "/assets/layer-2.png", depth: 0.4 }
+          - { url: "/assets/layer-3.png", depth: 1 }
 
-            # 网站标题文字或者图片，支持html
-            title: 银河渡舟 #任何html内容
+      # 网站标题文字或者图片，支持html
+      title: 银河渡舟 #任何html内容
 
-            # 网站副标题
-            description:
-                # 副标题类型，type 允许值：
-                #  - normal  静态文本或html，content 域应当为文本或html
-                #  - random  随机文本或html，content 域应当为文本或html的列表，每次刷新从中随机一个
-                #  - api     从api中获取文本，api的返回类型应当为json，若 type 为 api，则 url 域
-                #            应当填入api路径，text_field 域应当填入 json 中句子文本对应的属性名称，
-                #            from_field 域应当填入 json 中句子出处对应的属性名称
-                type: api
-                url: //v1.hitokoto.cn
-                text_field: hitokoto
-                from_field: from
-            # 是否开启滚动提示
-            scroll_indicator: true
-        post:
-            # 头部封面特色图片显示类型
-            #  - none     无封面图片
-            #  - full     全覆盖特色图片
-            #  - mini     局部卡片样式特色图片
-            cover: full
+      # 网站副标题
+      description:
+        # 副标题类型，type 允许值：
+        #  - normal  静态文本或html，content 域应当为文本或html
+        #  - random  随机文本或html，content 域应当为文本或html的列表，每次刷新从中随机一个
+        #  - api     从api中获取文本，api的返回类型应当为json，若 type 为 api，则 url 域
+        #            应当填入api路径，text_field 域应当填入 json 中句子文本对应的属性名称，
+        #            from_field 域应当填入 json 中句子出处对应的属性名称
+        type: api
+        url: //v1.hitokoto.cn
+        text_field: hitokoto
+        from_field: from
+      # 是否开启滚动提示
+      scroll_indicator: true
+    post:
+      # 头部封面特色图片显示类型
+      #  - none     无封面图片
+      #  - full     全覆盖特色图片
+      #  - mini     局部卡片样式特色图片
+      cover: full
 
-        page:
-            height: 400px
+    page:
+      height: 400px
 
-
+# 配置顶部导航栏
 navigator:
-    logo: 银河渡舟 #任何html
-    menu:
-        - name: 博客
-          url: /
-        - name: 分类
-          url: /categories
-        - name: 标签
-          url: /tags
-        - name: 归档
-          url: /archives
-        - name: 友链
-          url: /friends
-        - name: 关于
-          url: /about
-        - name: 菜单
+  logo: 银河渡舟 #任何html
+  menu:
+    - name: 博客
+      url: /
+    - name: 分类
+      url: /categories
+    - name: 标签
+      url: /tags
+    - name: 归档
+      url: /archives
+    - name: 友链
+      url: /friends
+    - name: 关于
+      url: /about
+    - name: 菜单
+      submenu:
+        - name: 条目1
+          url: #
+        - name: 条目2
+          url: #
+        - divider # 分割线
+        - name: 子菜单
           submenu:
-              - name: 条目1
-                url: #
-              - name: 条目2
-                url: #
-              - divider # 分割线
-              - name: 子菜单
-                submenu:
-                    - name: 条目1
-                      url: #
-                    - name: 条目2
-                      url: #
+            - name: 条目1
+              url: #
+            - name: 条目2
+              url: #
+  # 导航栏附加功能按钮
+  toolkit:
+    search: true # 搜索功能入口按钮，注意要同时开启配置文件中的 search.enable 后才能生效
+    darkmode: true # 深色某切换按钮
 
-    search: true
-    darkmode: true
-
+# 配置侧边栏
 sidebar:
-    enable: true
-    show_profile: true
-    show_tag_cloud: true
-    show_category_tree: true
-    show_toc: true
+  enable: true
+  show_profile: true
+  show_tag_cloud: true
+  show_category_tree: true
+  show_toc: true
 
-
+# 配置页脚
 footer:
   text: 欢迎来访我的小窝
 
 # 配置默认文章卡片
 post_card: 
-    # 卡片封面配置
-    cover:
-        # 卡片封面类型默认值，可被Front-matter替换，允许值：
-        #  - none 无特色图片
-        #  - blur 卡片背景为图片模糊
-        #  - full 卡片背景为图片填充
-        #  - material 卡片背景从图片取色
-        type: blur
-        # 卡片封面位置默认值，仅对type为blur和material的卡片生效
-        # 可被Front-matter替换，允许值：
-        #  - alter 左右交替
-        #  - left 始终在左侧
-        #  - right 始终在右侧
-        position: alter
+  # 卡片封面配置
+  cover:
+    # 卡片封面类型默认值，可被Front-matter替换，允许值：
+    #  - none 无特色图片
+    #  - blur 卡片背景为图片模糊
+    #  - full 卡片背景为图片填充
+    #  - material 卡片背景从图片取色
+    type: blur
+    # 卡片封面位置默认值，仅对type为blur和material的卡片生效
+    # 可被Front-matter替换，允许值：
+    #  - alter 左右交替
+    #  - left 始终在左侧
+    #  - right 始终在右侧
+    position: alter
 
 darkmode: true
 
+# 配置评论功能
 comments:
-    disqus:
-        enable: false
-        shortname: demo
-    disqusjs:
-        enable: true
-        # 你的 Disqus shortname
-        shortname: demo
-        # 你站点的名称，将会显示在「评论基础模式」的 header 中；
-        # 该配置应该和 Disqus Admin - Settings - General - Website Name 一致
-        sitename: demo
-        # DisqusJS 请求的 API Endpoint，通常情况下你应该配置一个 Disqus API 的反代并填入反代的地址。
-        # 你也可以直接使用 DISQUS 官方 API 的 Endpoint https://disqus.com/api/，
-        # 或是使用SukkaW搭建的 Disqus API 反代 Endpoint https://disqus.skk.moe/disqus/。
-        api: #一个反代地址
-        # DisqusJS 向 API 发起请求时使用的 API Key，
-        # 你应该在配置 Disqus Application 时获取了 API Key;
-        # DisqusJS 支持填入一个 包含多个 API Key 的 Array，在每次请求时会随机使用其中一个；
-        # 如果你只需要填入一个 API Key，则可以填入 String 或 Array。
-        apikey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        # 你的站点的 Disqus Moderator 的用户名（也就是你的用户名）。
-        # 你可以在 Disqus - Settings - Account - Username 获取你的 Username
-        #admin: GREDIW
-        # 你想显示在 Disqus Moderator Badge 中的文字。
-        # 该配置应和 Disqus Admin - Settings - Community - Moderator Badge Text 相同
-        #adminLabel: 银河渡舟
-    gitalk:
-        enable: false
-        # 所有配置项参考 https://github.com/gitalk/gitalk/blob/master/readme-cn.md
-        # 必须. GitHub Application Client ID.
-        clientID: xxxxxxxxxxxxxxxxxxxx
-        # 必须. GitHub Application Client Secret.
-        clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        # 必须. GitHub repository.
-        repo: example-repo
-        # 必须. GitHub repository 所有者，可以是个人或者组织。
-        owner: WiderGao
-        # 必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
-        admin: WiderGao
-    giscus:
-        enable: true
-        # 所有配置项参考 https://giscus.app/
-        repo: example-repo
-        repoId: xxxxxxxxxxxxxxxxxx
-        category: General
-        categoryId: xxxxxxxxxxxxxxxxxx
-        mapping: pathname
-        reactionsEnabled: 0
-        emitMetadata: 0
-        theme: light
-    twikoo:
-        enable: false
-        # CloudBase环境ID
-        envId: xxxx-xxxx-xxxxxxxxxxxx
+  disqus:
+    enable: false
+    shortname: demo
+  disqusjs:
+    enable: true
+    # 你的 Disqus shortname
+    shortname: demo
+    # 你站点的名称，将会显示在「评论基础模式」的 header 中；
+    # 该配置应该和 Disqus Admin - Settings - General - Website Name 一致
+    sitename: demo
+    # DisqusJS 请求的 API Endpoint，通常情况下你应该配置一个 Disqus API 的反代并填入反代的地址。
+    # 你也可以直接使用 DISQUS 官方 API 的 Endpoint https://disqus.com/api/，
+    # 或是使用SukkaW搭建的 Disqus API 反代 Endpoint https://disqus.skk.moe/disqus/。
+    api: #一个反代地址
+    # DisqusJS 向 API 发起请求时使用的 API Key，
+    # 你应该在配置 Disqus Application 时获取了 API Key;
+    # DisqusJS 支持填入一个 包含多个 API Key 的 Array，在每次请求时会随机使用其中一个；
+    # 如果你只需要填入一个 API Key，则可以填入 String 或 Array。
+    apikey: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # 你的站点的 Disqus Moderator 的用户名（也就是你的用户名）。
+    # 你可以在 Disqus - Settings - Account - Username 获取你的 Username
+    #admin: GREDIW
+    # 你想显示在 Disqus Moderator Badge 中的文字。
+    # 该配置应和 Disqus Admin - Settings - Community - Moderator Badge Text 相同
+    #adminLabel: 银河渡舟
+  gitalk:
+    enable: false
+    # 所有配置项参考 https://github.com/gitalk/gitalk/blob/master/readme-cn.md
+    # 必须. GitHub Application Client ID.
+    clientID: xxxxxxxxxxxxxxxxxxxx
+    # 必须. GitHub Application Client Secret.
+    clientSecret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # 必须. GitHub repository.
+    repo: example-repo
+    # 必须. GitHub repository 所有者，可以是个人或者组织。
+    owner: WiderGao
+    # 必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
+    admin: WiderGao
+  giscus:
+    enable: true
+    # 所有配置项参考 https://giscus.app/
+    repo: example-repo
+    repoId: xxxxxxxxxxxxxxxxxx
+    category: General
+    categoryId: xxxxxxxxxxxxxxxxxx
+    mapping: pathname
+    reactionsEnabled: 0
+    emitMetadata: 0
+    theme: light
+  twikoo:
+    enable: false
+    # CloudBase环境ID
+    envId: xxxx-xxxx-xxxxxxxxxxxx
+
+# 附加功能
 plugins:
-    katex: true
-    anchor: false
-    lazyload:
-        enable: true
-        loading_img: /assets/loading.svg
-        error_img: /assets/loading.svg
-    pjax: true
+  katex: true
+  anchor: false
+  lazyload:
+    enable: true
+    loading_img: /assets/loading.svg
+  pjax: true
+
+# 配置搜索服务，目前提供了本地搜索服务和 Algolia 搜索服务，请确保任何时候只开启一个搜索服务
+search:
+  enable: true
+  # 使用 hexo 插件生成搜索信息
+  local_search:
+    enable: true
+    # 搜索框占位符
+    placeholder: 请输入关键词开始搜索
+    # 是否启用输入时搜索
+    searchAsYouType: false
+  # 使用 Algolia 的服务
+  algolia_search:
+    enable: false
+    # 使用了 Algolia 官方提供的 InstantSearch.js
+    # https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/
+    # 预置的组件有 configure, searchBox, poweredBy, hits, infiniteHits, stats, pagination
+    # 每个组件可以由对应同名字段进行配置, 并可使用改字段内 enable 属性控制是否启用
+    # 默认开启并配置好的组件有 configure, searchBox, infiniteHits, 你可以不做任何修改
+    # 详细可配置内容参见: https://www.algolia.com/doc/api-reference/widgets/js/
+    searchBox:
+      placeholder: 请输入关键字开始搜索
+      searchAsYouType: false
+    configure:
+      hitsPerPage: 8

@@ -91,9 +91,9 @@
         <%_ } _%>
     </div>
     <%_ } else { _%>
-    <%_ let cover = getPageCover(page); _%>
+    <%_ let cover = page.cover ?? null; _%>
     <div class="cover" style="height:<%- headerConfig.height %>">
-        <%_ if(cover.type == 'none') { _%>
+        <%_ if(cover == null || cover.type == 'none') { _%>
         <div class="background bg-gradient-<%- Math.floor(Math.random()*10) %>"></div>
         <%_ } else { _%> 
         <div class="background <%= headerConfig.cover === 'mini'?'md:blur-xl md:scale-125':'' %>" style="background-image:url('<%- url_for(cover.path) %>')"></div>

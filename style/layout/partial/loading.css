@@ -1,5 +1,5 @@
 .loading {
-    @apply fixed inset-0 z-[1000] bg-gray-200/70 dark:bg-gray-800/70;
+    @apply fixed inset-0 z-[10000] bg-gray-200/70 dark:bg-gray-800/70;
 }
 .spinner {
     animation: rotate 2s linear infinite;
@@ -33,7 +33,7 @@
 }
 
 #nprogress {
-    @apply z-[1010];
+    @apply z-[11000] fixed;
     .bar {
         @apply !bg-indigo-500 !h-[4px];
     }
