@@ -30,8 +30,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css" media="all">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light-border.min.css" media="all">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css" media="all">
-    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js" defer></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all"> -->
@@ -40,11 +40,11 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/lib/theme-chalk/index.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js" defer></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" defer></script>
     <%- css({href: url_for('/css/style.css'), media: 'all'}) %>
     <%- css({href: url_for('/css/iconfont.css'), media: 'all'}) %>
     <% if(config.highlight.enable) { %>
@@ -69,14 +69,14 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/rgbaster@2/dist/rgbaster.umd.min.js"></script> -->
     <% if(theme.plugins.lazyload.enable) { %>
     <!-- <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script> -->
-    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5/plugins/print/ls.print.min.js,npm/lazysizes@5/plugins/noscript/ls.noscript.min.js,npm/lazysizes@5/plugins/bgset/ls.bgset.min.js,npm/lazysizes@5/plugins/blur-up/ls.blur-up.min.js,npm/lazysizes@5"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5/plugins/print/ls.print.min.js,npm/lazysizes@5/plugins/noscript/ls.noscript.min.js,npm/lazysizes@5/plugins/bgset/ls.bgset.min.js,npm/lazysizes@5/plugins/blur-up/ls.blur-up.min.js,npm/lazysizes@5" defer></script>
     <% } %> 
     <% if(theme.plugins.pjax.enable) { %>
     <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
     <% } %> 
     <%- partial('./_partial/jsbridge') %>
     <%# 提前判断深色模式防止闪烁 %>
-    <script type="text/javascript" defer>
+    <script type="text/javascript" async>
     (function() {
         function getOsPreference() {
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

@@ -59,13 +59,13 @@
                     <%_ if(headerConfig.description.type=='normal') { _%>
                     <span><%- headerConfig.description.content %></span>
                     <%_ } else if(headerConfig.description.type=='random') { _%>
-                    <script>
+                    <script async>
                         let descList = [<%- headerConfig.description.content.toString() %>];
                         let desc = document.querySelector('#header .description');
                         desc.innerHTML = '<span><%- descList[Math.floor(Math.random()*descList.length)] %></span>';
                     </script>
                     <%_ } else if(headerConfig.description.type=='api') { _%>
-                    <script>
+                    <script async>
                         fetch('<%- headerConfig.description.url %>').then(res=>res.json()).then(data => {
                             let desc = document.querySelector('#header .description');
                             desc.innerHTML = `<span class="hotokoto">`

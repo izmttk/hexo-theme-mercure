@@ -62,17 +62,29 @@ function initLocalSearch(element) {
 <% } else if (theme.search.algolia_search.enable) { %> 
 <template id="algolia-search-template">
     <div id="algolia-search-panel">
+        <%_ if(theme.search.algolia_search.searchBox.enable) { _%>
         <div id="algolia-searchbox"></div>
+        <%_ } _%> 
         <div id="algolia-search-result-wrap">
             <div id="algolia-search-result">
-                <!-- <div id="algolia-meta">
+                <%_ if(theme.search.algolia_search.stats.enable || theme.search.algolia_search.poweredBy.enable) { _%>
+                <div id="algolia-meta">
+                    <%_ if(theme.search.algolia_search.stats.enable) { _%>
                     <div id="algolia-stats"></div>
-                    <dic id="algolia-powerby"></dic>
-                </div> -->
+                    <%_ } _%> 
+                    <%_ if(theme.search.algolia_search.poweredBy.enable) { _%>
+                    <dic id="algolia-poweredby"></dic>
+                    <%_ } _%> 
+                </div>
+                <%_ } _%> 
+                <%_ if(theme.search.algolia_search.hits.enable || theme.search.algolia_search.infiniteHits.enable) { _%>
                 <div id="algolia-hits"></div>
-                <!-- <div id="algolia-pagination"></div> -->
+                <%_ } _%> 
+                <%_ if(theme.search.algolia_search.pagination.enable) { _%>
+                <div id="algolia-pagination"></div>
+                <%_ } _%> 
             </div>
-            <footer id="algolia-footer" class="flex justify-end items-center flex-none p-[16px] border-t border-slate-600/10">
+            <footer id="algolia-footer" class="flex justify-end items-center">
                 <div class="block h-[16px] py-[1px]">
                     <a href="https://www.algolia.com/?utm_source=documentation&amp;utm_medium=link&amp;utm_term=footer&amp;utm_campaign=poweredby" rel="noopener noreferrer" target="_blank" class="flex items-center h-full">
                         <span class="text-slate-500 text-xs">Search by </span>
@@ -146,7 +158,7 @@ function initAlgoliaSearch(element) {
 <% if(theme.search.algolia_search.poweredBy.enable) { _%>
     <%_ let { enable, ...options } = theme.search.algolia_search.poweredBy; _%>
     const poweredBy = instantsearch.widgets.poweredBy(Object.assign({
-        container: element.querySelector('#algolia-powerby')
+        container: element.querySelector('#algolia-poweredby')
     }, <%- JSON.stringify(options) %>));
     widgets.push(poweredBy);
 <% } _%>

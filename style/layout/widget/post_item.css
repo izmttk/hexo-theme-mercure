@@ -132,10 +132,10 @@
     &.material-cover {
         text-shadow: 0 2px 2px rgba(0,0,0,.5);
         .post-cover {
-            @apply md:w-[30rem] overflow-hidden;
+            @apply md:w-[30rem] overflow-hidden z-0;
         }
         .post-info {
-            @apply relative;
+            @apply relative z-10;
             @apply text-white md:text-gray-800;
             @apply md:dark:text-gray-200;
             .post-meta-line-2 {

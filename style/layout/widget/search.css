@@ -41,22 +41,25 @@
     @apply dark:bg-slate-800 md:dark:border-2 dark:border-slate-600 dark:text-slate-100;
     box-shadow: 0 8px 22px 0 rgba(37,44,97,.15), 0 4px 6px 0 rgba(93,100,148,.2);
     #algolia-searchbox, #local-searchbox {
-        @apply flex items-center flex-none h-[72px] border-b border-transparent;
+        @apply z-10 flex items-center flex-none h-[72px];
+        @apply border-b border-slate-600/10;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     }
     #algolia-search-result-wrap, #local-search-result-wrap {
-        @apply flex-auto overflow-hidden flex flex-col;
+        @apply z-0 flex-auto overflow-hidden flex flex-col;
         #algolia-search-result, #local-search-result {
-            @apply flex-auto overflow-y-auto touch-auto bg-[#f5f5fa] px-2 md:px-4;
+            @apply z-0 flex-auto overflow-y-auto bg-[#f5f5fa] px-2 md:px-4;
             @apply dark:bg-slate-700;
             #algolia-meta, #local-meta {
-                @apply flex justify-between items-center my-4;
+                @apply flex justify-between items-center pt-4 text-sm;
             }
             #algolia-hits, #local-hits {
                 @apply py-2 md:py-4;
             }
         }
         #algolia-footer, #local-footer {
-            @apply flex-none;
+            @apply z-10 flex-none p-[16px] border-t border-slate-600/10;
+            box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);
         }
     }
     
@@ -139,10 +142,8 @@
         background-color: rgba(84, 104, 255, 0.1);
         color: #5468ff;
         border-radius: 3px;
-        padding-left: 3px;
-        padding-right: 3px;
-        margin-left: 3px;
-        margin-right: 3px;
+        padding: 0 3px;
+        margin: 0 3px;
         @apply dark:bg-[rgb(143,156,255,0.2)];
     }
 
@@ -155,8 +156,7 @@
     .ais-InfiniteHits-loadMore {
         display: block;
         height: 32px;
-        padding-left: 16px;
-        padding-right: 16px;
+        padding: 0 16px;
         margin: 12px auto;
         background-image: linear-gradient(180deg,#7c90ff,#5468ff);
         font-size: 12px;
@@ -177,9 +177,9 @@
         display: none;
     }
     .ais-Pagination {
-        display: block;
-        margin-top: 24px;
-        margin-bottom: 24px
+        display: flex;
+        justify-content: center;
+        margin: 12px 0;
     }
 
     .ais-Pagination-list {
@@ -196,11 +196,15 @@
         color: #21243d;
         border-radius: 4px;
         box-shadow: 0 4px 11px 0 rgba(37,44,97,.15),0 2px 3px 0 rgba(93,100,148,.2);
-        transition: all .2s ease-out
+        transition: all .2s ease-out;
+        .dark & {
+            color: #fff;
+            background-image: linear-gradient(180deg,#526989,#242f42);
+        }
     }
 
     .ais-Pagination-item--selected {
-        background-image: linear-gradient(180deg,#7c90ff,#5468ff);
+        background-image: linear-gradient(180deg,#7c90ff,#5468ff)!important;
         color: #fff
     }
 
@@ -209,8 +213,6 @@
     }
 
     .ais-Pagination-link {
-        display: -webkit-box;
-        display: -ms-flexbox;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -225,12 +227,10 @@
     .ais-HitsPerPage-select,.ais-SortBy-select {
         width: 100%;
         height: 100%;
-        padding-left: 8px;
-        padding-right: 8px;
+        padding: 8px 0;
         background-color: transparent;
         appearance: none;
         line-height: 16px;
-        font-family: Open Sans,system-ui,BlinkMacSystemFont,-apple-system,sans-serif;
         font-size: 12px;
         color: inherit;
         cursor: pointer
