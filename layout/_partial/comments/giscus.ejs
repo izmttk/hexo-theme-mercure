@@ -1,7 +1,10 @@
 <div class="giscus"></div>
 <script>
-  function loadComments() {
-    var script = document.createElement("script");
+function loadComments(theme='light') {
+    document.querySelector('.giscus').innerHTML = '';
+    document.querySelector('#giscus-script')?.remove();
+    let script = document.createElement("script");
+    script.id="giscus-script";
     script.type = 'text/javascript';
     script.src = 'https://giscus.app/client.js';
     script.async = true;
@@ -14,11 +17,37 @@
     script.setAttribute('data-mapping','<%= theme.comments.giscus.mapping %>');
     script.setAttribute('data-reactions-enabled','<%= theme.comments.giscus.reactionsEnabled %>');
     script.setAttribute('data-emit-metadata','<%= theme.comments.giscus.emitMetadata %>');
-    script.setAttribute('data-theme','<%= theme.comments.giscus.theme %>');
+    script.setAttribute('data-theme', theme);
     script.setAttribute('data-lang','<%= theme.comments.giscus.lang %>');
 
     // script.appendChild(document.createTextNode(code));
     document.querySelector('head').appendChild(script);
-  }
-  loadComments();
+}
+(function() {
+    let giscusMutationCallback = (mutationsList) => {
+        for(let mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                let isDarkTheme = mutation.target.classList.contains('dark');
+                if(isDarkTheme) {
+                    loadComments('dark_dimmed');
+                } else {
+                    loadComments('light');
+                }
+            }
+        }
+        // console.log(mutationsList);
+    };
+    let observer = new MutationObserver(giscusMutationCallback);
+    observer.observe(document.documentElement, {
+        attributes: true, 
+        attributeFilter: ['class'],
+        childList: false,
+        subtree: false
+    });
+    if(document.documentElement.classList.contains('dark')) {
+        loadComments('dark_dimmed');
+    } else {
+        loadComments('light');
+    }
+})();
 </script>

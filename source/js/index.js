@@ -949,12 +949,16 @@ class Blog {
         let self = this;
         document.addEventListener('pjax:send', function() {
             self.loading.show();
+            // console.log('pjax:send');
+        });
+        document.addEventListener('pjax:complete', function() {
             self.header?.destroy();
             self.navbar?.destoryMenuDrawer();
             self.navbar?.destorySideDrawer();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
             window.loadComments = null;
+            // console.log('pjax:complete');
         });
         document.addEventListener('pjax:success', function() {
             self.initHeader();
@@ -972,6 +976,7 @@ class Blog {
             animateCSS('#header','slide-down-fade-in');
             animateCSS('#main','slide-up-fade-in');
             self.loading.hide();
+            // console.log('pjax:success');
         });
         // 对所有 a[href] 绑定 click 事件，此后 DOM 新增的 a[href] 也会自动监听
         // 只有站内跳转才会用到 pjax ，注意要取消事件的默认行为
