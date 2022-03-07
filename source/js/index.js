@@ -210,7 +210,7 @@ class AnchorManager {
 }
 const anchorManager = new AnchorManager();
 
-const animateCSS = (element, animation, prefix = '') =>
+const animateCSS = (element, animation, duration, prefix = '') =>
   new Promise((resolve, reject) => {
     const animationName = `${prefix}${animation}`;
     let node = element;
@@ -218,11 +218,16 @@ const animateCSS = (element, animation, prefix = '') =>
         node = document.querySelector(element);
     }
     node.classList.add(`${prefix}animated`, animationName);
-
+    if(typeof duration === 'number') {
+        node.style.animationDuration = duration + 'ms';
+    } else if(typeof duration === 'string') {
+        node.style.animationDuration = duration;
+    }
     // When the animation ends, we clean the classes and resolve the Promise
     function handleAnimationEnd(event) {
       event.stopPropagation();
       node.classList.remove(`${prefix}animated`, animationName);
+      node.style.animationDuration = null;
       resolve('Animation ended');
     }
 
@@ -835,15 +840,14 @@ class Loading {
     }
     show() {
         NProgress.start();
-        this.element.style.display = 'block';
         this.element.style.visibility = 'visible';
-        animateCSS(this.element, 'fade-in');
+        animateCSS(this.element, 'fade-in', 500);
 
         // this.element.classList.add('fade-in');
     }
     hide() {
         NProgress.done();
-        animateCSS(this.element, 'fade-out').then(() => {
+        animateCSS(this.element, 'fade-out', 500).then(() => {
             this.element.style.visibility = 'hidden';
         });
     }

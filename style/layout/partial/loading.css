@@ -1,15 +1,14 @@
 .loading {
-    @apply fixed inset-0 z-[10000] bg-gray-200/70 dark:bg-gray-800/70;
+    @apply fixed inset-0 z-[10000] bg-gray-200 dark:bg-gray-800;
 }
-.spinner {
-    animation: rotate 2s linear infinite;
+/* .spinner-wrapper {
     @apply absolute top-1/2 left-1/2 mt-[-25px] ml-[-25px] w-[50px] h-[50px];
-    & .path {
-        @apply stroke-current text-indigo-500 dark:text-indigo-400;
-        stroke-linecap: round;
-        animation: dash 1.5s ease-in-out infinite;
-    }
-
+    animation: rotate 2s linear infinite;
+}
+.spinner .path {
+    @apply stroke-current text-blue-600 dark:text-blue-500;
+    stroke-linecap: round;
+    animation: dash 1.25s ease-in-out infinite;
 }
 
 @keyframes rotate {
@@ -30,12 +29,12 @@
         stroke-dasharray: 90, 150;
         stroke-dashoffset: -124;
     }
-}
+} */
 
 #nprogress {
     @apply z-[11000] fixed;
     .bar {
-        @apply !bg-indigo-500 !h-[4px];
+        @apply !bg-blue-600 !h-[4px] dark:!bg-blue-500;
     }
     .peg {
         transform: rotate(3deg) translate(0,-6px) !important;

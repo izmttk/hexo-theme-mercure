@@ -9,6 +9,7 @@ function themeConfig(config) {
         footer: footerConfig(config),
         navigator: navigatorConfig(config),
         search: searchConfig(config),
+        loading: loadingConfig(config),
     }
     let configCopy = Object.assign({}, config);
     Object.assign(configCopy, THEME_CONFIG);
@@ -176,6 +177,19 @@ function searchConfig(config) {
         }
     }
     let combinedConfig = deepMerge(defaultConfig, configCopy);
+    return combinedConfig;
+}
+function loadingConfig(config) {
+    const defaultConfig = {
+        enable: true,
+        image: {
+            src: '/assets/ring-loading.gif',
+            width: '80px',
+            height: '80px',
+        },
+        text: '加载中...',
+    }
+    let combinedConfig = deepMerge(defaultConfig, config?.loading ?? {});
     return combinedConfig;
 }
 hexo.extend.filter.register('template_locals', function (locals) {

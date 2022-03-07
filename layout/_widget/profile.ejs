@@ -1,6 +1,6 @@
 <div class="profile">
     <div class="head">
-        <img class="head-img" src="<%= url_for(theme.author.background) %>" alt="<%= theme.author.name %>">
+        <img class="head-img nolazyload" src="<%= url_for(theme.author.background) %>" alt="<%= theme.author.name %>">
     </div>
     <div class="body">
         <div class="author-info">
@@ -8,7 +8,7 @@
                 <%# 凹角效果，使用透明背景和白色阴影实现，外层包裹用来裁剪凹角 %>
                 <!-- <div class="left-corner-wrap"><div class="left-corner"></div></div> -->
                 <!-- <div class="right-corner-wrap"><div class="right-corner"></div></div> -->
-                <img class="avatar-img" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
+                <img class="avatar-img nolazyload" src="<%= url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
             </div>
             <div class="name">
                 <span><%= theme.author.name %></span>

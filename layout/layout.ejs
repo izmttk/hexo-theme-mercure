@@ -100,7 +100,9 @@
 </head>
 
 <body>
-    <%- partial('./_partial/loading', {}, {cache: true}) %>
+    <% if(theme.loading.enable) { %>
+        <%- partial('./_partial/loading', {}, {cache: true}) %>
+    <% } %>
     <% if(theme.search.enable) { %>
         <%- partial('./_partial/search', {}, {cache: true}) %>
     <% } %>

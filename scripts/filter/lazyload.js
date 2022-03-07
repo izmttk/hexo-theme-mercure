@@ -10,7 +10,7 @@ hexo.extend.filter.register('after_render:html', function (str, data) {
         let $ = cheerio.load(str);
         let img = $('img');
         // might be duplicate
-        if (img.attr('data-src') || img.attr('data-srcset') || img.attr('loading') == 'eager') {
+        if (img.attr('data-src') || img.attr('data-srcset') || img.hasClass('nolazyload') ||img.attr('loading') == 'eager') {
             return str;
         }
         if (/data:image(.*?)/gi.test(img.attr('src'))) {
