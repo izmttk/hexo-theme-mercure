@@ -35,11 +35,12 @@
         katex: theme.plugins.katex,
         pjax: theme.plugins.pjax,
         search: {
-            
+            enable: theme.search.enable,
         }
     }
     if(theme.search.algolia_search.enable) {
         blogConfig.search = {
+            ...blogConfig.search,
             ...theme.search.algolia_search,
             appId: theme.search.algolia_search.appId ?? config.algolia.appId,
             apiKey: theme.search.algolia_search.apiKey ?? config.algolia.apiKey,
@@ -49,6 +50,7 @@
     }
     if(theme.search.local_search.enable) {
         blogConfig.search = {
+            ...blogConfig.search,
             ...theme.search.local_search,
             provider: 'local'
         };

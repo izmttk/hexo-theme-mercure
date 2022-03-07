@@ -506,11 +506,13 @@ class Navbar {
         });
     }
     _initTool() {
-        this.searchIns = new Search();
-        this._searchListener = this._searchListener.bind(this);
+        if(window.BLOG_CONFIG.search.enable) {
+            this.searchIns = new Search();
+            this._searchListener = this._searchListener.bind(this);
+            this.searchElement.addEventListener('click', this._searchListener);
+        }
         this._menuDrawerListener = this._menuDrawerListener.bind(this);
         this._sideDrawerListener = this._sideDrawerListener.bind(this);
-        this.searchElement.addEventListener('click', this._searchListener);
         this.initMenuDrawer();
         this.initSideDrawer();
     }
@@ -753,7 +755,10 @@ class Search {
             this.open();
         }
     }
-    destroy() {}
+    destroy() {
+        this.modal.close();
+        this.modal = null;
+    }
 }
 
 class FloatToolbar {
@@ -951,18 +956,15 @@ class Blog {
             self.loading.show();
             // console.log('pjax:send');
         });
-        document.addEventListener('pjax:complete', function() {
+        document.addEventListener('pjax:success', function() {
             self.header?.destroy();
+            self.navbar?.searchIns?.close();
             self.navbar?.destoryMenuDrawer();
             self.navbar?.destorySideDrawer();
             self.sidebar?.destroy();
             self.floatToolbar?.destroy();
-            window.loadComments = null;
-            // console.log('pjax:complete');
-        });
-        document.addEventListener('pjax:success', function() {
+
             self.initHeader();
-            self.navbar?.searchIns.close();
             self.navbar?.initMenuDrawer();
             self.navbar?.initSideDrawer();
             self.navbar?.updateMenuIndicator();

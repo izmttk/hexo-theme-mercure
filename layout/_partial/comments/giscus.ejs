@@ -1,30 +1,31 @@
 <div class="giscus"></div>
 <script>
-function loadComments(theme='light') {
-    document.querySelector('.giscus').innerHTML = '';
-    document.querySelector('#giscus-script')?.remove();
-    let script = document.createElement("script");
-    script.id="giscus-script";
-    script.type = 'text/javascript';
-    script.src = 'https://giscus.app/client.js';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-
-    script.setAttribute('data-repo','<%= theme.comments.giscus.repo %>');
-    script.setAttribute('data-repo-id','<%= theme.comments.giscus.repoId %>');
-    script.setAttribute('data-category','<%= theme.comments.giscus.category %>');
-    script.setAttribute('data-category-id','<%= theme.comments.giscus.categoryId %>');
-    script.setAttribute('data-mapping','<%= theme.comments.giscus.mapping %>');
-    script.setAttribute('data-reactions-enabled','<%= theme.comments.giscus.reactionsEnabled %>');
-    script.setAttribute('data-emit-metadata','<%= theme.comments.giscus.emitMetadata %>');
-    script.setAttribute('data-theme', theme);
-    script.setAttribute('data-lang','<%= theme.comments.giscus.lang %>');
-
-    // script.appendChild(document.createTextNode(code));
-    document.querySelector('head').appendChild(script);
-}
 (function() {
+    function loadComments(theme='light') {
+        document.querySelector('.giscus').innerHTML = '';
+        document.querySelector('#giscus-script')?.remove();
+        let script = document.createElement("script");
+        script.id="giscus-script";
+        script.type = 'text/javascript';
+        script.src = 'https://giscus.app/client.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+
+        script.setAttribute('data-repo','<%= theme.comments.giscus.repo %>');
+        script.setAttribute('data-repo-id','<%= theme.comments.giscus.repoId %>');
+        script.setAttribute('data-category','<%= theme.comments.giscus.category %>');
+        script.setAttribute('data-category-id','<%= theme.comments.giscus.categoryId %>');
+        script.setAttribute('data-mapping','<%= theme.comments.giscus.mapping %>');
+        script.setAttribute('data-reactions-enabled','<%= theme.comments.giscus.reactionsEnabled %>');
+        script.setAttribute('data-emit-metadata','<%= theme.comments.giscus.emitMetadata %>');
+        script.setAttribute('data-theme', theme);
+        script.setAttribute('data-lang','<%= theme.comments.giscus.lang %>');
+
+        // script.appendChild(document.createTextNode(code));
+        document.querySelector('head').appendChild(script);
+    }
     let giscusMutationCallback = (mutationsList) => {
+        // console.log(mutationsList);
         for(let mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 let isDarkTheme = mutation.target.classList.contains('dark');
@@ -35,7 +36,6 @@ function loadComments(theme='light') {
                 }
             }
         }
-        // console.log(mutationsList);
     };
     let observer = new MutationObserver(giscusMutationCallback);
     observer.observe(document.documentElement, {
