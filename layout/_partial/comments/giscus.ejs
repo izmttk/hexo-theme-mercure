@@ -1,8 +1,11 @@
 <div class="giscus"></div>
 <script>
 (function() {
-    function loadComments(theme='light') {
-        document.querySelector('.giscus').innerHTML = '';
+    function loadComments() {
+        let giscus = document.querySelector('.giscus');
+        while(giscus?.firstChild) {
+            giscus.removeChild(giscus.firstChild);
+        }
         document.querySelector('#giscus-script')?.remove();
         let script = document.createElement("script");
         script.id="giscus-script";
@@ -11,6 +14,7 @@
         script.async = true;
         script.crossOrigin = 'anonymous';
 
+        let isDarkTheme = document.documentElement.classList.contains('dark');
         script.setAttribute('data-repo','<%= theme.comments.giscus.repo %>');
         script.setAttribute('data-repo-id','<%= theme.comments.giscus.repoId %>');
         script.setAttribute('data-category','<%= theme.comments.giscus.category %>');
@@ -18,36 +22,47 @@
         script.setAttribute('data-mapping','<%= theme.comments.giscus.mapping %>');
         script.setAttribute('data-reactions-enabled','<%= theme.comments.giscus.reactionsEnabled %>');
         script.setAttribute('data-emit-metadata','<%= theme.comments.giscus.emitMetadata %>');
-        script.setAttribute('data-theme', theme);
+        script.setAttribute('data-theme', isDarkTheme ? 'dark_dimmed' : 'light');
         script.setAttribute('data-lang','<%= theme.comments.giscus.lang %>');
 
         // script.appendChild(document.createTextNode(code));
         document.querySelector('head').appendChild(script);
     }
-    let giscusMutationCallback = (mutationsList) => {
-        // console.log(mutationsList);
-        for(let mutation of mutationsList) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                let isDarkTheme = mutation.target.classList.contains('dark');
-                if(isDarkTheme) {
-                    loadComments('dark_dimmed');
-                } else {
-                    loadComments('light');
-                }
+    loadComments();
+    if(!window.giscusAutoUpdateConfig) {
+        window.giscusAutoUpdateConfig = function() {
+            function updateConfig(config) {
+                let iframe = document.querySelector('iframe.giscus-frame');
+                if (!iframe) return;
+                iframe.contentWindow.postMessage({ 
+                    giscus: {
+                        setConfig: config
+                    }
+                }, 'https://giscus.app');
             }
+            let lastDark = document.documentElement.classList.contains('dark');
+            let giscusMutationCallback = (mutationsList) => {
+                for(let mutation of mutationsList) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        let isDarkTheme = mutation.target.classList.contains('dark');
+                        if(lastDark !== isDarkTheme) {
+                            lastDark = isDarkTheme;
+                            updateConfig({
+                                theme: isDarkTheme ? 'dark_dimmed' : 'light'
+                            });
+                        }
+                    }
+                }
+            };
+            let observer = new MutationObserver(giscusMutationCallback);
+            observer.observe(document.documentElement, {
+                attributes: true, 
+                attributeFilter: ['class'],
+                childList: false,
+                subtree: false
+            });
         }
-    };
-    let observer = new MutationObserver(giscusMutationCallback);
-    observer.observe(document.documentElement, {
-        attributes: true, 
-        attributeFilter: ['class'],
-        childList: false,
-        subtree: false
-    });
-    if(document.documentElement.classList.contains('dark')) {
-        loadComments('dark_dimmed');
-    } else {
-        loadComments('light');
+        window.giscusAutoUpdateConfig();
     }
 })();
 </script>

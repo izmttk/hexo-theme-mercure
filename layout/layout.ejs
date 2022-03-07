@@ -26,6 +26,28 @@
     <%#  输出标题格式：xxxx - 网站标题 %>
     <title><% if(title){ %> <%= title %> - <% } %><%= config.title %></title>
     <%- favicon_tag(theme.favicon) %>
+    <%# 提前判断深色模式防止闪烁 %>
+    <script type="text/javascript" async>
+    (function() {
+        function getOsPreference() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        //维持用户的选择直到下一次OsPreference切换
+        if(localStorage.getItem('osPreference') == getOsPreference()) {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        } else {
+            if(getOsPreference() === 'dark') {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        }
+    })();
+    </script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css" media="all">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light-border.min.css" media="all">
@@ -75,28 +97,6 @@
     <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
     <% } %> 
     <%- partial('./_partial/jsbridge') %>
-    <%# 提前判断深色模式防止闪烁 %>
-    <script type="text/javascript" async>
-    (function() {
-        function getOsPreference() {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        //维持用户的选择直到下一次OsPreference切换
-        if(localStorage.getItem('osPreference') == getOsPreference()) {
-            if (localStorage.getItem('theme') === 'dark') {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        } else {
-            if(getOsPreference() === 'dark') {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        }
-    })();
-    </script>
 </head>
 
 <body>
