@@ -12,6 +12,10 @@ body {
 *[hidden] {
     @apply !hidden;
 }
+img[data-sizes="auto"] {
+    display: block;
+    width: 100%;
+}
 #main {
     @apply flex flex-row flex-nowrap w-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
     #content {
