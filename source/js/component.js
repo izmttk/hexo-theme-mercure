@@ -330,6 +330,7 @@ class Drawer {
         else this.open();
     }
     destroy() {
+        this.close();
         var $overlay = this.element.children('.overlay');
         $overlay.off('click');
         $overlay.off('transitionend');

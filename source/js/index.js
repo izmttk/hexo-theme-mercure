@@ -674,7 +674,7 @@ class SideDrawer extends Drawer {
         super.open();
     }
     close() {
-        let self = this;
+        // let self = this;
         // setTimeout(function(){
         //     self.sidebarContainer.appendChild(self.drawerContainer.querySelector('.sidebar-content'));
         // }, 350);

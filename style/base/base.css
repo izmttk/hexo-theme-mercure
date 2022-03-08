@@ -15,9 +15,9 @@ body {
 #main {
     @apply flex flex-row flex-nowrap w-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
     #content {
-        @apply flex-1 min-w-0 z-10 m-1 md:m-4;
+        @apply flex-1 min-w-0 z-10 m-2 md:m-4;
         .recent-posts {
-            @apply space-y-4 md:space-y-7;
+            @apply space-y-3 md:space-y-7;
         }
     }
     #sidebar {
