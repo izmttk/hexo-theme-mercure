@@ -11,9 +11,6 @@
     }
     .tabs {
         @apply h-screen flex flex-col;
-        transition-property: padding-top;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 500ms;
         @apply dark:text-gray-200;
         .tabs-header {
             @apply m-4 flex-none mb-2 p-1 flex rounded-lg relative overflow-hidden bg-[#dbe1ee];
@@ -58,8 +55,17 @@
             }
         }
     }
-    .headblank {
-        @apply pt-16;
+    .sticky {
+        @apply transition-[top] duration-[250ms];
+        .tabs {
+            @apply transition-[height] duration-[250ms];
+        }
+    }
+    .sticky.headblank {
+        @apply top-[3.75rem];
+        .tabs {
+            @apply h-[calc(100vh_-_3.75rem)];
+        }
     }
     .card {
         @apply bg-white rounded-xl shadow-lg overflow-hidden;

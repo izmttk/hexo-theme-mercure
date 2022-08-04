@@ -119,20 +119,27 @@ class ScrollManager {
         this.store = {};
         this.element = element;
         this._handleScroll = this._handleScroll.bind(this);
-        this.element.addEventListener('scroll', throttle(this._handleScroll, 200));
+        this.element.addEventListener('scroll', (event) => {
+            throttle(() => {
+                this._handleScroll(event);
+            }, 200)();
+        });
     }
     register(name, fn) {
+        console.log('register', name);
         if (!name) throw new TypeError('name is required');
         if (typeof fn !== 'function') throw new TypeError('fn must be a function');
         this.store[name] = fn;
     }
     unregister(name) {
         if (!name) throw new TypeError('name is required');
-        Reflect.deleteProperty(this.store, name);
+        delete this.store[name];
+        // Reflect.deleteProperty(this.store, name);
     }
-    _handleScroll() {
-        for (let handler in this.store) {
-            Reflect.apply(this.store[handler], this, arguments);
+    _handleScroll(event) {
+        for (let name in this.store) {
+            this.store[name].call(this, event);
+            // Reflect.apply(this.store[handler], this, args);
         }
     }
     getScrollTop() {
@@ -142,7 +149,7 @@ class ScrollManager {
         return this.element === document ? document.documentElement.scrollLeft : this.element.scrollLeft;
     }
     scrollTo(xCoord, yCoord = 0) {
-        window.scroll({
+        window.scrollTo({
             top: xCoord,
             left: yCoord,
             behavior: 'smooth'
@@ -414,7 +421,6 @@ class Navbar {
         this.searchElement = this.toolElement.querySelector('.search-toggle');
         this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
         this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
-
         this._initMenu();
         this._initTool();
         this._bindScrollListener();
@@ -425,32 +431,37 @@ class Navbar {
         //添加滚动事件监听
         let lastScrollTop = scrollManager.getScrollTop();
         scrollManager.register('nav', function(event) {
-            let sidebar  = document.querySelector('#sidebar');
-            let scrollTop = scrollManager.getScrollTop();
+
+            const navbarHeight = self.rootElement.offsetHeight;
+            const sidebar  = document.querySelector('#sidebar');
+            const throttleHeight = document.querySelector('#header')?.scrollHeight - navbarHeight ?? 0;
+            const scrollTop = scrollManager.getScrollTop();
 
             if (scrollTop <= 30) {
                 self.show();
                 self.rootElement.classList.remove('nav-fix');
                 self.rootElement.classList.add('nav-top');
-
-                sidebar.querySelector('.tabs')?.classList.remove('headblank');
+                sidebar.querySelector('.sidebar-content')?.classList.remove('headblank');
             }
             else {
                 self.rootElement.classList.remove('nav-top');
                 self.rootElement.classList.add('nav-fix');
                 if (scrollTop - lastScrollTop > 0) {
-                    self.hide();
-                    //向上滚动取消侧边栏头部留空
-                    sidebar.querySelector('.tabs')?.classList.remove('headblank');
+                    if (scrollTop > throttleHeight) {
+                        self.hide();
+                    }
+                    //向下滚动取消侧边栏头部留空
+                    sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
                 }
                 else {
                     self.show();
-                    //向下滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
-                    if (sidebar.getBoundingClientRect().top < self.rootElement.getBoundingClientRect().height) {
-                        sidebar.querySelector('.tabs')?.classList.add('headblank');
-                    }
-                    else {
-                        sidebar.querySelector('.tabs')?.classList.remove('headblank');
+                    //向上滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
+                    const sidebarTop = sidebar?.getBoundingClientRect().top ?? 0;
+                    const sidebarContentTop = sidebar?.querySelector('.sidebar-content')?.getBoundingClientRect().top ?? 0;
+                    if (sidebarTop < navbarHeight && sidebarContentTop >= 0) {
+                        sidebar?.querySelector('.sidebar-content')?.classList.add('headblank');
+                    } else {
+                        sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
                     }
                 }
             }
@@ -868,6 +879,7 @@ class Blog {
             '.nav-sidebar-drawer',
             '.float-toolbar',
         ];
+        this.initColorScheme();
         this.initNavbar();
         this.initHeader();
         this.initSidebar();
@@ -995,53 +1007,50 @@ class Blog {
             }
         });
     }
+    initColorScheme() {
+        function getSystemColorScheme() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        function setDarkTheme() {
+            localStorage.setItem('user-color-scheme', 'dark');
+            localStorage.setItem('system-color-scheme', getSystemColorScheme());
+            document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-sun-fill"></i>';
+            document.documentElement.classList.add('dark')
+        }
+        function setLightTheme() {
+            localStorage.removeItem('user-color-scheme');
+            localStorage.setItem('system-color-scheme', getSystemColorScheme());
+            document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-moon-fill"></i>';
+            document.documentElement.classList.remove('dark')
+        }
+        //维持用户的选择直到下一次OsPreference切换
+        if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {
+            if (localStorage.getItem('user-color-scheme') === 'dark') {
+                setDarkTheme();
+            } else {
+                setLightTheme();
+            }
+        } else {
+            if(getSystemColorScheme() === 'dark') {
+                setDarkTheme();
+            } else {
+                setLightTheme();
+            }
+        }
+        document.querySelector('.dark-theme-toggle').addEventListener('click', function() {
+            if(document.documentElement.classList.contains('dark')) {
+                setLightTheme();
+            } else {
+                setDarkTheme();
+            }
+        });
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                setDarkTheme();
+            } else {
+                setLightTheme();
+            }
+        });
+    }
 }
 const blog = new Blog();
-
-function initDarkTheme() {
-    function getSystemColorScheme() {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    function setDarkTheme() {
-        localStorage.setItem('user-color-scheme', 'dark');
-        localStorage.setItem('system-color-scheme', getSystemColorScheme());
-        document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-sun-fill"></i>';
-        document.documentElement.classList.add('dark')
-    }
-    function setLightTheme() {
-        localStorage.removeItem('user-color-scheme');
-        localStorage.setItem('system-color-scheme', getSystemColorScheme());
-        document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-moon-fill"></i>';
-        document.documentElement.classList.remove('dark')
-    }
-    //维持用户的选择直到下一次OsPreference切换
-    if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {
-        if (localStorage.getItem('user-color-scheme') === 'dark') {
-            setDarkTheme();
-        } else {
-            setLightTheme();
-        }
-    } else {
-        if(getSystemColorScheme() === 'dark') {
-            setDarkTheme();
-        } else {
-            setLightTheme();
-        }
-    }
-    document.querySelector('.dark-theme-toggle').addEventListener('click', function() {
-        if(document.documentElement.classList.contains('dark')) {
-            setLightTheme();
-        } else {
-            setDarkTheme();
-        }
-    });
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        if (e.matches) {
-            setDarkTheme();
-        } else {
-            setLightTheme();
-        }
-    });
-}
-
-initDarkTheme();

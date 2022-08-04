@@ -11,17 +11,15 @@
     }
     .toc-link {
         @apply relative block;
-        @apply pr-2 py-1;
+        @apply pr-2 py-1 rounded;
         @apply text-gray-700;
-        @apply bg-white hover:bg-gray-100;
+        @apply hover:bg-gray-200;
         /* @apply transition duration-300; */
-        @apply dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700;
+        @apply dark:text-gray-300 dark:hover:bg-gray-800;
         &::before {
             content: "";
             @apply absolute top-0 bottom-0 left-0;
-            @apply w-1.5;
-            @apply bg-white;
-            @apply dark:bg-gray-800;
+            @apply w-1.5 rounded-l;
             /* @apply transition duration-300; */
         }
         &:hover:not(.toc-active)::before {
