@@ -26,24 +26,31 @@
     <%#  输出标题格式：xxxx - 网站标题 %>
     <title><% if(title){ %> <%= title %> - <% } %><%= config.title %></title>
     <%- favicon_tag(theme.favicon) %>
+    <%- partial('./_partial/jsbridge') %>
     <%# 提前判断深色模式防止闪烁 %>
     <script type="text/javascript" async>
     (function() {
-        function getOsPreference() {
+        function getSystemColorScheme() {
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
+        function setDarkTheme() {
+            document.documentElement.classList.add('dark');
+        }
+        function setLightTheme() {
+            document.documentElement.classList.remove('dark');
+        }
         //维持用户的选择直到下一次OsPreference切换
-        if(localStorage.getItem('osPreference') == getOsPreference()) {
-            if (localStorage.getItem('theme') === 'dark') {
-                document.documentElement.classList.add('dark')
+        if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {
+            if (localStorage.getItem('user-color-scheme') === 'dark') {
+                setDarkTheme();
             } else {
-                document.documentElement.classList.remove('dark')
+                setLightTheme();
             }
         } else {
-            if(getOsPreference() === 'dark') {
-                document.documentElement.classList.add('dark')
+            if(getSystemColorScheme() === 'dark') {
+                setDarkTheme();
             } else {
-                document.documentElement.classList.remove('dark')
+                setLightTheme();
             }
         }
     })();
@@ -54,14 +61,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css" media="all">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js" defer></script>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all"> -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" media="all">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js" defer></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" defer></script>
     <%- css({href: url_for('/css/style.css'), media: 'all'}) %>
     <%- css({href: url_for('/css/iconfont.css'), media: 'all'}) %>
@@ -91,8 +96,13 @@
     <% } %> 
     <% if(theme.plugins.pjax.enable) { %>
     <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
-    <% } %> 
-    <%- partial('./_partial/jsbridge') %>
+    <% } %>
+    <% if(theme.plugins.overlay_scrollbar.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@1/css/OverlayScrollbars.min.css" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@1/js/OverlayScrollbars.min.js" defer></script>
+    <% } else { %>
+    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js" defer></script>
+    <% } %>
 </head>
 
 <body>

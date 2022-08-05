@@ -112,21 +112,16 @@ function throttle(func, wait, options) {
 }
 //引入工具函数结束
 
-
 // 滚动事件拦截器
-class ScrollManager {
-    constructor(element = document) {
+class AbstractScrollManager {
+    constructor() {
+        if (this.constructor === AbstractScrollManager) {
+            throw new TypeError('AbstractScrollManager is an abstract class and cannot be instantiated directly.');
+        }
         this.store = {};
-        this.element = element;
-        this._handleScroll = this._handleScroll.bind(this);
-        this.element.addEventListener('scroll', (event) => {
-            throttle(() => {
-                this._handleScroll(event);
-            }, 200)();
-        });
+        this.handleScrollEvent = this.handleScrollEvent.bind(this);
     }
     register(name, fn) {
-        console.log('register', name);
         if (!name) throw new TypeError('name is required');
         if (typeof fn !== 'function') throw new TypeError('fn must be a function');
         this.store[name] = fn;
@@ -136,11 +131,45 @@ class ScrollManager {
         delete this.store[name];
         // Reflect.deleteProperty(this.store, name);
     }
-    _handleScroll(event) {
+    handleScrollEvent(event) {
         for (let name in this.store) {
             this.store[name].call(this, event);
             // Reflect.apply(this.store[handler], this, args);
         }
+    }
+    getScrollTop() { throw new Error('not implemented'); }
+    getScrollLeft() { throw new Error('not implemented'); }
+    scrollTo(xCoord, yCoord) { throw new Error('not implemented'); }
+    triggerEvent() { throw new Error('not implemented'); }
+    destroy() {
+        delete this.store;
+    }
+}
+
+class NativeScrollManager extends AbstractScrollManager {
+    constructor(element = document) {
+        super();
+        this.element = element;
+        this.bindEvent();
+    }
+    bindEvent() {
+        this.element.addEventListener('scroll', throttle((event) => {
+            this.handleScrollEvent(event);
+        }, 200));
+    }
+    scrollTo(xCoord, yCoord, immediate = false) {
+        if (yCoord === undefined) {
+            yCoord = xCoord;
+            xCoord = 0;
+        }
+        window.scroll({
+            top: yCoord,
+            left: xCoord,
+            behavior: immediate ? 'auto' : 'smooth'
+        });
+    }
+    triggerEvent() {
+        this.element.dispatchEvent(new Event('scroll'));
     }
     getScrollTop() {
         return this.element === document ? document.documentElement.scrollTop : this.element.scrollTop;
@@ -148,22 +177,59 @@ class ScrollManager {
     getScrollLeft() {
         return this.element === document ? document.documentElement.scrollLeft : this.element.scrollLeft;
     }
-    scrollTo(xCoord, yCoord = 0) {
-        window.scrollTo({
-            top: xCoord,
-            left: yCoord,
-            behavior: 'smooth'
-        });
-    }
-    triggerEvent() {
-        this.element.dispatchEvent(new Event('scroll'));
-    }
     destroy() {
-        delete this.store;
-        this.element.removeEventListener('scroll', this._handleScroll);
+        super.destroy();
+        this.element.removeEventListener('scroll', this.handleScrollEvent);
     }
 }
-const scrollManager = new ScrollManager();
+
+class OverlayScrollManager extends AbstractScrollManager {
+    constructor(instance = OverlayScrollbars(document.querySelectorAll("body"), {
+        nativeScrollbarsOverlaid: {
+            initialize: false,
+        },
+        scrollbars: {
+            autoHide: 'move',
+        },
+    })) {
+        if (!instance) throw new TypeError('instance is required');
+        super();
+        this.instance = instance;
+        this.bindEvent();
+    }
+    bindEvent() {
+        this.instance.options('callbacks', {
+            onScroll: throttle((event) => {
+                this.handleScrollEvent(event);
+            }, 200)
+        });
+    }
+    scrollTo(xCoord, yCoord, immediate = false) {
+        if (yCoord === undefined) {
+            yCoord = xCoord;
+            xCoord = 0;
+        }
+        this.instance.scroll({
+            x: xCoord,
+            y: yCoord,
+        }, immediate ? 0 : 500, 'easeOutCubic');
+    }
+    triggerEvent() {
+        this.instance.getElements('viewport').dispatchEvent(new Event('scroll'));
+    }
+    getScrollTop() {
+        return this.instance.scroll().position.y;
+    }
+    getScrollLeft() {
+        return this.instance.scroll().position.x;
+    }
+    destroy() {
+        this.instance.destroy();
+        super.destroy();
+    }
+}
+
+const scrollManager = window.BLOG_CONFIG.overlay_scrollbar.enable ? new OverlayScrollManager() : new NativeScrollManager();
 
 // anchor 点击事件拦截器
 class AnchorManager {
@@ -994,6 +1060,7 @@ class Blog {
             animateCSS('#header','slide-down-fade-in');
             animateCSS('#main','slide-up-fade-in');
             self.loading.hide();
+            scrollManager.scrollTo(0, 0, true);
             // console.log('pjax:success');
         });
         // 对所有 a[href] 绑定 click 事件，此后 DOM 新增的 a[href] 也会自动监听
@@ -1016,12 +1083,18 @@ class Blog {
             localStorage.setItem('system-color-scheme', getSystemColorScheme());
             document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-sun-fill"></i>';
             document.documentElement.classList.add('dark')
+            if (window.BLOG_CONFIG.overlay_scrollbar.enable) {
+                scrollManager.instance.options('className', 'os-theme-light');
+            }
         }
         function setLightTheme() {
-            localStorage.removeItem('user-color-scheme');
+            localStorage.setItem('user-color-scheme', 'light');
             localStorage.setItem('system-color-scheme', getSystemColorScheme());
             document.querySelector('.dark-theme-toggle').innerHTML='<i class="ri-moon-fill"></i>';
             document.documentElement.classList.remove('dark')
+            if (window.BLOG_CONFIG.overlay_scrollbar.enable) {
+                scrollManager.instance.options('className', 'os-theme-dark');
+            }
         }
         //维持用户的选择直到下一次OsPreference切换
         if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {

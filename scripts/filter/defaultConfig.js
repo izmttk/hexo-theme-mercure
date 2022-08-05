@@ -119,6 +119,9 @@ function pluginsConfig(config) {
         },
         pjax: {
             enable: true,
+        },
+        overlay_scrollbar: {
+            enable: true,
         }
     }
     let configCopy = Object.assign({}, config.plugins);

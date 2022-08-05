@@ -43,6 +43,7 @@ iframe {
 }
 ::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
     background-color: transparent;
 }
 
@@ -228,4 +229,10 @@ kbd {
         @apply text-[10px] block w-full h-[20px] py-[2px] px-[4px] rounded border-t border-l border-r border-white leading-none;
         @apply dark:border-slate-600;
     }
+}
+
+
+[class^="ri-"],
+[class*=" ri-"] {
+    font-weight: normal!important;
 }

@@ -6,7 +6,6 @@
     "build": "postcss ./source/_pre/style.css --dir ./source/css/ --env production",
     "build-dev": "postcss ./source/_pre/style.css --dir ./source/css/ --env development"
   },
-  "devDependencies": {},
   "main": "postcss.config.js",
   "author": "",
   "license": "ISC",

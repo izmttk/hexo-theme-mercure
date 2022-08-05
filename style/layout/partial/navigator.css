@@ -1,6 +1,6 @@
 .navigator {
-    @apply fixed w-full h-14 md:h-[3.75rem] z-40 translate-y-0 text-gray-900;
-    @apply dark:text-gray-100;
+    @apply fixed w-full h-14 md:h-[3.75rem] z-40 translate-y-0;
+    @apply text-slate-800 dark:text-gray-100;
     @apply transition-[color,transform] duration-[250ms];
     /* transition-property: top, height, background-color, color,
                          box-shadow, backdrop-filter;
@@ -11,22 +11,22 @@
         content: "";
         @apply absolute inset-0 -z-10;
         @apply transition-transform duration-[250ms];
-        @apply shadow-sm;
+        @apply shadow-sm dark:shadow-gray-900/50;
         @apply bg-white/80 border-b border-gray-200 dark:bg-gray-800/75 dark:border-gray-800;
         @apply backdrop-blur-md backdrop-saturate-150;
     }
     .content {
-        @apply w-full lg:max-w-[63rem] xl:max-w-[67rem] 2xl:max-w-[71rem] mx-auto h-full flex flex-nowrap items-center;
+        @apply w-full h-full lg:max-w-[63rem] xl:max-w-[67rem] 2xl:max-w-[71rem] mx-auto flex flex-nowrap items-center;
         .nav-left-drawer, .nav-right-drawer {
-            @apply block md:hidden;
+            @apply block md:hidden h-full;
             .drawer-toggle {
-                @apply w-14 h-[3.75rem] text-xl;
+                @apply w-14 h-full text-xl;
             }
         }
         .nav-logo {
             @apply ml-0 px-2 lg:-ml-4 md:px-5;
             a {
-                @apply flex flex-nowrap h-[3.75rem] leading-[4rem] items-center;
+                @apply flex flex-nowrap h-full items-center;
                 img, svg {
                     @apply h-10;
                     fill: currentColor;
@@ -37,16 +37,16 @@
             }
         }
         .nav-menu {
-            @apply h-[3.75rem] flex-1;
+            @apply h-full flex-1 overflow-x-auto overflow-y-hidden;
             /* font-family: "Noto Serif SC", ui-serif, serif; */
             /* font-weight: bold; */
             .nav-menu-list {
-                @apply hidden md:flex overflow-x-auto overflow-y-hidden;
+                @apply md:flex h-full hidden;
                 @apply flex-nowrap items-center;
                 .nav-menu-item {
-                    @apply relative flex-none;
+                    @apply relative flex-none h-full;
                     >.link {
-                        @apply relative block z-20 px-4 h-[3.75rem] text-base leading-[3.75rem];
+                        @apply relative flex items-center z-20 mx-2.5 h-full;
                     }
                 }
                 .nav-menu-item::after {
@@ -54,6 +54,9 @@
                     @apply absolute top-3 bottom-3 left-1 right-1;
                     @apply rounded-md;
                     @apply transition;
+                }
+                .nav-menu-item.nav-active {
+                    @apply font-bold;
                 }
                 .nav-menu-item:hover::after,
                 .nav-menu-item.nav-active::after {
@@ -70,7 +73,7 @@
             @apply mr-0 px-1 lg:-mr-4 md:px-5 space-x-0.5 md:space-x-2;
             >button {
                 @apply w-9 h-9 md:w-10 md:h-10 rounded-full text-current outline-none bg-gray-400/30;
-                @apply text-gray-900 dark:text-gray-100;
+                /* @apply text-gray-900 dark:text-gray-100; */
                 @apply transition duration-[250ms];
                 i {
                     @apply text-lg leading-9 md:leading-10;
@@ -80,12 +83,12 @@
     }
 }
 .navigator.nav-hide {
-    @apply md:-translate-y-[3.75rem];
+    @apply md:-translate-y-full;
 }
 .navigator.nav-top {
     @apply  text-gray-100;
     &::before {
-        @apply -translate-y-[3.75rem];
+        @apply -translate-y-full;
     }
     .content {
         /* max-width: calc(100% - 16rem); */
@@ -100,13 +103,11 @@
             filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
         }
         .nav-menu {
-            .nav-menu-list .nav-menu-item > .link {
-                text-shadow: 0 2px 2px rgba(0,0,0,.5);
-            }
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
         }
         .nav-toolkit {
             >button {
-                /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */
+                @apply backdrop-blur-md;
                 @apply bg-white/50 text-black;
                 @apply dark:bg-black/50 dark:text-white;
             }
@@ -114,7 +115,7 @@
     }
 }
 .navigator.nav-top.nav-noheader {
-    @apply text-gray-900;
+    @apply text-slate-800;
     @apply dark:text-gray-100;
     /* .nav-menu {
         .nav-menu-list {
