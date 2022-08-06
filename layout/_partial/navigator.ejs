@@ -89,8 +89,11 @@
         <%_ } _%>
         </div>
         <div class="nav-right-drawer">
+            <%_ if(theme.sidebar.enable) { _%> 
             <button class="drawer-toggle"><i class="ri-layout-right-line"></i></button>
+            <%_ } _%>
         </div>
+
     </div>
 </div>
 <div class="nav-menu-drawer drawer drawer-closed">
@@ -98,5 +101,7 @@
     <%_ flatNavCollapse(theme.navigator.menu) _%>
 </div>
 <div class="nav-sidebar-drawer drawer drawer-closed">
+<%_ if(theme.sidebar.enable) { _%> 
     <div id="sidebar-drawer"><%- partial('./sidebar') %></div>
+<%_ } _%>
 </div>

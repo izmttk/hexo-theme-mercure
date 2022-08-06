@@ -17,7 +17,7 @@ img[data-sizes="auto"] {
     width: 100%;
 }
 #main {
-    @apply flex flex-row flex-nowrap w-full lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem] mx-auto;
+    @apply flex flex-row flex-nowrap w-full mx-auto;
     #content {
         @apply flex-1 min-w-0 z-10 m-2 md:m-4;
         .recent-posts {
@@ -27,6 +27,12 @@ img[data-sizes="auto"] {
     #sidebar {
         @apply z-0;
     }
+}
+#main.singal-column {
+    @apply lg:max-w-[50rem] xl:max-w-[52rem] 2xl:max-w-[56rem];
+}
+#main.double-column {
+    @apply lg:max-w-[67rem] xl:max-w-[69rem] 2xl:max-w-[71rem];
 }
 /* :root {
     color-scheme: light dark;

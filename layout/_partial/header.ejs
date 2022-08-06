@@ -1,28 +1,11 @@
 <%- partial('../_partial/navigator') %>
 <% 
-    // 不同模板的页面有不同的配置
-    let headerConfig = theme.header.default;
-    if(is_home()) headerConfig = theme.header.index;
-    else if(is_category() || page.layout === 'category') headerConfig = theme.header.category;
-    else if(is_tag() || page.layout === 'tag') headerConfig = theme.header.tag;
-    else if(is_post()) headerConfig = theme.header.post;
-    else if(is_page()) headerConfig = theme.header.page;
-    else if(is_archive()) headerConfig = theme.header.archive;
-    // console.log(headerConfig);
+    const headerConfig = theme.header;
+    // console.log('header',headerConfig);
 %>
 <%_ if(headerConfig.enable) { _%>
 <div id="header">
     <%_ if(is_home()) { _%>
-    <!-- <style>
-        #header .cover {
-            height: <%- theme.header.default.height %>!important;
-        }
-        @media (min-width: 768px) {
-            #header .cover {
-                height: <%- headerConfig.height %>!important;
-            }
-        }
-    </style> -->
     <div class="cover home-cover" style="height:<%- headerConfig.height %>">
         <!-- Header Background Section -->
         <%_ if(headerConfig.cover.type=='none') { _%>

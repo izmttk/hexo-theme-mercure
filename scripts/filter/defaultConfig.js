@@ -1,4 +1,5 @@
 const { deepMerge } = require('hexo-util');
+// https://github.com/hexojs/hexo-util#deepmergetarget-source
 const { isBoolean } = require('../helper/typeof')
 let siteConfig = hexo.config;
 function themeConfig(config) {
@@ -8,6 +9,7 @@ function themeConfig(config) {
         plugins: pluginsConfig(config),
         footer: footerConfig(config),
         navigator: navigatorConfig(config),
+        sidebar: sidebarConfig(config),
         search: searchConfig(config),
         loading: loadingConfig(config),
     }
@@ -16,62 +18,98 @@ function themeConfig(config) {
     return configCopy;
 }
 
-function headerConfig(config) {
-    // console.log(config)
-    const defaultConfig = {
-        enable: config?.header?.enable ?? true,
-        height: config?.header?.height ?? '400px',
-        bottom_effect: config?.header?.bottom_effect ?? 'none',
-    };
-    const indexConfig = Object.assign({
-        cover: {
-            type: 'normal',
-            image: '/assets/defalut-bg.jpg',
-        },
-        title: siteConfig.title,
-        description: {
-            type: 'normal',
-            content: siteConfig.description,
-        },
-        scroll_indicator: true,
-    }, defaultConfig);
-    const postConfig = Object.assign({
-        cover: 'full',
-    }, defaultConfig);
-    const pageConfig = Object.assign({
-        cover: 'full',
-    }, defaultConfig);
-    const archiveConfig = Object.assign({
-        cover: 'full',
-    }, defaultConfig);
-    const categoryConfig = Object.assign({
-        cover: 'full',
-    }, defaultConfig);
-    const tagConfig = Object.assign({
-        cover: 'full',
-    }, defaultConfig);
-    
-    let combinedConfig = {
-        default: defaultConfig,
-        index: deepMerge(indexConfig, config.header?.layout?.index ?? {}),
-        post: deepMerge(postConfig, config.header?.layout?.post ?? {}),
-        page: deepMerge(pageConfig, config.header?.layout?.page ?? {}),
-        archive: deepMerge(archiveConfig, config.header?.layout?.archive ?? {}),
-        category: deepMerge(categoryConfig, config.header?.layout?.category ?? {}),
-        tag: deepMerge(tagConfig, config.header?.layout?.tag ?? {}),
+function booleanToObject(config) {
+    let configCopy = null;
+    if (isBoolean(config)) {
+        configCopy = {
+            enable: config,
+        }
+    } else {
+        configCopy = Object.assign({}, config);
     }
-    for (let key in config?.header?.layout) {
-        if (key !== 'index' && key !== 'post' && key !== 'page' &&
-            key !== 'archive' && key !== 'category' && key !== 'tag')
-        combinedConfig[key] = deepMerge(defaultConfig, config?.header?.layout[key]);
+    return configCopy;
+}
+
+function constructLayoutConfig(defalutConfig = {}, config = {}) {
+    const publicConfig = {};
+    for (const key in config) {
+        if (key !== 'layout') {
+            publicConfig[key] = config[key];
+        }
+    }
+    const combinedConfig = {};
+    for (const key in defalutConfig) {
+        combinedConfig[key] = deepMerge(defalutConfig[key], publicConfig);
+    }
+    for (const key in config.layout) {
+        if (!combinedConfig[key]) {
+            combinedConfig[key] = deepMerge({}, publicConfig);
+        }
+        combinedConfig[key] = deepMerge(combinedConfig[key], config.layout[key]);
     }
     return combinedConfig;
 }
 
-function navigatorConfig(config) {
+function headerConfig(config) {
+    const publicDefaultConfig = {
+        enable: true,
+        height: '400px',
+        bottom_effect: 'none',
+    }
     const defaultConfig = {
+        default: deepMerge(publicDefaultConfig, {}),
+        index: deepMerge(publicDefaultConfig, {
+            cover: {
+                type: 'normal',
+                image: '/assets/defalut-bg.jpg',
+            },
+            title: siteConfig.title,
+            description: {
+                type: 'normal',
+                content: siteConfig.description,
+            },
+            scroll_indicator: true,
+        }),
+        post: deepMerge(publicDefaultConfig, {
+            cover: 'full',
+        }),
+        page: deepMerge(publicDefaultConfig, {
+            cover: 'full',
+        }),
+        archive: deepMerge(publicDefaultConfig, {
+            cover: 'full',
+        }),
+        tag: deepMerge(publicDefaultConfig, {
+            cover: 'full',
+        }),
+        category: deepMerge(publicDefaultConfig, {
+            cover: 'full',
+        }),
+    };
+    const configCopy = booleanToObject(config?.header);
+    return constructLayoutConfig(defaultConfig, configCopy);
+}
+
+function sidebarConfig(config) {
+    const publicDefaultConfig = {
+        enable: true,
+        show_profile: true,
+        show_tag_cloud: true,
+        show_category_tree: true,
+        show_toc: true
+    }
+    const defaultConfig = {
+        default: deepMerge(publicDefaultConfig, {}),
+    };
+    const configCopy = booleanToObject(config?.sidebar);
+    return constructLayoutConfig(defaultConfig, configCopy);
+}
+
+function navigatorConfig(config) {
+    const publicDefaultConfig = {
+        enable: true,
         logo: siteConfig.title,
-        menu: config?.navigator ?? [
+        menu: config?.navigator ? [] : [
             {name: '分类', url: '/categories'},
             {name: '标签', url: '/tags'},
             {name: '归档', url: '/archives'},
@@ -81,16 +119,23 @@ function navigatorConfig(config) {
             darkmode: true,
         }
     }
-    let combinedConfig = deepMerge(defaultConfig, config?.navigator ?? {});
-    return combinedConfig;
+    const defaultConfig = {
+        default: deepMerge(publicDefaultConfig, {}),
+    };
+    const configCopy = booleanToObject(config?.navigator);
+    return constructLayoutConfig(defaultConfig, configCopy);
 }
 
 function footerConfig(config) {
-    const defaultConfig = {
+    const publicDefaultConfig = {
+        enable: true,
         text: null
     }
-    let combinedConfig = deepMerge(defaultConfig, config?.footer ?? {});
-    return combinedConfig;
+    const defaultConfig = {
+        default: deepMerge(publicDefaultConfig, {}),
+    };
+    const configCopy = booleanToObject(config?.footer);
+    return constructLayoutConfig(defaultConfig, configCopy);
 }
 
 function postCardConfig(config) {
@@ -124,13 +169,9 @@ function pluginsConfig(config) {
             enable: true,
         }
     }
-    let configCopy = Object.assign({}, config.plugins);
+    let configCopy = Object.assign({}, config?.plugins);
     for(let key in configCopy) {
-        if(isBoolean(configCopy[key])) {
-            configCopy[key] = {
-                enable: configCopy[key]
-            }
-        }
+        configCopy[key] = booleanToObject(configCopy[key]);
     }
     let combinedConfig = deepMerge(defaultConfig, configCopy);
     return combinedConfig;
@@ -171,12 +212,11 @@ function searchConfig(config) {
             }
         }
     }
-    let configCopy = Object.assign({}, config.search);
+
+    let configCopy = booleanToObject(config?.search);
     for(let key in configCopy) {
-        if(isBoolean(configCopy[key])) {
-            configCopy[key] = {
-                enable: configCopy[key]
-            }
+        if (key !== 'enable') {
+            configCopy[key] = booleanToObject(configCopy[key]);
         }
     }
     let combinedConfig = deepMerge(defaultConfig, configCopy);
@@ -192,12 +232,60 @@ function loadingConfig(config) {
         },
         text: '加载中...',
     }
-    let combinedConfig = deepMerge(defaultConfig, config?.loading ?? {});
+    let configCopy = booleanToObject(config?.loading);
+    let combinedConfig = deepMerge(defaultConfig, configCopy);
     return combinedConfig;
 }
+
+const is_home = hexo.extend.helper.get('is_home');
+const is_category = hexo.extend.helper.get('is_category');
+const is_tag = hexo.extend.helper.get('is_tag');
+const is_post = hexo.extend.helper.get('is_post');
+const is_page = hexo.extend.helper.get('is_page');
+const is_archive = hexo.extend.helper.get('is_archive');
+
+const configCache = [];
+
 hexo.extend.filter.register('template_locals', function (locals) {
     let localsCopy = Object.assign({}, locals);
-    localsCopy.theme = themeConfig(localsCopy.theme);
+
+    if(localsCopy.page?.theme) {
+        const mode = localsCopy.page.theme.mode === 'replace' ? 'replace' : 'merge';
+        if (mode === 'merge') {
+            localsCopy.theme = deepMerge(localsCopy.theme, localsCopy.page.theme);
+        } else if (mode === 'replace') {
+            localsCopy.theme = localsCopy.page.theme;
+        }
+        localsCopy.theme = themeConfig(localsCopy.theme);
+    } else {
+        if(configCache.length === 0) {
+            configCache.push(themeConfig(localsCopy.theme));
+        }
+        localsCopy.theme = Object.assign({}, configCache[0]);
+    }
+
+
+    let layout = null;
+    if(is_home.call(locals)) {
+        layout = 'index';
+    } else if(is_category.call(locals) || localsCopy.page.layout === 'category') {
+        layout = 'category';
+    } else if(is_tag.call(locals) || localsCopy.page.layout === 'tag') {
+        layout = 'tag';
+    } else if(is_archive.call(locals) || localsCopy.page.layout === 'archive') {
+        layout = 'archive';
+    } else {
+        layout = localsCopy.page.layout;
+    }
+
+    for (const field of ['header', 'navigator', 'footer', 'sidebar']) {
+        if (layout in localsCopy.theme[field]) {
+            localsCopy.theme[field] = localsCopy.theme[field][layout];
+        } else {
+            localsCopy.theme[field] = localsCopy.theme[field].default;
+        }
+    }
+
     hexo.theme.config = localsCopy.theme;
     // console.log(hexo.theme.config);
     return localsCopy;

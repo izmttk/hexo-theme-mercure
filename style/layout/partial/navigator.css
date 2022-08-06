@@ -1,6 +1,6 @@
 .navigator {
     @apply fixed w-full h-14 md:h-[3.75rem] z-40 translate-y-0;
-    @apply text-slate-800 dark:text-gray-100;
+    @apply text-slate-700 dark:text-gray-100;
     @apply transition-[color,transform] duration-[250ms];
     /* transition-property: top, height, background-color, color,
                          box-shadow, backdrop-filter;
@@ -52,15 +52,15 @@
                 .nav-menu-item::after {
                     content: "";
                     @apply absolute top-3 bottom-3 left-1 right-1;
-                    @apply rounded-md;
-                    @apply transition;
+                    @apply rounded-md opacity-0;
+                    @apply transition-opacity duration-100;
                 }
                 .nav-menu-item.nav-active {
                     @apply font-bold;
                 }
                 .nav-menu-item:hover::after,
                 .nav-menu-item.nav-active::after {
-                    @apply bg-black/10 dark:bg-white/10;
+                    @apply opacity-100 bg-black/10 dark:bg-white/10;
                     /* @apply absolute left-1 right-1 bottom-2.5;
                     @apply h-1 rounded-full; */
                     /* background: #20a0ff;
@@ -74,7 +74,7 @@
             >button {
                 @apply w-9 h-9 md:w-10 md:h-10 rounded-full text-current outline-none bg-gray-400/30;
                 /* @apply text-gray-900 dark:text-gray-100; */
-                @apply transition duration-[250ms];
+                @apply transition-colors duration-[250ms];
                 i {
                     @apply text-lg leading-9 md:leading-10;
                 }
@@ -92,18 +92,18 @@
     }
     .content {
         /* max-width: calc(100% - 16rem); */
-        /* .nav-menu {
-            .nav-menu-list {
-                .nav-menu-item.nav-active::after {
-                    @apply bg-white/10;
-                }
-            }
-        } */
         .nav-logo {
             filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
         }
         .nav-menu {
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
+            .nav-menu-item .link {
+                filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
+            }
+            .nav-menu-item:hover::after,
+            .nav-menu-item.nav-active::after {
+                @apply backdrop-blur-md;
+                @apply bg-white/30 dark:bg-black/30;
+            }
         }
         .nav-toolkit {
             >button {

@@ -3,7 +3,7 @@ const { slugize } = require('hexo-util');
 
 hexo.extend.filter.register('after_post_render', data => {
   const theme = hexo.theme.config;
-  if (!theme.plugins.anchor) return;
+  if (!theme.plugins.anchor.enable) return;
 
   const $ = cheerio.load(data.content, { decodeEntities: false });
   const headings = $('h1, h2, h3, h4, h5, h6');

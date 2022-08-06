@@ -1,31 +1,22 @@
 <% 
     // 不同模板的页面有不同的配置
-    let headerConfig = theme.header.default;
-    let layout = null;
+    let layout = 'none';
 
     if(is_home()) {
-        headerConfig = theme.header.index;
         layout = 'index';
     } else if(is_category() || page.layout === 'category') {
-        headerConfig = theme.header.category;
         layout = 'category';
     } else if(is_tag() || page.layout === 'tag') {
-        headerConfig = theme.header.tag;
         layout = 'tag';
-    } else if(is_post()) {
-        headerConfig = theme.header.post;
-        layout = 'post';
-    } else if(is_page()) {
-        headerConfig = theme.header.page;
-        layout = 'page';
-    } else if(is_archive()) {
-        headerConfig = theme.header.archive;
+    } else if(is_archive() || page.layout === 'archive') {
         layout = 'archive';
+    } else {
+        layout = page.layout;
     }
 
     const blogConfig = {
         layout: layout,
-        header:  headerConfig,
+        header:  theme.header,
         navigator: theme.navigator,
         sidebar: theme.sidebar,
         footer: theme.footer,

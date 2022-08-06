@@ -53,6 +53,7 @@ header:
   #  - cloud     静态云朵图案
   #  - waves     动态波浪效果
   bottom_effect: waves
+  # 通过 layout 指定不同模板下的配置，某些模板具有一些独特的配置项
   layout:
     index:
       # 网页头部的高度，可以为每个模板单独指定，full表示全屏，支持 css 写法
@@ -138,10 +139,18 @@ navigator:
 # 配置侧边栏
 sidebar:
   enable: true
+  # 是否显示个人信息组件
   show_profile: true
+  # 是否显示标签云组件
   show_tag_cloud: true
+  # 是否显示树形分类组件
   show_category_tree: true
+  # 是否在文章或页面中显示目录
   show_toc: true
+  # 指定不同模板下的配置
+  layout:
+    friends:
+      enable: false
 
 # 配置页脚
 footer:
@@ -230,6 +239,8 @@ plugins:
     enable: true
     loading_img: /assets/loading.svg
   pjax: true
+  # 使用 js 统一滚动条外观
+  overlay_scrollbar: true
 
 # 配置搜索服务，目前提供了本地搜索服务和 Algolia 搜索服务，请确保任何时候只开启一个搜索服务
 search:
@@ -255,3 +266,12 @@ search:
       searchAsYouType: false
     configure:
       hitsPerPage: 8
+
+# 页面加载遮罩
+loading:
+  enable: true
+  image: 
+    src: /assets/sagiri.gif
+    width: auto
+    height: 288px
+  text: 少女祈祷中 ······

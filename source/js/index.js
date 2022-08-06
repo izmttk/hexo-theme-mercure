@@ -485,8 +485,6 @@ class Navbar {
         this.logoElement = this.rootElement.querySelector('.nav-logo');
         this.toolElement = this.rootElement.querySelector('.nav-toolkit');
         this.searchElement = this.toolElement.querySelector('.search-toggle');
-        this.menuDrawerElement = this.rootElement.querySelector('.nav-left-drawer');
-        this.sideDrawerElement = this.rootElement.querySelector('.nav-right-drawer');
         this._initMenu();
         this._initTool();
         this._bindScrollListener();
@@ -499,7 +497,10 @@ class Navbar {
         scrollManager.register('nav', function(event) {
 
             const navbarHeight = self.rootElement.offsetHeight;
-            const sidebar  = document.querySelector('#sidebar');
+            let sidebar = null;
+            if(window.BLOG_CONFIG.sidebar.enable) {
+                sidebar = document.querySelector('#sidebar');
+            }
             const throttleHeight = document.querySelector('#header')?.scrollHeight - navbarHeight ?? 0;
             const scrollTop = scrollManager.getScrollTop();
 
@@ -507,7 +508,9 @@ class Navbar {
                 self.show();
                 self.rootElement.classList.remove('nav-fix');
                 self.rootElement.classList.add('nav-top');
-                sidebar.querySelector('.sidebar-content')?.classList.remove('headblank');
+                if(window.BLOG_CONFIG.sidebar.enable) {
+                    sidebar.querySelector('.sidebar-content')?.classList.remove('headblank');
+                }
             }
             else {
                 self.rootElement.classList.remove('nav-top');
@@ -516,18 +519,22 @@ class Navbar {
                     if (scrollTop > throttleHeight) {
                         self.hide();
                     }
-                    //向下滚动取消侧边栏头部留空
-                    sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
+                    if(window.BLOG_CONFIG.sidebar.enable) {
+                        //向下滚动取消侧边栏头部留空
+                        sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
+                    }
                 }
                 else {
                     self.show();
-                    //向上滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
-                    const sidebarTop = sidebar?.getBoundingClientRect().top ?? 0;
-                    const sidebarContentTop = sidebar?.querySelector('.sidebar-content')?.getBoundingClientRect().top ?? 0;
-                    if (sidebarTop < navbarHeight && sidebarContentTop >= 0) {
-                        sidebar?.querySelector('.sidebar-content')?.classList.add('headblank');
-                    } else {
-                        sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
+                    if(window.BLOG_CONFIG.sidebar.enable) {
+                        //向上滚动时若导航条覆盖侧边栏内容，则给侧边栏头部留空
+                        const sidebarTop = sidebar?.getBoundingClientRect().top ?? 0;
+                        const sidebarContentTop = sidebar?.querySelector('.sidebar-content')?.getBoundingClientRect().top ?? 0;
+                        if (sidebarTop < navbarHeight && sidebarContentTop >= 0) {
+                            sidebar?.querySelector('.sidebar-content')?.classList.add('headblank');
+                        } else {
+                            sidebar?.querySelector('.sidebar-content')?.classList.remove('headblank');
+                        }
                     }
                 }
             }
@@ -596,7 +603,9 @@ class Navbar {
         this._menuDrawerListener = this._menuDrawerListener.bind(this);
         this._sideDrawerListener = this._sideDrawerListener.bind(this);
         this.initMenuDrawer();
-        this.initSideDrawer();
+        if(window.BLOG_CONFIG.sidebar.enable) {
+            this.initSideDrawer();
+        }
     }
     _searchListener (event) {
         this.searchIns.toggle();
@@ -914,6 +923,10 @@ class Loading {
             trickleSpeed: 200,
             showSpinner: false
         });
+        this.show();
+        document.addEventListener('DOMContentLoaded', () => {
+            this.hide()
+        });
     }
     show() {
         NProgress.start();
@@ -939,10 +952,10 @@ class Blog {
             'meta[name=description]',
             '#script_blog_config',
             '#header',
-            '#content',
-            '#sidebar',
+            '#main',
             '.nav-menu-drawer',
             '.nav-sidebar-drawer',
+            '.nav-right-drawer',
             '.float-toolbar',
         ];
         this.initColorScheme();
@@ -1032,6 +1045,7 @@ class Blog {
             elements: '.pjax',
             selectors: this.pjaxSelectors,
             cacheBust: false,
+            debug: true
         });
         let self = this;
         document.addEventListener('pjax:send', function() {
@@ -1039,17 +1053,29 @@ class Blog {
             // console.log('pjax:send');
         });
         document.addEventListener('pjax:success', function() {
-            self.header?.destroy();
-            self.navbar?.searchIns?.close();
-            self.navbar?.destoryMenuDrawer();
-            self.navbar?.destorySideDrawer();
-            self.sidebar?.destroy();
+            if (window.BLOG_CONFIG.header.enable) {
+                self.header?.destroy();
+            }
+            if (window.BLOG_CONFIG.navigator.enable) {
+                self.navbar?.searchIns?.close();
+                self.navbar?.destoryMenuDrawer();
+                if (window.BLOG_CONFIG.sidebar.enable) {
+                    self.navbar?.destorySideDrawer();
+                }
+            }
+            if (window.BLOG_CONFIG.sidebar.enable) {
+                self.sidebar?.destroy();
+            }
             self.floatToolbar?.destroy();
 
             self.initHeader();
-            self.navbar?.initMenuDrawer();
-            self.navbar?.initSideDrawer();
-            self.navbar?.updateMenuIndicator();
+            if (window.BLOG_CONFIG.navigator.enable) {
+                self.navbar?.initMenuDrawer();
+                self.navbar?.updateMenuIndicator();
+                if (window.BLOG_CONFIG.sidebar.enable) {
+                    self.navbar?.initSideDrawer();
+                }
+            }
             self.initSidebar();
             // self.anchorSmoothScroll();
             self.initFloatToolbar();

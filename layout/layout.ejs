@@ -113,13 +113,15 @@
         <%- partial('./_partial/search', {}, {cache: true}) %>
     <% } %>
     <%- partial('./_partial/header') %>
-    <div id="main">
+    <div id="main" class="<%- theme.sidebar.enable ? 'double-column' : 'singal-column' %>">
         <div id="content">
             <%- body %>
         </div>
+        <% if(theme.sidebar.enable) { %>
         <div id="sidebar">
             <%- partial('./_partial/sidebar') %>
         </div>
+        <% } %>
     </div>
     <div id="footer">
         <%- partial('./_partial/footer', {}, {cache: true}) %>
