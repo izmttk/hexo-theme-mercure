@@ -2,7 +2,11 @@
 
 Mercure主题，使用Tailwind CSS编写的双栏主题。
 
-预览：[demo](https://widergao.github.io/)
+## 预览
+
+![preview-1](preview-1.png)
+
+![preview-2](preview-2.png)
 
 ## 安装方式
 
