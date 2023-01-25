@@ -1,0 +1,205 @@
+<% 
+const headerConfig = theme.header;
+let bottomEffectClass = '';
+if(headerConfig.bottom_effect=='gradient') {
+  bottomEffectClass = 'gradient-bottom';
+} else if(headerConfig.bottom_effect=='waves') {
+  bottomEffectClass = 'waves-bottom';
+}
+%>
+<div id="header" class="<%- bottomEffectClass %>">
+  <% if(is_home()) { %>
+    <div class="cover home-cover">
+      <!-- Header Background Section -->
+      <% if(headerConfig.cover.type=='none') { %>
+        <%# empty %>
+      <% } else if(headerConfig.cover.type=='normal') { %>
+        <div class="background" style="background-image:url(<%- url_for(headerConfig.cover.path) %>)"></div>
+      <% } else if(headerConfig.cover.type=='random') { %>
+        <div class="background"></div>
+      <% } else if(headerConfig.cover.type=='custom') { %>
+        <div class="background" style="background:<%- headerConfig.cover.path %>"></div>
+      <% } else if(headerConfig.cover.type=='parallax') { %>
+        <div class="background parallax-background">
+          <% headerConfig.cover.path.forEach(image => { %>
+            <div class="layer" data-depth="<%= image.depth %>" style="background-image:url(<%- url_for(image.url) %>)"></div>
+          <% }) %>
+        </div>
+      <% } %>
+      <!-- Header Title & Description Section -->
+      <% if(headerConfig.cover.type=='parallax') { %>
+        <div class="content parallax-content">
+      <% } else { %>
+        <div class="content">
+      <% } %>
+      <div class="site-info">
+        <div class="<%= is_home()?'site-title':'title' %>"><%- headerConfig.title %></div>
+        <div class="description">
+          <% if(headerConfig.description.type=='normal') { %>
+            <span><%- headerConfig.description.content %></span>
+          <% } %>
+        </div>
+      </div>
+      <% if(headerConfig.cover.type=='parallax') { %>
+        </div>
+      <% } else { %>
+        </div>
+      <% } %>
+      <% if(headerConfig.scroll_indicator) { %>
+        <div class="indicator" <% if(headerConfig.bottom_effect!='none') { %>style="padding-bottom:3rem"<% } %> >
+          <i class="ri-arrow-down-s-line"></i>
+        </div>
+      <% } %>
+    </div>
+  <% } else { %>
+    <% const cover = getPageCover(page.cover ?? headerConfig.cover) %>
+    <div class="cover">
+      <% if (cover.type === 'random') { %>
+        <div class="background bg-gradient-<%= Math.floor(Math.random()*10) %>"></div>
+      <% } else if (cover.type === 'none') { %>
+        <div class="background"></div>
+      <% } else { %>
+        <div class="background">
+          <%- image_tag(cover.path,{
+            alt: page.title,
+            class: 'background-img',
+            crossOrigin: ''
+          }) %>
+        </div>
+      <% } %>
+      <div class="content">
+        <div class="page-info">
+          <% if(is_category()) { %>
+            <% if (page.index) { %>
+              <div class="title">
+                <span>分类</span>
+              </div>
+              <div class="subtitle">
+                <span>共 <%= site.categories.count() %> 个，继续努力！</span>
+              </div>
+            <% } else { %>
+              <%
+              const categoryNum = site.posts.filter((post) => {
+                return post.categories.some(category => category.name === page.category);
+              }).count();
+              %>
+              <div class="title">
+                <span>分类 <%= page.category %></span>
+              </div>
+              <div class="subtitle">
+                <span>共 <%= categoryNum %> 篇，继续努力！</span>
+              </div>
+            <% } %>
+          <% } else if(is_tag()) { %>
+            <% if (page.index) { %>
+              <div class="title">
+                <span>标签</span>
+              </div>
+              <div class="subtitle">
+                <span>共 <%= site.tags.count() %> 个，继续努力！</span>
+              </div>
+            <% } else { %>
+              <%
+              const tagNum = site.posts.filter((post) => {
+                return post.tags.some(tag => tag.name === page.tag);
+              }).count();
+              %>
+              <div class="title">
+                <span>标签 <%= page.tag %></span>
+              </div>
+              <div class="subtitle">
+                <span>共 <%= tagNum %> 篇，继续努力！</span>
+              </div>
+            <% } %>
+          <% } else if(is_archive()) { %>
+            <%
+            const archiveDate = (is_year() || is_month())
+              ? moment(
+                is_year()
+                ? { year:page.year }
+                : { year:page.year, month:page.month-1 }
+              )
+              : null;
+            const archiveNum = site.posts.filter((post) => {
+              if (is_year()) {
+                return post.date.isSame(archiveDate, 'year');
+              } else if (is_month()) {
+                return post.date.isSame(archiveDate, 'month');
+              }
+              return true;
+            }).count();
+            %>
+            <div class="title">
+              <% if (!is_year() && !is_month()) { %>
+                <span>归档</span>
+              <% } else { %>
+                <span>归档 <%= archiveDate.locale(config.language).format(is_year() ? 'y' : 'y.M') %></span>
+              <% } %>
+            </div>
+            <div class="subtitle">
+              <span>共 <%= archiveNum %> 篇，继续努力！</span>
+            </div>
+          <% } else if(is_page()) { %>
+            <div class="title"><%- page.title %></div>
+          <% } else if(is_post()) { %>
+            <div class="meta">
+              <%# 文章字数 %>
+              <span class="post-wordcount">
+                <i class="ri-font-size-2 mr-1"></i>
+                <span>共 <%= wordcount(page.content) %> 字</span>
+              </span>
+              <%# 文章阅读时长 %>
+              <span class="post-readtime">
+                <i class="ri-time-fill mr-1"></i>
+                <span>约 <%= min2read(page.content) %> 分钟</span>
+              </span>
+            </div>
+            <div class="title"><%- page.title %></div>
+            <div class="meta">
+              <div class="publish-date">
+                <i class="ri-calendar-fill mr-1"></i>
+                <span><%= page.date.locale(config.language).format('ll') %></span>
+              </div>
+              <div class="update-date">
+                <i class="ri-edit-2-fill mr-1"></i>
+                <span><%= page.updated.locale(config.language).format('ll') %></span>
+              </div>
+            </div>
+            <% if (is_post()) { %>
+              <div class="meta">
+                <%- partial('../_metas/post_category', { post: page }) %>
+                <%- partial('../_metas/post_tags', { post: page }) %>
+              </div>
+            <% } %>
+          <% } %>
+        </div>
+        <% if(headerConfig.cover === 'mini' && cover.type !== 'none' ) { %>
+          <div class="mini-cover">
+            <%- image_tag(cover.path,{
+              alt: page.title,
+              class: 'cover-img',
+              crossOrigin: ''
+            }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+  <% if(headerConfig.bottom_effect=='gradient') { %>
+    <div class="bottom"></div>
+  <% } else if(headerConfig.bottom_effect=='waves') { %>
+    <div class="bottom">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use id="wave-1" xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,.3)" />
+          <use id="wave-2" xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,.5)" />
+          <use id="wave-3" xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,.7)" />
+          <use id="wave-4" xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255,255,255,1)" />
+        </g>
+      </svg>
+    </div>
+  <% } %>
+</div>

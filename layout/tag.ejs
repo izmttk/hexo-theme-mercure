@@ -1,7 +1,8 @@
 <% if( page.layout=='tag' ) { %>
-<article class="page">
-  <h1>全部标签</h1>
-  <%- partial('./_widget/tag_list', {}, {cache: true}) %>
-</article>
-<% } else { %> <%-partial('./_partial/recent-posts')%>
-<%-partial('./_partial/paginator')%> <% } %>
+  <article class="page-unstyled">
+    <%- partial('./_widgets/tag_list', {}, {cache: true}) %>
+  </article>
+<% } else { %>
+  <%- partial('./_partials/recent_posts') %>
+  <%- partial('./_partials/paginator')%>
+<% } %>

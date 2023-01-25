@@ -1,0 +1,16 @@
+<%
+//限制标签数量
+const maxCount = 30;
+%>
+<div class="tag-cloud">
+  <div class="tags">
+    <% let tags=site.tags.sort({length: -1,name:1}); %>
+    <% if(maxCount>0) tags=tags.limit(maxCount); %>
+    <% tags.each(tag => { %>
+      <a class="tag" href="<%= url_for(tag.path) %>">
+        <i class="ri-hashtag"></i>
+        <span class="tag-name"><%- tag.name %></span>
+      </a>
+    <% }) %>
+  </div>
+</div>

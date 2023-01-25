@@ -1,0 +1,31 @@
+.tag-list {
+    @apply my-3 space-y-4;
+    .group {
+        @apply flex flex-nowrap items-center;
+        .title {
+            @apply w-10 h-7 flex-none text-xl font-bold self-start;
+        }
+        .tags {
+            @apply flex flex-wrap flex-row gap-2;
+            a {
+                @apply block rounded-full pl-2 pr-1 py-1;
+                @apply plate-bg plate-shadow border-highlight pressable;
+                @apply inline-flex items-center;
+                &:hover {
+                    @apply bg-primary-600 text-gray-100 shadow-lg shadow-primary-900/50 dark:shadow-primary-700/50;
+                    .tag-count {
+                        @apply bg-primary-500;
+                    }
+                }
+                .tag-name {
+                    @apply text-sm mr-1;
+                }
+                .tag-count {
+                    @apply px-1 h-5 min-w-[1.25rem] text-xs leading-5 rounded-full text-center;
+                    @apply bg-primary-600 text-gray-100;
+                }
+            }
+        }
+    }
+
+}

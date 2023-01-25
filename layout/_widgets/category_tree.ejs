@@ -1,0 +1,34 @@
+<%
+const maxDepth = Infinity;
+const buildTree = (id, depth = 0) => {
+  const isMaxDepth = depth >= maxDepth ? true : false;
+  const childrenCats = site.categories.find({ parent: id });
+  const cur =  site.categories.findOne({ _id: id });
+
+  const isEndpoint = isMaxDepth || childrenCats.length == 0;
+  const children = [];
+
+  childrenCats.sort({length: -1, name: 1})
+    .filter(cat => cat.length)
+    .forEach(cat => {
+        children.push(buildTree(cat._id, depth + 1));
+    });
+  return {
+    name: `<a href="${url_for(cur.path)}" class="hover:font-bold inline-flex items-center [&:hover>i]:translate-x-0 [&:hover>i]:opacity-100" tabindex="-1">${cur.name} <i class="ri-arrow-right-line transition-[transform,opacity] duration-300 -translate-x-1/2 opacity-0"></i></a>`,
+    prefix: isEndpoint ? '<i class="ri-book-fill"></i>' : '<i class="ri-folder-3-line"></i>',
+    suffix: `<span class="text-xs">${cur.length}</span>`,
+    expanded: depth < 1,
+    children: children
+  };
+}
+const trees = [];
+site.categories.find({parent: undefined}).sort({length: -1, name: 1}).forEach(cat => {
+  trees.push(buildTree(cat._id));
+});
+%>
+<div class="category-tree">
+  <%- partial('../_components/treeview', {
+    trees: trees,
+    classes: 'p-2'
+  }) %>
+</div>

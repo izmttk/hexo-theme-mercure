@@ -1,0 +1,15 @@
+.post-tags {
+  @apply flex gap-x-2 gap-y-1 flex-wrap;
+  @apply text-[0.8125rem] leading-none;
+  .post-tag {
+    @apply flex-none flex items-center;
+    @apply text-gray-800 px-2 py-1 bg-gray-200/60 rounded-full;
+    @apply hover:bg-white hover:shadow-md transition duration-150 active:scale-90;
+    /* @apply backdrop-blur-md backdrop-contrast-125 backdrop-brightness-125; */
+    @apply dark:text-white dark:bg-gray-900/50 dark:hover:text-black dark:hover:bg-white;
+    text-shadow: none;
+    a {
+      @apply flex items-center;
+    }
+  }
+}

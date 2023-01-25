@@ -1,0 +1,29 @@
+#paginator {
+  @apply w-full flex justify-center mt-10;
+  @apply text-sm md:text-base text-secondary leading-none;
+  .group {
+    @apply flex flex-wrap justify-center space-x-1;
+    .page-number,
+    .extend,
+    .space {
+      @apply relative flex justify-center items-center min-w-[2.25rem] h-9 rounded-lg p-2;
+      @apply hover:plate-bg hover:plate-shadow hover:border-highlight pressable;
+      @apply appearance-none cursor-pointer select-none touch-manipulation whitespace-nowrap;
+    }
+    .extend {
+      @apply text-sm;
+      &.prev {
+        @apply pr-3;
+      }
+      &.next {
+        @apply pl-3;
+      }
+    }
+    .page-number.current {
+      @apply bg-gradient-to-br from-primary-500 to-primary-700 text-gray-100;
+      @apply shadow-md shadow-primary-900/50 dark:shadow-primary-700/50;
+      @apply text-gray-100 transition-shadow;
+      @apply hover:shadow-lg hover:shadow-primary-900/50 dark:hover:shadow-primary-700/70;
+    }
+  }
+}

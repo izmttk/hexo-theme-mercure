@@ -1,0 +1,18 @@
+.tag-cloud {
+    .tags {
+        @apply flex flex-wrap flex-row pl-2 -mr-[0.3125rem];
+        a {
+            @apply plate-bg plate-shadow border-highlight pressable;
+            @apply transition-shadow;
+            @apply rounded-lg shadow-md shadow-black/5 mr-[0.3125rem] mb-[0.3125rem] overflow-hidden;
+            @apply px-2 text-xs h-[1.625rem] leading-[1.625rem];
+            @apply flex items-center;
+            i, .tag-name {
+                @apply leading-none;
+            }
+            &:hover {
+                @apply bg-primary-600 text-white shadow-lg shadow-primary-900/50 dark:shadow-primary-700/50;
+            }
+        }
+    }
+}

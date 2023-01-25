@@ -5,156 +5,121 @@ favicon: /favicon.ico
 author:
   name: 银河渡舟
   avatar: /assets/avatar.png
-  background: /assets/defalut-profile-bg.jpg
+  background: /assets/default-profile-bg.jpg
   signature: 永远相信美好的事情即将发生
   social:
     - name: QQ
       link: #
-      icon: iconfont icon-qq
-      color: "#1a98ff"
+      icon: <i class="iconfont icon-qq"></i>
+      color: '#1a98ff'
     - name: 哔哩哔哩
       link: #
-      icon: iconfont icon-bilibili
-      color: "#fc87b2"
+      icon: <i class="iconfont icon-bilibili"></i>
+      color: '#fc87b2'
     - name: 网易云音乐
       link: #
-      icon: iconfont icon-netease-music
-      color: "#ff4e6a"
+      icon: <i class="iconfont icon-netease-music"></i>
+      color: '#ff4e6a'
     - name: Github
       link: #
-      icon: iconfont icon-github
-      color: "#7c8690"
+      icon: <i class="iconfont icon-github"></i>
+      color: '#7c8690'
     - name: Telegram
       link: #
-      icon: iconfont icon-telegram
-      color: "#00dbff"
+      icon: <i class="iconfont icon-telegram"></i>
+      color: '#00dbff'
     - name: 邮件
       link: #
-      icon: iconfont icon-mail
-      color: "#15ce05"
+      icon: <i class="iconfont icon-mail"></i>
+      color: '#15ce05'
     - name: 知乎
       link: #
-      icon: iconfont icon-zhihu
-      color: "#1e88e5"
+      icon: <i class="iconfont icon-zhihu"></i>
+      color: '#1e88e5'
     - name: 微博
       link: #
-      icon: iconfont icon-weibo
-      color: "#ff3b00"
+      icon: <i class="iconfont icon-weibo"></i>
+      color: '#ff3b00'
 
 # 配置页头
 header:
   # 是否显示 header
   enable: true
-  height: 400px
   
   # Header 的底部效果，允许值：
   #  - none      无过渡效果
   #  - gradient  从透明到背景色渐变过渡
-  #  - cloud     静态云朵图案
   #  - waves     动态波浪效果
   bottom_effect: waves
-  # 通过 layout 指定不同模板下的配置，某些模板具有一些独特的配置项
-  layout:
-    index:
-      # 网页头部的高度，可以为每个模板单独指定，full表示全屏，支持 css 写法
-      height: calc(100vh + 60px)
-
-      # 网站封面
-      cover:
-        # 网站封面类型，仅对首页生效，type 允许值：
-        #  - none     无封面图片
-        #  - normal   静态图片，image 域应当为图像路径文本
-        #  - random   随机图片，image 域应当为图像路径列表，每次刷新从中随机一个
-        #  - custom   自定义 css 中 background 后的内容，可以为颜色、渐变、图像等
-        #  - parallax 视差效果，image 域应当为对象列表，列表项包含 url 和 depth 两个属性
-        #             url 属性表示图片路径，depth 属性表示图像视差深度
-        type: parallax
-        # 图像路径、路径列表或配置对象列表
-        image:
-          - { url: "/assets/layer-1.png", depth: 0.2 }
-          - { url: "/assets/layer-2.png", depth: 0.4 }
-          - { url: "/assets/layer-3.png", depth: 1 }
-
-      # 网站标题文字或者图片，支持html
-      title: 银河渡舟 #任何html内容
-
-      # 网站副标题
-      description:
-        # 副标题类型，type 允许值：
-        #  - normal  静态文本或html，content 域应当为文本或html
-        #  - random  随机文本或html，content 域应当为文本或html的列表，每次刷新从中随机一个
-        #  - api     从api中获取文本，api的返回类型应当为json，若 type 为 api，则 url 域
-        #            应当填入api路径，text_field 域应当填入 json 中句子文本对应的属性名称，
-        #            from_field 域应当填入 json 中句子出处对应的属性名称
-        type: api
-        url: //v1.hitokoto.cn
-        text_field: hitokoto
-        from_field: from
-      # 是否开启滚动提示
-      scroll_indicator: true
-    post:
-      # 头部封面特色图片显示类型
-      #  - none     无封面图片
-      #  - full     全覆盖特色图片
-      #  - mini     局部卡片样式特色图片
-      cover: full
-
-    page:
-      height: 400px
 
 # 配置顶部导航栏
 navigator:
-  logo: 银河渡舟 #任何html
+  enable: true
+  logo: 银河渡舟 # 任何html
   menu:
     - name: 博客
-      url: /
+      link: /
     - name: 分类
-      url: /categories
+      link: /categories
     - name: 标签
-      url: /tags
+      link: /tags
     - name: 归档
-      url: /archives
+      link: /archives
     - name: 友链
-      url: /friends
+      link: /friends
     - name: 关于
-      url: /about
+      link: /about
     - name: 菜单
       submenu:
         - name: 条目1
-          url: #
+          link: #
+          target: _blank # 打开方式，默认为"_self"
+                         # 详见 https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a#attr-target
+          rel: nofollow  # 链接类型，默认为"noopener"
+                         # 详见 https://developer.mozilla.org/zh-CN/docs/Web/HTML/Link_types
+        - <div class="p-1 text-sm text-center">---This-is-a-html-tag---</div> # 可以插入任何html
         - name: 条目2
-          url: #
+          link: #
         - divider # 分割线
         - name: 子菜单
           submenu:
             - name: 条目1
-              url: #
+              link: #
+              suffix: <i class="iconfont icon-arrow-down"></i>
+              prefix: <i class="iconfont icon-category"></i>
             - name: 条目2
-              url: #
+              link: #
   # 导航栏附加功能按钮
   toolkit:
     search: true # 搜索功能入口按钮，注意要同时开启配置文件中的 search.enable 后才能生效
-    darkmode: true # 深色某切换按钮
+    colormode: true # 颜色模式切换按钮
 
 # 配置侧边栏
 sidebar:
   enable: true
   # 是否显示个人信息组件
-  show_profile: true
+  profile: true
+  # 是否显示统计数据
+  stats: true
   # 是否显示标签云组件
-  show_tag_cloud: true
+  tag_cloud: true
   # 是否显示树形分类组件
-  show_category_tree: true
+  category_tree: true
   # 是否在文章或页面中显示目录
-  show_toc: true
-  # 指定不同模板下的配置
-  layout:
-    friends:
-      enable: false
+  toc: true
 
 # 配置页脚
 footer:
+  enable: true
   text: 欢迎来访我的小窝
+
+# 配置浮动按钮
+fabs:
+  enable: true
+  # 是否显示返回顶部按钮
+  goto_top: true
+  # 是否显示直达评论按钮
+  goto_comment: true
 
 # 配置默认文章卡片
 post_card: 
@@ -162,9 +127,11 @@ post_card:
   cover:
     # 卡片封面类型默认值，可被Front-matter替换，允许值：
     #  - none 无特色图片
-    #  - blur 卡片背景为图片模糊
-    #  - full 卡片背景为图片填充
-    #  - material 卡片背景从图片取色
+    #  - blur 卡片背景为特色图片模糊
+    #  - full 卡片背景为特色图片填充
+    #  - random 随机渐变背景，无特色图片
+    #  - material 特色图片边缘渐变过渡
+    #  - plain 简单朴素的样式
     type: blur
     # 卡片封面位置默认值，仅对type为blur和material的卡片生效
     # 可被Front-matter替换，允许值：
@@ -173,10 +140,12 @@ post_card:
     #  - right 始终在右侧
     position: alter
 
-darkmode: true
+# 配置主题颜色模式，可选值：auto | light | dark
+colormode: auto
 
 # 配置评论功能
 comments:
+  enable: true
   disqus:
     enable: false
     shortname: demo
@@ -240,7 +209,7 @@ plugins:
     loading_img: /assets/loading.svg
   pjax: true
   # 使用 js 统一滚动条外观
-  overlay_scrollbar: true
+  overlay_scrollbar: false
 
 # 配置搜索服务，目前提供了本地搜索服务和 Algolia 搜索服务，请确保任何时候只开启一个搜索服务
 search:
@@ -270,8 +239,65 @@ search:
 # 页面加载遮罩
 loading:
   enable: true
-  image: 
-    src: /assets/sagiri.gif
-    width: auto
-    height: 288px
-  text: 少女祈祷中 ······
+  splash:
+    # splash 标志类型，可选值：
+    #  - none     无标志
+    #  - bars     自带动画
+    #  - image    图像标志，src 域应当为图像路径
+    #  - video    视频标志，src 域应当为视频路径
+    type: video
+    src: /assets/sagiri.webm
+    width: 120px
+    height: auto
+  text: 请稍后 ······
+
+# 通过 layout 指定不同模板下的配置，某些模板具有一些独有的配置项
+layout:
+  home:
+    home:
+      # 网站封面
+      cover:
+        # 网站封面类型，仅对首页生效，type 允许值：
+        #  - none     无封面图片
+        #  - normal   静态图片，image 域应当为图像路径文本
+        #  - random   随机图片，image 域应当为图像路径列表，每次刷新从中随机一个
+        #  - custom   自定义 css 中 background 后的内容，可以为颜色、渐变、图像等
+        #  - parallax 视差效果，image 域应当为对象列表，列表项包含 url 和 depth 两个属性
+        #             url 属性表示图片路径，depth 属性表示图像视差深度
+        type: parallax
+        # 图像路径、路径列表或配置对象列表
+        image:
+          - { url: "/assets/layer-1.png", depth: 0.2 }
+          - { url: "/assets/layer-2.png", depth: 0.4 }
+          - { url: "/assets/layer-3.png", depth: 1 }
+
+      # 网站标题文字或者图片，支持html
+      title: 银河渡舟 #任何html内容
+
+      # 网站副标题
+      description:
+        # 副标题类型，type 允许值：
+        #  - normal  静态文本或html，content 域应当为文本或html
+        #  - random  随机文本或html，content 域应当为文本或html的列表，每次刷新从中随机一个
+        #  - api     从api中获取文本，api的返回类型应当为json，若 type 为 api，则 url 域
+        #            应当填入api路径，text_field 域应当填入 json 中句子文本对应的属性名称，
+        #            from_field 域应当填入 json 中句子出处对应的属性名称
+        type: api
+        url: //v1.hitokoto.cn
+        text_field: hitokoto
+        from_field: from
+      # 是否开启滚动提示
+      scroll_indicator: true
+  friends:
+    # 配置侧边栏
+    sidebar:
+      enable: false
+
+# 若您不关心主题的开发，忽略以下配置即可
+build:
+  # 是否手动构建js和css，如果为 true，则需要手动执行 npm run build 命令进行构建
+  manual: true
+  # 构建环境, 可选值为 production 和 development, 留空则根据 hexo 命令自动判断
+  # 若运行 hexo s 或 hexo server 则为 development, 其他情况为 production
+  # 在 production 环境下，html、js和css将会被压缩优化，在 development 环境下不做处理
+  env: # 空

@@ -1,0 +1,59 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= config.description %>">
+  <% 
+  /* 判断页面标题
+  * /tag/xxx -> is_tag
+  * /category/xxx --> is_category
+  * /archive --> is_archive
+  * /archive/xxxx --> is_year
+  * /archive/xxxx/xx --> is_month
+  */
+  let title = strip_html(page.title);
+  if (is_archive()) {
+    title = '归档';
+    if (is_year()) {
+      title += `: ${page.year}`;
+    } else if (is_month()) {
+      title += `: ${page.year}.${page.month}`;
+    }
+  } else if (is_category()) {
+    title = `分类${page.index ? '' : ': ' + page.category}`;
+  } else if (is_tag()) {
+    title = `标签${page.index ? '' : ': ' + page.tag}`;
+  }
+  %>
+  <%#  输出标题格式：xxxx - 网站标题 %>
+  <title><% if (title) { %><%= title %> - <% } %><%= config.title %></title>
+  <%- favicon_tag(theme.favicon ?? config.favicon) %>
+  <%- partial('./config_data') %>
+  <%# 提前判断深色模式防止闪烁 %>
+  <% if (theme.colormode === 'auto') { %> 
+    <script type="text/javascript">
+      (function () {
+          const mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : null;
+          mode && document.documentElement.classList.add(mode);
+      })();
+    </script>
+  <% } %> 
+
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all"> -->
+
+  <% if (config.highlight.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css" media="all">
+  <% } %> 
+  <% if (theme.plugins.katex.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" media="all">
+    <style>.katex *{color:currentColor;border-color:currentColor}.katex{overflow-x:auto;overflow-y:hidden}</style>
+  <% } %>
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" media="all"> -->
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all"> -->
+  <% if (theme.plugins.lazyload.enable) { %>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5/plugins/print/ls.print.min.js,npm/lazysizes@5/plugins/noscript/ls.noscript.min.js,npm/lazysizes@5/plugins/bgset/ls.bgset.min.js,npm/lazysizes@5" defer></script>
+  <% } %> 
+  <% if (theme.plugins.overlay_scrollbar.enable) { %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2/styles/overlayscrollbars.min.css" media="all">
+  <% } %>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js@1/src/toastify.min.css">
+</head>

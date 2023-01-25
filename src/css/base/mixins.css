@@ -1,0 +1,23 @@
+@layer utilities {
+  .plate-bg {
+    @apply bg-plate-light dark:bg-plate-dark;
+  }
+  .plate-shadow {
+    @apply shadow-lg shadow-gray-900/10 dark:shadow-black/20;
+  }
+  .border-highlight {
+    @apply ring-1 ring-gray-600/10 dark:ring-highlight dark:ring-white/5;
+  }
+  .text-primary {
+    @apply text-text-primary-light dark:text-text-primary-dark;
+  }
+  .text-secondary {
+    @apply text-text-secondary-light dark:text-text-secondary-dark;
+  }
+  .text-disabled {
+    @apply text-text-disabled-light dark:text-text-disabled-dark;
+  }
+  .pressable {
+    @apply active:scale-90;
+  }
+}

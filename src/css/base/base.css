@@ -1,0 +1,285 @@
+:root {
+  @apply antialiased;
+  color-scheme: light;
+  &.dark {
+    color-scheme: dark;
+  }
+}
+
+body {
+  @apply bg-background-light dark:bg-background-dark text-primary;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px; /*滚动条的宽度*/
+  height: 6px; /*滚动条的高度*/
+}
+*::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-black/30 dark:bg-white/30;
+}
+*::-webkit-scrollbar-thumb:horizontal {
+  /*水平滚动条的样式*/
+  /* background-color: #cccccc; */
+}
+*::-webkit-scrollbar-thumb:vertical {
+  /*垂直滚动条的样式*/
+  /* background-color: #999; */
+}
+*::-webkit-scrollbar-thumb:hover {
+  /*滚动条的hover样式*/
+  @apply bg-black/50 dark:bg-white/50;
+}
+*::-webkit-scrollbar-thumb:active {
+  /*滚动条的点击样式*/
+  @apply bg-black/70 dark:bg-white/70;
+}
+*::-webkit-scrollbar-corner {
+  /*滚动条的角落样式*/
+  @apply bg-transparent;
+}
+
+/* FireFox ScrollBar Thin Style */
+* {
+  scrollbar-width: thin;
+}
+
+:focus:not(:focus-visible) {
+  @apply outline outline-none;
+}
+:focus-visible {
+  @apply outline outline-2 outline-primary-400 outline-offset-2;
+}
+@supports not selector(:focus-visible) {
+  :focus {
+    @apply outline outline-2 outline-primary-400 outline-offset-2;
+  }
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  @apply outline-none;
+}
+
+[hidden] {
+  @apply !hidden;
+}
+img[data-sizes='auto'] {
+  display: block;
+  width: 100%;
+}
+
+#main {
+  @apply flex flex-row flex-nowrap w-full mx-auto;
+  #content {
+    @apply flex-1 min-w-0 z-10 m-3 md:m-4 md:mr-1;
+    .recent-posts {
+      @apply space-y-4 md:space-y-7;
+    }
+  }
+  #sidebar {
+    @apply z-0;
+  }
+}
+#main.singal-column {
+  @apply lg:max-w-[52em] xl:max-w-[57rem] 2xl:max-w-[63rem];
+}
+#main.double-column {
+  @apply lg:max-w-[69rem] xl:max-w-[72rem] 2xl:max-w-[75rem];
+}
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  display: none;
+}
+
+.bg-gradient-0 {
+  background-image: linear-gradient(135deg, #ee9ae5 10%, #5961f9 100%);
+}
+.bg-gradient-1 {
+  background-image: linear-gradient(135deg, #fccf31 10%, #f55555 100%);
+}
+.bg-gradient-2 {
+  background-image: linear-gradient(135deg, #e2b0ff 10%, #9f44d3 100%);
+}
+.bg-gradient-3 {
+  background-image: linear-gradient(135deg, #79f1a4 10%, #0e5cad 100%);
+}
+.bg-gradient-4 {
+  background-image: linear-gradient(135deg, #ffaa85 10%, #b3315f 100%);
+}
+.bg-gradient-5 {
+  background-image: linear-gradient(135deg, #97abff 10%, #123597 100%);
+}
+.bg-gradient-6 {
+  background-image: linear-gradient(135deg, #ce9ffc 10%, #7367f0 100%);
+}
+.bg-gradient-7 {
+  background-image: linear-gradient(135deg, #feb692 10%, #ea5455 100%);
+}
+.bg-gradient-8 {
+  background-image: linear-gradient(135deg, #abdcff 10%, #0396ff 100%);
+}
+.bg-gradient-9 {
+  background-image: linear-gradient(135deg, #fec163 10%, #de4313 100%);
+}
+
+@keyframes slideUpIn {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideDownIn {
+  from {
+    transform: translateY(-100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideUpOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100px);
+  }
+}
+@keyframes slideDownOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100px);
+  }
+}
+@keyframes slideLeftIn {
+  from {
+    transform: translateX(100px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideRightIn {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideLeftOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100px);
+  }
+}
+@keyframes slideRightOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100px);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.fade-in {
+  animation: fadeIn 0.4s both;
+}
+.slide-up-in {
+  animation: slideUpIn 0.4s both;
+}
+.slide-down-in {
+  animation: slideDownIn 0.4s both;
+}
+.slide-left-in {
+  animation: slideLeftIn 0.4s both;
+}
+.slide-right-in {
+  animation: slideRightIn 0.4s both;
+}
+.slide-up-fade-in {
+  animation: slideUpIn 0.4s, fadeIn 0.4s both;
+}
+.slide-down-fade-in {
+  animation: slideDownIn 0.4s, fadeIn 0.4s both;
+}
+.slide-left-fade-in {
+  animation: slideLeftIn 0.4s, fadeIn 0.4s both;
+}
+.slide-right-fade-in {
+  animation: slideRightIn 0.4s, fadeIn 0.4s both;
+}
+.fade-out {
+  animation: fadeOut 0.4s both;
+}
+.slide-up-out {
+  animation: slideUpOut 0.4s both;
+}
+.slide-down-out {
+  animation: slideDownOut 0.4s both;
+}
+.slide-left-out {
+  animation: slideLeftOut 0.4s both;
+}
+.slide-right-out {
+  animation: slideRightOut 0.4s both;
+}
+.slide-up-fade-out {
+  animation: slideUpOut 0.4s, fadeOut 0.4s both;
+}
+.slide-down-fade-out {
+  animation: slideDownOut 0.4s, fadeOut 0.4s both;
+}
+.slide-left-fade-out {
+  animation: slideLeftOut 0.4s, fadeOut 0.4s both;
+}
+.slide-right-fade-out {
+  animation: slideRightOut 0.4s, fadeOut 0.4s both;
+}
+
+kbd {
+  @apply inline-block rounded min-w-[24px] relative border-b-2 border-[#d6d6e7] cursor-pointer align-middle;
+  @apply bg-gradient-to-tl from-[#f5f5fa] to-[#d6d6e7]/60 dark:border-slate-800 dark:from-slate-700 dark:to-slate-800/60;
+  @apply shadow-[0_4px_11px_0_rgba(37,44,97,.15),0_1px_3px_0_rgba(93,100,148,.6)] dark:shadow-[0_4px_11px_0_rgba(0,0,0,.4),0_1px_3px_0_rgba(0,0,0,.25)];
+  @apply text-[10px] min-h-[22px] py-[2px] px-[4px];
+  &:active {
+    @apply border-b;
+    @apply shadow-[0_4px_5px_0_rgba(37,44,97,.15),0_1px_1px_0_rgba(93,100,148,.6)] translate-y-[1px];
+    @apply dark:shadow-[0_4px_5px_0_rgba(0,0,0,.2),0_1px_1px_0_rgba(0,0,0,.15)];
+  }
+  &::after {
+    content: '';
+    @apply absolute inset-0 rounded border-t border-l border-r border-white;
+    @apply dark:border-slate-600;
+  }
+}
+
+[class^='ri-'],
+[class*=' ri-'] {
+  font-weight: normal !important;
+}

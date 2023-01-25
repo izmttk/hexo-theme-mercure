@@ -1,42 +1,40 @@
-<article class="post">
+<article class="page">
   <%- page.content %>
 </article>
 <div class="prev-next">
   <% if(page.prev) { %>
-  <% let prev_cover = getPageCover(page.prev) %>
-  <div 
-    class="prev <%= prev_cover.type=='none'?'no-cover':'' %>" 
-    <% if(prev_cover.type!=='none') { %> 
-    style="background-image:url('<%- url_for(prev_cover.path) %>')"
-    <% } %>
-  >
-    <span class="deixis"><i class="ri-arrow-left-line"></i>上一篇</span>
-    <a class="title" href="<%= url_for(page.prev.path) %>"><%= page.prev.title %></a>
-    <span class="meta">
-      <%- partial('./_meta/post_category', { post: page.prev }) %>
-      <%- partial('./_meta/post_tag', { post: page.prev }) %>
-    </span>
-  </div>
+    <% const prev_cover = getPageCover(page.prev.cover) %>
+    <div class="prev <%- prev_cover.type=='none'?'no-cover':'' %>" <% if(prev_cover.type!=='none') { %>style="background-image:url('<%- url_for(prev_cover.path) %>')"<% } %>>
+      <span class="deixis"><i class="ri-arrow-left-line"></i>上一篇</span>
+      <% if (page.prev.link) { %>
+        <a class="title" href="<%= url_for(page.prev.link) %>"><%- page.prev.title %></a>
+      <% } else { %>
+        <a class="title" href="<%= url_for(page.prev.path) %>"><%- page.prev.title %></a>
+      <% } %>
+      <span class="meta">
+        <%- partial('./_metas/post_last_category', { post: page.prev }) %>
+        <%- partial('./_metas/post_tags', { post: page.prev }) %>
+      </span>
+    </div>
   <% } else { %>
-  <span class="blank">已经是最新的了</span>
+    <span class="blank">已经是最新的了</span>
   <% } %> 
   <% if(page.next) { %>
-  <% let next_cover = getPageCover(page.next) %>
-  <div
-    class="next <%= next_cover.type=='none'?'no-cover':'' %>" 
-    <% if(next_cover.type!=='none') { %>
-    style="background-image:url('<%- url_for(next_cover.path) %>')"
-    <% } %>
-  >
-    <span class="deixis"><i class="ri-arrow-right-line"></i>下一篇</span>
-    <a class="title" href="<%= url_for(page.next.path) %>"><%= page.next.title %></a>
-    <span class="meta">
-      <%- partial('./_meta/post_category', { post: page.next }) %>
-      <%- partial('./_meta/post_tag', { post: page.next }) %>
-    </span>
-  </div>
+    <% const next_cover = getPageCover(page.next.cover) %>
+    <div class="next <%- next_cover.type=='none'?'no-cover':'' %>" <% if(next_cover.type!=='none') { %>style="background-image:url('<%- url_for(next_cover.path) %>')"<% } %>>
+      <span class="deixis"><i class="ri-arrow-right-line"></i>下一篇</span>
+      <% if (page.next.link) { %>
+        <a class="title" href="<%= url_for(page.next.link) %>"><%- page.next.title %></a>
+      <% } else { %>
+        <a class="title" href="<%= url_for(page.next.path) %>"><%- page.next.title %></a>
+      <% } %>
+      <span class="meta">
+        <%- partial('./_metas/post_last_category', { post: page.next }) %>
+        <%- partial('./_metas/post_tags', { post: page.next }) %>
+      </span>
+    </div>
   <% } else { %>
-  <span class="blank">已经是最后一篇了</span>
+    <span class="blank">已经是最后一篇了</span>
   <% } %> 
 </div>
-<%- partial('./_partial/comments.ejs') %>
+<%- partial('./_partials/comments.ejs') %>

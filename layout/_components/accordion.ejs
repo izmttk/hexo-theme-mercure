@@ -1,0 +1,37 @@
+<%# 
+accordion params:
+  title: title of accordion
+  content: accordion panel content
+  prefixIcon: prefix icon with animation
+  suffixIcon: suffix icon with animation
+  fullwidth: boolean, default false
+  classes: class of accordion
+%>
+<% 
+const accordionTitle = (typeof title !== 'undefined') ? title : null;
+const accordionContent = (typeof content !== 'undefined') ? content : false;
+const accordionPrefixIcon = (typeof prefixIcon !== 'undefined') ? prefixIcon : false;
+const accordionSuffixIcon = (typeof suffixIcon !== 'undefined') ? suffixIcon : true;
+const accordionFullWidth = (typeof fullWidth !== 'undefined') ? fullWidth : true;
+const accordionClasses = (typeof classes !== 'undefined') ? classes : null;
+const hash = hashName(uuid());
+%>
+
+<div class="<%- accordionClasses %> accordion [&.open>.accordion-header>.prefix-icon]:rotate-90 [&.open>.accordion-header>.suffix-icon]:rotate-180">
+  <div class="accordion-header flex items-center px-4 py-0.5 h-9 rounded-md <%- accordionFullWidth ? 'w-auto' : 'w-max' %> text-sm plate-bg border-highlight shadow-sm select-none" id="<%= `accordion-header-${hash}` %>" aria-controls="<%= `accordion-panel-${hash}` %>" role="button" tabindex="0" aria-expanded="false">
+    <% if(accordionPrefixIcon) { %> 
+      <div class="prefix-icon flex-none mr-2 transition-transform duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+      </div>
+    <% } %>
+    <div class="title flex-auto"><%- accordionTitle %></div>
+    <% if(accordionSuffixIcon) { %> 
+      <div class="suffix-icon flex-none ml-2 transition-transform duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+      </div>
+    <% } %>
+  </div>
+  <div class="accordion-content transition-[height] duration-200 h-0 overflow-hidden" id="<%= `accordion-panel-${hash}` %>" role="region" aria-labelledby="<%= `accordion-header-${hash}` %>">
+    <%- accordionContent %>
+  </div>
+</div>

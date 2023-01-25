@@ -1,0 +1,192 @@
+#header {
+  @apply relative mb-4 md:mb-8;
+  .cover {
+    @apply relative flex justify-center items-center min-h-[20rem] md:min-h-[26rem];
+    .content {
+      @apply lg:max-w-[69rem] xl:max-w-[72rem] 2xl:max-w-[75rem];
+      @apply w-full h-full mx-auto;
+      @apply px-6 md:px-8 pt-20 pb-8 md:pt-28 md:pb-20;
+      @apply flex justify-between items-center flex-row z-10;
+      .page-info {
+        @apply flex justify-center flex-col z-10;
+        .title, .subtitle, .meta > :not(.post-tags, .post-category) {
+          @apply drop-shadow-[0_2px_2px_rgba(0,0,0,.5)];
+        }
+        .title {
+          @apply my-4 text-3xl font-bold md:font-normal md:text-5xl md:leading-tight lg:text-6xl lg:leading-tight text-white;
+        }
+        .subtitle {
+          @apply my-1 text-lg text-white;
+        }
+        .meta {
+          @apply flex flex-wrap my-1 text-white text-sm gap-x-4 gap-y-1;
+          > * {
+            @apply inline-flex items-center;
+          }
+        }
+      }
+      .mini-cover {
+        @apply hidden md:block;
+        @apply w-60 h-60 rounded-lg overflow-hidden flex-none shadow-lg;
+        .cover-img {
+          @apply h-full w-full object-cover;
+        }
+      }
+    }
+    
+    .background {
+      @apply absolute inset-0 bg-primary-900 bg-cover bg-no-repeat bg-center overflow-hidden select-none;
+      &:after {
+        content: '';
+        @apply absolute inset-0;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='3' height='3' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(135)'%3E%3Crect width='100%25' height='100%25' fill='rgba(0, 0, 0,0)'/%3E%3Cpath d='m0 10h40v20h-40z' fill='rgba(0, 0, 0,0.1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E%0A");
+        /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAKUlEQVQImU3IMREAIAgAwJfNkQCEsH8cijjpMf6vnXlQaIiJFx+omEBfmqIEZLe2jzcAAAAASUVORK5CYII=); */
+      }
+      .background-img {
+        @apply w-full h-full object-cover;
+      }
+      &.mini-cover-bg .background-img {
+        @apply md:blur-xl md:scale-125;
+      }
+    }
+    .indicator {
+      @apply hidden md:flex absolute bottom-2 cursor-pointer z-20;
+      @apply flex-col justify-center items-center;
+      @apply text-white font-sans;
+      animation: scroll-down 2s infinite;
+      .icon {
+        @apply text-2xl;
+      }
+    }
+    @keyframes scroll-down {
+      0% {
+        opacity: 0.8;
+        transform: translateY(-0.5rem);
+      }
+      50% {
+        opacity: 0.4;
+        transform: translateY(-1.5rem);
+      }
+      100% {
+        opacity: 0.8;
+        transform: translateY(-0.5rem);
+      }
+    }
+    .parallax-content {
+      .layer {
+        width: 100%;
+        height: 100%;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .parallax-background {
+      .layer {
+        position: absolute !important;
+        top: -50px !important;
+        left: -50px !important;
+        bottom: -50px !important;
+        right: -50px !important;
+        /* width: 100%; */
+        /* height: 100%; */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
+  .cover.home-cover {
+    @apply h-96 md:h-[clamp(20rem,calc(100vh_+_60px),36rem)];
+    .content {
+      @apply w-full p-0;
+      .site-info {
+        @apply w-full h-full flex flex-col justify-center items-center;
+        .site-title {
+          @apply text-white text-5xl;
+          @apply flex h-24 leading-[6rem] md:h-36 md:leading-[9rem] mx-4 my-4;
+          img,
+          svg {
+            @apply h-full object-contain;
+          }
+        }
+        .description {
+          @apply mx-8 p-1 text-white text-sm flex flex-nowrap justify-between items-center;
+          @apply drop-shadow-[-1px_1px_1px_rgba(0,0,0,.5)];
+        }
+      }
+    }
+  }
+  .bottom {
+    @apply overflow-hidden;
+  }
+}
+#header.gradient-bottom {
+  @apply mb-0;
+  .cover {
+    @apply !min-h-min;
+    .background {
+      @apply -bottom-16 md:-bottom-32 z-0;
+      &:before {
+        content: "";
+        @apply absolute z-10 inset-x-0 bottom-0 h-[40%];
+        background: linear-gradient(to top, theme(colors.background.light), ease-in-out, transparent);
+        .dark & {
+          background: linear-gradient(to top, theme(colors.background.dark), ease-in-out, transparent);
+        }
+      }
+    }
+  }
+  /* smooth gradient trick on https://css-tricks.com/easing-linear-gradients/ */
+}
+#header.waves-bottom .bottom {
+  /* @apply hidden md:block; */
+  @apply absolute inset-x-0 bottom-0 z-20;
+  .waves {
+    @apply w-full h-7 md:h-[3.75rem] mb-[-1px] min-h-[1.5rem] max-h-[8rem];
+  }
+  /* Animation */
+  .parallax > use {
+    animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+  }
+  .parallax > use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
+  }
+  .parallax > use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+  }
+  .parallax > use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+  }
+  .parallax > use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+  }
+  @keyframes move-forever {
+    0% {
+      transform: translate3d(-90px, 0, 0);
+    }
+    100% {
+      transform: translate3d(85px, 0, 0);
+    }
+  }
+  .waves {
+    @apply text-background-light dark:text-background-dark;
+    #wave-1 {
+      @apply fill-current opacity-30;
+    }
+    #wave-2 {
+      @apply fill-current opacity-50;
+    }
+    #wave-3 {
+      @apply fill-current opacity-70;
+    }
+    #wave-4 {
+      @apply fill-current opacity-100;
+    }
+  }
+}

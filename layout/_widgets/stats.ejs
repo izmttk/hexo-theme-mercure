@@ -1,0 +1,19 @@
+<% 
+const postNum = site.posts.count();
+const categoryNum = site.categories.count();
+const tagNum = site.tags.count();
+%> 
+<div class="stats p-3 flex flex-nowrap divide-x divide-gray-200 dark:divide-gray-700">
+  <div class="text-center flex-auto">
+    <div class="text-lg font-bold"><%= postNum %></div>
+    <div class="text-sm text-secondary">文章</div>
+  </div>
+  <div class="text-center flex-auto">
+    <div class="text-lg font-bold"><%= categoryNum %></div>
+    <div class="text-sm text-secondary">分类</div>
+  </div>
+  <div class="text-center flex-auto">
+    <div class="text-lg font-bold"><%= tagNum %></div>
+    <div class="text-sm text-secondary">标签</div>
+  </div>
+</div>

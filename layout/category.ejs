@@ -1,9 +1,8 @@
 <% if( page.layout=='category' ) { %>
-<article class="page">
-<h1>全部分类</h1>
-<%- partial('./_widget/category_list', {}, {cache: true}) %>
-</article>
+  <article class="page-unstyled">
+    <%- partial('./_widgets/category_list', {}, {cache: true}) %>
+  </article>
 <% } else { %>
-<%-partial('./_partial/recent-posts')%>
-<%-partial('./_partial/paginator')%>
+  <%- partial('./_partials/recent_posts') %>
+  <%- partial('./_partials/paginator') %>
 <% } %>

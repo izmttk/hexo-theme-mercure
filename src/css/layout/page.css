@@ -1,0 +1,83 @@
+.page {
+  @apply plate-bg plate-shadow border-highlight;
+  @apply relative rounded-2xl py-6 px-4 md:p-10 prose prose-sm text-[0.9375rem] md:prose-base prose-a:text-primary-600 max-w-none mb-4 break-words;
+  @apply dark:prose-invert dark:prose-a:text-primary-400;
+  img,
+  picture {
+    @apply mx-auto max-w-full md:max-w-prose;
+  }
+}
+
+.page-unstyled {
+  @apply relative rounded-2xl py-6 px-4 md:p-10 max-w-none mb-4 break-words;
+}
+
+.prev-next {
+  @apply flex flex-nowrap space-x-0 space-y-2 mb-4 flex-col md:flex-row md:space-x-4 md:space-y-0;
+  .prev,
+  .next {
+    @apply plate-bg plate-shadow border-highlight;
+    @apply relative flex flex-col flex-1 p-4;
+    @apply text-gray-100;
+    @apply bg-center bg-no-repeat bg-cover;
+    @apply rounded-xl transition-transform duration-300 md:hover:scale-105 overflow-hidden;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    .deixis {
+      @apply z-10 inline-flex items-center text-sm;
+      .icon {
+        @apply mr-1 text-2xl;
+      }
+    }
+    .title {
+      @apply z-10 text-lg font-bold py-3;
+    }
+    .meta {
+      @apply z-10 flex gap-x-1 gap-y-1 overflow-x-auto h-5 scrollbar-none;
+      .post-tags {
+        @apply flex-nowrap;
+      }
+    }
+  }
+  .prev:not(.no-cover)::before,
+  .next:not(.no-cover)::before {
+    content: '';
+    @apply z-0 absolute inset-0 bg-black bg-opacity-30;
+  }
+  .blank {
+    @apply flex-1 hidden md:flex justify-center items-center shadow-none;
+    @apply text-gray-500 dark:text-gray-200;
+  }
+  .no-cover {
+    @apply text-primary;
+    text-shadow: none;
+  }
+}
+/* .highlight {
+  @apply overflow-x-auto rounded-xl;
+  table {
+    tbody {
+      tr {
+        @apply flex flex-row flex-nowrap;
+        td.gutter {
+          @apply flex-none p-0 select-none;
+          pre {
+            @apply text-[0.9375rem];
+            @apply m-0 rounded-none text-gray-400 text-right;
+          }
+        }
+        td.code {
+          @apply flex-auto p-0;
+          pre {
+            @apply m-0 rounded-none pl-0;
+          }
+          pre code {
+            @apply text-[0.9375rem];
+          }
+        }
+      }
+    }
+  }
+  .hljs {
+    @apply p-0 bg-transparent inline;
+  }
+} */

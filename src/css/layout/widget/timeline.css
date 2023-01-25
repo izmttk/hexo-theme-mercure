@@ -1,0 +1,38 @@
+.timeline {
+    @apply text-sm;
+    .timestamp {
+        @apply my-2 plate-bg plate-shadow border-highlight w-max px-3 py-1 rounded-md pressable;
+        a {
+            @apply inline-flex items-center;
+        }
+    }
+    .monthly-archives {
+        @apply flex flex-col ml-6 relative;
+        &::before {
+            content: "";
+            @apply absolute -left-2 w-[2px] h-full bg-gray-300 dark:bg-gray-700;
+        }
+        .archive-post {
+            @apply flex flex-nowrap items-center m-1 py-1 px-3 rounded-md w-max max-w-[calc(100%_-_0.5rem)];
+            &:hover {
+                @apply bg-primary-600 text-gray-100 shadow-lg shadow-primary-900/50 dark:shadow-primary-700/50;
+                .tag-count {
+                    @apply bg-primary-500;
+                }
+                .date {
+                    @apply mr-2 font-bold text-primary-200 dark:text-primary-200;
+                }
+            }
+            &::before {
+                content: "";
+                @apply absolute left-[calc(-0.75rem_+_1px)] w-2 h-2 rounded-full bg-gray-100 dark:bg-gray-900 ring-2 ring-gray-300 dark:ring-gray-700;
+            }
+            .date {
+                @apply flex-none mr-2 font-bold text-secondary;
+            }
+            .title {
+                @apply truncate min-w-0;
+            }
+        }
+    }
+}

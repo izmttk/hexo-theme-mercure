@@ -1,0 +1,252 @@
+.post-item {
+    @apply relative md:h-[14.5rem];
+    @apply rounded-xl;
+    @apply flex flex-col md:flex-row flex-nowrap;
+    @apply overflow-hidden;
+    @apply transition-[box-shadow,transform] ease-out duration-300 scale-100;
+    @apply plate-bg plate-shadow border-highlight;
+    @apply md:hover:scale-[1.025] md:active:scale-100;
+
+    .post-cover {
+        @apply relative overflow-hidden;
+        @apply flex-none h-40 w-full md:h-full md:w-72 md:shrink ;
+        @apply z-10 select-none pointer-events-none;
+        .cover-img {
+            @apply object-cover h-full w-full scale-[1.025];
+        }
+    }
+    .post-info {
+        @apply flex-auto flex flex-col flex-nowrap justify-between;
+        @apply p-3 md:py-8 md:px-8 w-full md:w-72;
+        @apply z-10 pointer-events-none;
+        @apply text-gray-800;
+        @apply dark:text-gray-100;
+
+        .post-meta {
+            @apply flex flex-wrap text-sm gap-x-4 gap-y-1 scrollbar-none;
+            .post-date {
+                @apply inline-flex items-center;
+                .icon {
+                    @apply mr-1;
+                }
+            }
+            .post-wordcount,
+            .post-readtime {
+                @apply shrink truncate;
+                @apply inline-flex items-center;
+                .icon {
+                    @apply mr-1;
+                }
+            }
+            .post-tags,
+            .post-category {
+                @apply flex-none;
+            }
+        }
+        .post-meta-line-1 {
+            @apply justify-start py-1;
+            .post-date {
+                @apply flex-none mr-auto;
+            }
+        }
+        .post-meta-line-2 {
+            @apply justify-start flex-nowrap;
+            @apply max-w-full w-max py-1 overflow-x-auto;
+            @apply pointer-events-auto;
+        }
+        .post-title {
+            @apply truncate text-xl md:text-2xl font-bold py-1;
+        }
+        .post-excerpt {
+            @apply hidden md:block md:line-clamp-2;
+            @apply break-all text-ellipsis overflow-hidden text-sm;
+        }
+    }
+    .background {
+        @apply absolute inset-0 z-0 overflow-hidden select-none;
+        .background-img {
+            @apply object-cover max-w-none;
+        }
+        .background-img, .post-link {
+            @apply block absolute left-0 right-0 w-full h-full;
+        }
+    }
+    @media screen(md) {
+        &.left-cover {
+            .post-cover {
+                @apply order-first;
+            }
+            .post-info {
+                @apply order-last md:pl-5 md:pr-9;
+            }
+        }
+        &.right-cover {
+            .post-cover {
+                @apply order-last;
+            }
+            .post-info {
+                @apply order-first md:pl-9 md:pr-5;
+            }
+        }
+    }
+    &.blur-cover {
+        @apply ring-1 ring-gray-600/10 dark:ring-white/5;
+        .post-cover {
+            .cover-img {
+                @apply object-[50%_40%] md:object-center;
+            }
+        }
+        .post-info {
+            @apply text-gray-50;
+            .post-meta-line-1, .post-title, .post-excerpt {
+                @apply drop-shadow-[0_2px_2px_rgba(0,0,0,.5)];
+            }
+            .post-meta, .post-excerpt {
+                @apply text-gray-50/95;
+            }
+        }
+        .background {
+            @apply bg-gray-900;
+            .background-img {
+                @apply scale-y-[200%] md:scale-y-100 origin-bottom md:origin-center;
+                @apply object-bottom md:object-center brightness-[0.8] md:brightness-[0.7] blur-xl w-[calc(100%_+_64px)] h-[calc(100%_+_64px)] ml-[-32px] mt-[-32px];
+            }
+        }
+        @media screen(md) {
+            &.left-cover .post-cover{
+                clip-path: polygon(0 0, 100% 0%, 94% 100%, 0% 100%);
+            }
+            &.right-cover .post-cover {
+                clip-path: polygon(6% 0, 100% 0%, 100% 100%, 0% 100%);
+            }
+        }
+    }
+    &.material-cover {
+        .post-cover {
+            @apply md:w-[28rem] overflow-hidden z-0;
+        }
+        .post-info {
+            @apply relative z-10;
+            @apply text-gray-700 dark:text-gray-200;
+            .post-meta-line-2 {
+                .post-category, .post-tag {
+                    @apply bg-gray-300/50 hover:bg-gray-200;
+                    @apply dark:bg-gray-500/50 dark:hover:hover:bg-white;
+                }
+            }
+        }
+        .post-cover {
+            mask: linear-gradient(
+                to bottom,
+                white 0%,
+                white 50%,
+                transparent 95%,
+                transparent 100%
+            );
+        }
+        @supports not (mask: none) {
+            .post-cover::after {
+                content: "";
+                @apply absolute inset-0;
+                background: linear-gradient(
+                    to bottom,
+                    transparent 0%,
+                    transparent 50%,
+                    theme('colors.plate.light') 95%
+                );
+                .dark & {
+                    background: linear-gradient(
+                        to bottom,
+                        transparent 0%,
+                        transparent 50%,
+                        theme('colors.plate.dark') 95%
+                    );
+                }
+            }
+        }
+        .post-info {
+            @apply -mt-12 md:mt-0;
+        }
+        @media screen(md) {
+            &.left-cover .post-cover {
+                mask: linear-gradient(
+                    to right,
+                    white 0%,
+                    white 35%,
+                    transparent 95%,
+                    transparent 100%
+                );
+            }
+            &.right-cover .post-cover {
+                mask: linear-gradient(
+                    to left,
+                    white 0%,
+                    white 35%,
+                    transparent 95%,
+                    transparent 100%
+                );
+            }
+            @supports not (mask: none) {
+                .post-cover::after {
+                    content: "";
+                    @apply absolute inset-0;
+                }
+                &.left-cover .post-cover::after {
+                    background: linear-gradient(
+                        to right,
+                        transparent 0%,
+                        transparent 35%,
+                        theme('colors.plate.light') 95%
+                    );
+                    .dark & {
+                        background: linear-gradient(
+                            to right,
+                            transparent 0%,
+                            transparent 35%,
+                            theme('colors.plate.dark') 95%
+                        );
+                    }
+                }
+                &.right-cover .post-cover::after {
+                    background: linear-gradient(
+                        to left,
+                        transparent 0%,
+                        transparent 35%,
+                        theme('colors.plate.light') 95%,
+                    );
+                    .dark & {
+                        background: linear-gradient(
+                            to left,
+                            transparent 0%,
+                            transparent 35%,
+                            theme('colors.plate.dark') 95%
+                        );
+                    }
+                }
+            }
+            &.left-cover .post-info {
+                @apply -ml-40;
+            }
+            &.right-cover .post-info {
+                @apply -mr-40;
+            }
+        }
+    }
+    &.full-cover, &.random-cover {
+        @apply ring-1 ring-gray-600/10 dark:ring-white/5;
+        .post-info {
+            @apply text-gray-50;
+            .post-meta-line-1, .post-title, .post-excerpt {
+                @apply drop-shadow-[0_2px_2px_rgba(0,0,0,.5)];
+            }
+            .post-title {
+                @apply mt-20 md:mt-0;
+            }
+        }
+        .background {
+            @apply bg-gray-900;
+        }
+    }
+    &.no-cover {
+    }
+}

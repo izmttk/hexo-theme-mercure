@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" media="all">
+<div class="loading fixed inset-0 z-[10000] bg-gray-200/80 dark:bg-gray-800/80" style="visibility: visible;">
+  <!-- <div class="spinner-wrapper">
+        <svg class="spinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+    </div> -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <% if (theme.loading.splash.type === 'image') { %> 
+      <img src="<%- url_for(theme.loading.splash.src) %>" style="width:<%= theme.loading.splash.width %>;height:<%= theme.loading.splash.height %>" loading="eager">
+    <% } else if (theme.loading.splash.type === 'video') { %>
+      <video src="<%- url_for(theme.loading.splash.src) %>" autoplay loop muted playsinline style="width:<%= theme.loading.splash.width %>;height:<%= theme.loading.splash.height %>"></video>
+    <% } else if (theme.loading.splash.type === 'bars') { %>
+      <svg class="text-gray-600 dark:text-gray-100 mx-auto w-10 h-10" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_jCIR{animation:spinner_B8Vq .9s linear infinite;animation-delay:-.9s}.spinner_upm8{animation-delay:-.8s}.spinner_2eL5{animation-delay:-.7s}.spinner_Rp9l{animation-delay:-.6s}.spinner_dy3W{animation-delay:-.5s}@keyframes spinner_B8Vq{0%,66.66%{animation-timing-function:cubic-bezier(0.36,.61,.3,.98);y:6px;height:12px}33.33%{animation-timing-function:cubic-bezier(0.36,.61,.3,.98);y:1px;height:22px}}</style><rect class="spinner_jCIR" x="1" y="6" width="2.8" height="12" rx="1.4"/><rect class="spinner_jCIR spinner_upm8" x="5.8" y="6" width="2.8" height="12" rx="1.4"/><rect class="spinner_jCIR spinner_2eL5" x="10.6" y="6" width="2.8" height="12" rx="1.4"/><rect class="spinner_jCIR spinner_Rp9l" x="15.4" y="6" width="2.8" height="12" rx="1.4"/><rect class="spinner_jCIR spinner_dy3W" x="20.2" y="6" width="2.8" height="12" rx="1.4"/></svg>
+    <% } %>
+    <span class="block text-center text-lg my-4 text-gray-800 dark:text-gray-200"><%- theme.loading.text %></span>
+  </div>
+</div>

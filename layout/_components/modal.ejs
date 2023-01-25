@@ -1,0 +1,47 @@
+<%# 
+modal params:
+  title: title of modal
+  content: body content
+  actions: action buttons
+  classes: class of modal
+  templateId: id of template
+  templateClasses: class of template
+%>
+<% 
+const modalTitle = (typeof title !== 'undefined') ? title : null;
+const modalContent = (typeof content !== 'undefined') ? content : null;
+const modalActions = (typeof actions !== 'undefined') ? actions : null;
+const modalClasses = (typeof classes !== 'undefined') ? classes : null;
+const modalTemplateId = (typeof templateId !== 'undefined') ? templateId : null;
+const modalTemplateClasses = (typeof templateClasses !== 'undefined') ? templateClasses : null;
+%>
+
+<template <%- modalTemplateId ? `id="${modalTemplateId}" ` : '' %>class="<%- modalTemplateClasses %> modal-template">
+  <div class="<%- modalClasses %> modal fixed inset-0 flex items-end justify-center sm:items-center overflow-hidden z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-label">
+    <div class="modal-backdrop bg-gray-500/75 dark:bg-gray-900/75 absolute inset-0"></div>
+    <div class="modal-panel flex flex-col max-h-full relative z-10 transform overflow-hidden rounded-lg plate-bg plate-shadow border-highlight sm:m-4 w-full sm:max-w-lg">
+      <% if(modalTitle) { %>
+        <div class="modal-header px-4 pt-5 sm:px-6 text-center sm:text-left flex flex-nowrap">
+          <h3 class="modal-title text-lg leading-7 font-medium text-gray-900 dark:text-gray-100 flex-auto" id="modal-label">
+            <%- modalTitle %>
+          </h3>
+          <button type="button" title="关闭" class="modal-close-btn text-gray-600 dark:text-gray-400 rounded-full w-7 h-7 flex-none flex justify-center items-center focus-visible:outline-2 focus-visible:outline-primary-400" tabindex="0">
+            <span aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </span>
+          </button>
+        </div>
+      <% } %>
+      <% if(modalContent) { %>
+        <div class="modal-body px-4 pb-4 sm:px-6 text-sm text-gray-500 dark:text-gray-400 mt-4 overflow-y-auto overscroll-y-contain">
+          <%- modalContent %>
+        </div>
+      <% } %>
+      <% if(modalActions) { %>
+        <div class="modal-footer bg-gray-100 dark:bg-gray-700 px-4 py-3 sm:px-6">
+          <%- modalActions %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,102 @@
+<div id="navigator" class="nav-hide">
+  <div class="content">
+    <div class="nav-left-dropdown">
+      <button id="left-dropdown-toggle" title="导航菜单"><i class="ri-menu-line"></i></button>
+      <%- partial('../_components/dropdown', {
+        templateId: 'left-dropdown-template',
+        classes: 'left-dropdown',
+        position: 'fixed',
+        items: theme.navigator.menu,
+      }) %>
+    </div>
+    <div class="nav-logo">
+      <a href="<%= url_for("/") %>" aria-label="<%= config.title %>"><%- theme.navigator.logo %></a>
+    </div>
+    <div class="nav-menu">
+      <ul class="nav-menu-list">
+        <%
+        const recurseProcessUrl = (menu, depth=0) => {
+          if (depth >= 16) return;
+          const newMenu = [];
+          menu.forEach((item) => {
+            if (typeof item === 'object') {
+              const itemCopy = { ...item };
+              if (itemCopy.link) {
+                  itemCopy.link = url_for(itemCopy.link);
+              }
+              if (itemCopy.submenu) {
+                  itemCopy.submenu = recurseProcessUrl(itemCopy.submenu, depth + 1);
+              }
+              newMenu.push(itemCopy);
+            } else {
+              newMenu.push(item);
+            }
+          });
+          return newMenu;
+        }
+        const newMenu = recurseProcessUrl(theme.navigator.menu);
+        %>
+        <% newMenu.forEach((item, index) => { %>
+          <% const cascade = item.submenu && item.submenu.length > 0 %>
+          <li class="nav-menu-item">
+            <% if(item.link) { %>
+              <a class="link" href="<%- item.link %>" target="<%= item.target ? item.target : '_self' %>" rel="<%= item.rel ? item.rel : 'noopener' %>">
+                <div class="prefix"><%- item.prefix %></div>
+                <div class="name"><%- item.name %></div>
+                <% if(cascade) { %><i class="ri-arrow-drop-down-fill"></i><% } %>
+              </a>
+            <% } else { %>
+              <button class="link menu-toggle" id="<%= cascade?'nav-dropdown-toggle-'+index:'' %>" href="javascript:void(0)">
+                <div class="prefix"><%- item.prefix %></div>
+                <div class="name"><%- item.name %></div>
+                <% if(cascade) { %><div class="suffix"><i class="ri-arrow-down-s-line"></i></div><% } %>
+              </button>
+            <% } %>
+            <% if(cascade) { %>
+              <%- partial('../_components/dropdown', {
+                templateId: 'nav-dropdown-template-' + index,
+                position: 'fixed',
+                items: item.submenu,
+              }) %>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+    <div class="nav-toolkit">
+      <% if(theme.navigator.toolkit.colormode.enable) { %>
+        <button id="color-mode-toggle" title="颜色模式">
+          <%- remixicon('ri-contrast-2-line') %>
+          <%- remixicon('ri-computer-line', {class:'hidden'}) %>
+          <%- remixicon('ri-moon-fill', {class:'hidden'}) %>
+          <%- remixicon('ri-sun-fill', {class:'hidden'}) %>
+        </button>
+      <% } %>
+      <% if(theme.navigator.toolkit.search.enable && theme.search.enable) { %>
+        <%- remixicon('ri-menu-line', {class:'hidden'}) %>
+        <%- remixicon('ri-arrow-right-s-line', {class:'hidden'}) %>
+        <%- remixicon('ri-search-line', {class:'hidden'}) %>
+        <%- remixicon('ri-loader-4-line', {class:'hidden'}) %>
+        <%- remixicon('ri-close-circle-fill', {class:'hidden'}) %>
+        <button id="search-toggle" title="文章搜索"><%- remixicon('ri-search-line') %></button>
+        <%- partial('../_components/modal', {
+          templateId: 'search-modal-template',
+          classes: 'search-modal',
+          title: `文章搜索`,
+          content: partial('./search'),
+        }) %>
+      <% } %>
+    </div>
+    <div class="nav-right-drawer <%- theme.sidebar.enable ? '' : '!w-2' %>">
+      <% if (theme.sidebar.enable) { %>
+        <button id="right-drawer-toggle" title="边栏抽屉"><i class="ri-layout-right-line"></i></button>
+        <%- partial('../_components/drawer', {
+          anchor: 'right',
+          templateId: 'right-drawer-template',
+          classes: 'right-drawer',
+          content: partial('./sidebar'),
+        }) %>
+      <% } %>
+    </div>
+  </div>
+</div>

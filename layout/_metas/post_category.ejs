@@ -1,0 +1,13 @@
+<%# 文章分类 %>
+<% if(post.categories.length>0) { %>
+  <div class="post-category">
+    <%- remixicon('ri-book-fill', {class: 'mr-1'}) %>
+    <% let catNum=0; post.categories.each(category=>{ %>
+      <% catNum++; %>
+      <a href="<%= url_for(category.path) %>"><%- category.name %></a>
+      <% if(catNum!=post.categories.length) { %>
+        <%- remixicon('ri-arrow-right-s-line') %>
+      <% } %>
+    <% }) %>
+  </div>
+<% } %>

@@ -1,0 +1,10 @@
+<%- list_categories({
+  orderby: 'name:-1',
+  depth: 0,
+  show_count: true,
+  class: 'category',
+  transform(str) {
+    return '<i class="ri-book-fill mr-1"></i>'+str;
+  }
+})
+%>

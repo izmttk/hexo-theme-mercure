@@ -1,0 +1,10 @@
+<%# 文章标签 %>
+<% if(post.tags.length>0) { %>
+  <div class="post-tags">
+    <% post.tags.each((tag)=>{ %>
+      <div class="post-tag">
+        <a href="<%= url_for(tag.path) %>"><%- remixicon('ri-hashtag') %><%= tag.name %></a>
+      </div>
+    <% }) %>
+  </div>
+<% } %>

@@ -1,132 +1,28 @@
 <!DOCTYPE html>
-<html <% if(config.language){ %>lang="<%- config.language %>"<% } %>>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<% config.description %>">
-    <!-- <meta name="color-scheme" content="light dark"> -->
-    <% 
-    /* 判断页面标题
-    * /tag/xxx -> is_tag
-    * /category/xxx --> is_category
-    * /archive --> is_archive
-    * /archive/xxxx --> is_year
-    * /archive/xxxx/xx --> is_month
-    */
-    var title = page.title;
-    if(is_archive())title = '归档';
-    if(is_category())title = '分类: '+page.category;
-    if(is_tag())title = '标签: '+page.tag;
-
-    if(is_year())
-      title += ': '+page.year;
-    else if(is_month())
-      title += ': '+page.year+'/'+page.month;
-    %>
-    <%#  输出标题格式：xxxx - 网站标题 %>
-    <title><% if(title){ %> <%= title %> - <% } %><%= config.title %></title>
-    <%- favicon_tag(theme.favicon) %>
-    <%- partial('./_partial/jsbridge') %>
-    <%# 提前判断深色模式防止闪烁 %>
-    <script type="text/javascript" async>
-    (function() {
-        function getSystemColorScheme() {
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        function setDarkTheme() {
-            document.documentElement.classList.add('dark');
-        }
-        function setLightTheme() {
-            document.documentElement.classList.remove('dark');
-        }
-        //维持用户的选择直到下一次OsPreference切换
-        if(localStorage.getItem('system-color-scheme') == getSystemColorScheme()) {
-            if (localStorage.getItem('user-color-scheme') === 'dark') {
-                setDarkTheme();
-            } else {
-                setLightTheme();
-            }
-        } else {
-            if(getSystemColorScheme() === 'dark') {
-                setDarkTheme();
-            } else {
-                setLightTheme();
-            }
-        }
-    })();
-    </script>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.min.css" media="all">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/themes/light-border.min.css" media="all">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/animations/shift-away.min.css" media="all">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js" defer></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2/fonts/remixicon.css" media="all">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" media="all"> -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" media="all">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js" defer></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" defer></script>
-    <%- css({href: url_for('/css/style.css'), media: 'all'}) %>
-    <%- css({href: url_for('/css/iconfont.css'), media: 'all'}) %>
-    <% if(config.highlight.enable) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.5.0/build/styles/atom-one-dark-reasonable.min.css" media="all">
-    <% } %> 
-    <% if(theme.plugins.katex.enable) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" media="all">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" defer></script>
-    <style>.katex *{color:currentColor;border-color:currentColor}.katex{overflow-x:auto;overflow-y:hidden}</style>
-    <% } %>
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" media="all"> -->
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;700;900&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" media="all"> -->
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3/lib/anime.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/parallax-js@3/dist/parallax.min.js" defer></script>
-    <%- js({src: url_for('/js/component.js'), defer: true}) %>
-
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/node-vibrant@3/dist/vibrant.min.js" defer></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/rgbaster@2/dist/rgbaster.umd.min.js"></script> -->
-    <% if(theme.plugins.lazyload.enable) { %>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js" defer></script> -->
-    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5/plugins/print/ls.print.min.js,npm/lazysizes@5/plugins/noscript/ls.noscript.min.js,npm/lazysizes@5/plugins/bgset/ls.bgset.min.js,npm/lazysizes@5/plugins/blur-up/ls.blur-up.min.js,npm/lazysizes@5" defer></script>
-    <% } %> 
-    <% if(theme.plugins.pjax.enable) { %>
-    <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer></script>
-    <% } %>
-    <% if(theme.plugins.overlay_scrollbar.enable) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@1/css/OverlayScrollbars.min.css" media="all">
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@1/js/OverlayScrollbars.min.js" defer></script>
-    <% } else { %>
-    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js" defer></script>
-    <% } %>
-</head>
-
+<html <% if(config.language){ %>lang="<%= config.language %>"<% } %> class="<%- theme.colormode === 'dark' ? 'dark' : '' %>">
+<%- partial('./_partials/head.ejs') %>
 <body>
-    <% if(theme.loading.enable) { %>
-        <%- partial('./_partial/loading', {}, {cache: true}) %>
-    <% } %>
-    <% if(theme.search.enable) { %>
-        <%- partial('./_partial/search', {}, {cache: true}) %>
-    <% } %>
-    <%- partial('./_partial/header') %>
-    <div id="main" class="<%- theme.sidebar.enable ? 'double-column' : 'singal-column' %>">
-        <div id="content">
-            <%- body %>
-        </div>
-        <% if(theme.sidebar.enable) { %>
-        <div id="sidebar">
-            <%- partial('./_partial/sidebar') %>
-        </div>
-        <% } %>
+  <% if (theme.loading.enable) { %><%- partial('./_partials/loading', {}, {cache: true}) %><% } %>
+  <% if (theme.navigator.enable) { %><%- partial('./_partials/navigator') %><% } %>
+  <% if (theme.header.enable) { %>
+    <%- partial('./_partials/header') %>
+  <% } else { %>
+    <div id="header" class="h-16 !m-0"></div>
+  <% } %>
+
+  <div id="main" class="<%= theme.sidebar.enable ? 'double-column' : 'singal-column' %>">
+    <div id="content">
+      <%- body %>
     </div>
-    <div id="footer">
-        <%- partial('./_partial/footer', {}, {cache: true}) %>
-    </div>
-    <%- partial('./_widget/float_toolbar') %>
-    <%- js({src: url_for('/js/index.js'), defer:true}) %>
+    <% if (theme.sidebar.enable) { %>
+      <div id="sidebar"><%- partial('./_partials/sidebar') %></div>
+    <% } %>
+  </div>
+  <% if (theme.footer.enable) { %>
+    <%- partial('./_partials/footer', {}, {cache: true}) %>
+  <% } else { %>
+    <div id="footer" class="!hidden"></div>
+  <% } %>
+  <% if (theme.fabs.enable) { %><%- partial('./_widgets/fabs') %><% } %>
 </body>
 </html>

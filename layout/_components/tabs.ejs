@@ -1,0 +1,42 @@
+<%# 
+tabs params:
+  tabs: body content
+    format: [
+      {
+        title: title of tab
+        content: content of tab
+      },
+      ...
+    ]
+  fullwidth: boolean, default false
+  centered: boolean, default false
+  classes: class of tabs
+%>
+<% 
+const tabsTabs = (typeof tabs !== 'undefined') ? tabs : null;
+const tabsFullWidth = (typeof fullWidth !== 'undefined') ? fullWidth : false;
+const tabsCentered = (typeof centered !== 'undefined') ? centered : false;
+const tabsClasses = (typeof classes !== 'undefined') ? classes : null;
+const hash = hashName(uuid());
+%>
+
+<div class="<%- tabsClasses %> tabs overflow-hidden">
+  <div class="tabs-header relative flex <%- tabsCentered ? 'mx-auto' : '' %> mb-2 items-center p-0.5 <%- tabsFullWidth ? 'w-auto' : 'w-max' %> text-sm rounded-lg bg-gray-200 dark:bg-gray-900 border border-gray-300 dark:border-gray-800 shadow-inner" role="tablist">
+    <% tabsTabs.forEach((tab, index) => { %>
+      <div class="tab cursor-pointer z-10 flex-auto flex justify-center items-center overflow-hidden rounded-md transition-colors py-1 px-2 focus-visible:outline-2 focus-visible:outline-primary-400 [&:not(.active)]:hover:bg-gray-500/20" id="<%= `tab-${hash}-${index}` %>" role="tab" tabindex="0" aria-selected="false" aria-controls="<%= `tabpanel-${hash}-${index}` %>">
+        <%- tab.title %>
+      </div>
+      <% if(index != tabsTabs.length - 1) { %>
+        <span class="flex-none mx-1 w-0 border-l border-gray-400/40 select-none" role="separator" aria-orientation="vertical">&nbsp;</span>
+      <% } %>
+    <% }); %>
+    <div class="tabs-glider z-0 absolute transition-[left,width] top-0 bottom-0 my-0.5 plate-bg plate-shadow border-highlight rounded-md" role="none" aria-hidden="true"></div>
+  </div>
+  <div class="tabs-body relative transition-[height]">
+    <% tabsTabs.forEach((tab, index) => { %>
+      <div class="tab-panel hidden relative top-0 left-0 w-full transition-[transform,opacity] overflow-hidden" id="<%= `tabpanel-${hash}-${index}` %>" role="tabpanel" aria-labelledby="<%= `tab-${hash}-${index}` %>">
+        <%- tab.content %>
+      </div>
+    <% }); %>
+  </div>
+</div>

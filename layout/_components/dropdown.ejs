@@ -1,0 +1,103 @@
+<%# 
+dropdown params:
+  items: array of dropdown items
+    format: [
+      'divider', // divide line
+      'html text', // html to insert
+      {
+        name: 'item name',
+        link: 'item link',
+        target: '',
+        prefix: 'item prefix',
+        suffix: 'item suffix',
+        submenu: []
+      }
+    ]
+  position: position of dropdown
+  templateId: id of template
+  templateClasses: class of template
+%>
+<% 
+const dropdownItems = (typeof items !== 'undefined') ? items : [];
+const dropdownPosition = (typeof position !== 'undefined') ? position : null;
+const dropdownTemplateId = (typeof templateId !== 'undefined') ? templateId : null;
+const dropdownTemplateClasses = (typeof templateClasses !== 'undefined') ? templateClasses : null;
+%>
+
+<% const dropdownTemplate = (menu, id) => { %>
+<div
+  <%- id ? `id="dropdown-${id}" ` : '' %>class="dropdown <%- dropdownPosition == 'fixed' ? 'fixed' : 'absolute' %> top-0 left-0 w-max min-w-[10rem] max-w-[calc(100vw_-_1rem)] z-30">
+  <div class="dropdown-backdrop hidden"></div>
+  <div class="dropdown-panel py-1 rounded-md plate-bg plate-shadow dark:shadow-black/50 border-highlight [&_.dropdown-item.active]:bg-gray-100 dark:[&_.dropdown-item.active]:bg-gray-700 transition-[transform,opacity] ease-out duration-100 opacity-0 scale-90" role="menu" aria-orientation="vertical" tabindex="-1">
+    <% menu.forEach((item) => { %>
+      <% if(item.isHtml) { %>
+        <%- item.html %>
+      <% } else if(item.isDivider) { %>
+        <div class="dropdown-divider my-1 border-b border-gray-100 dark:border-gray-700/40" role="separator"></div>
+      <% } else { %>
+        <% if(item.isCascade) { %>
+          <div class="dropdown-item dropdown-submenu" role="none">
+            <button id="dropdown-toggle-<%= item.submenu %>" class="text-left text-sm w-full pl-4 pr-6 py-1.5 flex flex-nowrap items-center truncate" role="menuitem" tabindex="-1">
+              <% if(item.prefix) { %><span class="text-secondary flex-none mr-1"><%- item.prefix %></span><% } %>
+              <% if(item.name) { %><span class="flex-auto truncate"><%- item.name %></span><% } %>
+              <% if(item.suffix) { %><span class="text-secondary flex-none ml-1"><%- item.suffix %></span><% } %>
+              <span class="absolute right-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+              </span>
+            </button>
+          </div>
+        <% } else { %>
+          <div class="dropdown-item" role="none">
+            <a href="<%- item.link %>" target="<%= item.target %>" rel="<%= item.rel %>" class="text-sm w-full pl-4 pr-6 py-1.5 flex flex-nowrap items-center truncate" role="menuitem" tabindex="-1">
+              <% if(item.prefix) { %><span class="text-secondary flex-none mr-1"><%- item.prefix %></span><% } %>
+              <% if(item.name) { %><span class="flex-auto truncate"><%- item.name %></span><% } %>
+              <% if(item.suffix) { %><span class="text-secondary flex-none ml-1"><%- item.suffix %></span><% } %>
+            </a>
+          </div>
+        <% } %>
+      <% } %>
+    <% }) %>
+  </div>
+</div>
+<% } %>
+<%  
+const recurseFlatten = (menu, hash, path, depth = 0) => {
+  if (depth >= 16) return;
+  const newMenu = [];
+  const newMenus = {};
+  menu.forEach((item, index) => {
+    const isDivider = item === 'divider';
+    const isHtml = typeof item === 'string' && !isDivider;
+    const isCascade = Boolean(item.submenu && item.submenu.length > 0);
+    const hash = hashName(path.join('-'));
+    const newItem = {
+      name: item.name ?? null,
+      prefix: item.prefix ?? null,
+      suffix: item.suffix ?? null,
+      link: item.link ?? null,
+      target: item.target ?? '_self',
+      rel: item.rel ?? 'noopener',
+      isCascade: isCascade,
+      submenu: isCascade ? hash : null,
+      isDivider: isDivider,
+      isHtml: isHtml,
+      html: isHtml ? item : null,
+    };
+    newMenu.push(newItem);
+    if(isCascade) {
+      Object.assign(newMenus, recurseFlatten(item.submenu, hash, [...path, index], depth + 1));
+    }
+  });
+  newMenus[hash] = newMenu;
+  return newMenus;
+}
+const flatMenus = recurseFlatten(dropdownItems, 'root', [0]);
+%>
+
+<template <%- dropdownTemplateId ? `id="${dropdownTemplateId}" ` : '' %>class="<%- dropdownTemplateClasses %> dropdown-template">
+  <div class="cascade-dropdown">
+    <% for(const i in flatMenus) {
+      dropdownTemplate(flatMenus[i], i);
+    } %>
+  </div>
+</template>

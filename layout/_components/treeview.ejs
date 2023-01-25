@@ -1,0 +1,79 @@
+<%# 
+treeview  params:
+  trees: array of treeview
+    format:[
+      {
+        name: title of treeview,
+        prefix: 'item prefix',
+        suffix: 'item suffix',
+        expanded: false,
+        children: []
+      },
+      ...
+    ]
+  prefixIcon: prefix icon with animation,
+  suffixIcon: suffix icon with animation,
+  fullwidth: boolean, default false
+  classes: class of treeview 
+%>
+<% 
+const treeviewTrees = (typeof trees !== 'undefined') ? trees : [];
+const treeviewFullWidth = (typeof fullWidth !== 'undefined') ? fullWidth : true;
+const treeviewClasses = (typeof classes !== 'undefined') ? classes : null;
+const treeviewPrefixIcon = (typeof prefixIcon !== 'undefined') ? prefixIcon : true;
+const treeviewSuffixIcon = (typeof suffixIcon !== 'undefined') ? suffixIcon : false;
+%>
+
+<% const recurseProcessItem = (treeview) => { %>
+  <% 
+  const treeviewName = treeview.name ?? '';
+  const treeviewPrefix = treeview.prefix ?? '';
+  const treeviewSuffix = treeview.suffix ?? '';
+  const treeviewChildren = treeview.children ?? [];
+  const isExpanded = treeview.expanded ?? false;
+  const isEndpoint = treeviewChildren.length === 0;
+  const hash = hashName(uuid());
+  %>
+  <div id="treeview-item-<%= hash %>" class="treeview-item
+    [&.expanded>.treeview-item-header>.prefix-icon]:rotate-90
+    [&.expanded>.treeview-item-header>.suffix-icon]:rotate-180
+    [&.focused:not(.selected)>.treeview-item-header]:bg-primary-400/[.15]
+    [&.focused:not(.selected)>.treeview-item-header>*]:text-primary-500
+    dark:[&.focused:not(.selected)>.treeview-item-header>*]:text-primary-400
+    [&.selected>.treeview-item-header]:bg-primary-600
+    [&.focused.selected>.treeview-item-header]:bg-primary-500
+    [&.selected>.treeview-item-header>*]:text-gray-100
+    [&.selected>.treeview-item-header>*]:font-medium
+    <%- isExpanded ? 'expanded' : '' %>" role="treeitem" aria-selected="false" <%- isEndpoint ? '' : `aria-expanded="${isExpanded}"` %> tabindex="-1">
+    <div class="treeview-item-header flex items-center px-1.5 py-1.5 rounded-md <%- treeviewFullWidth ? 'w-auto' : 'w-max' %> text-sm select-none cursor-pointer hover:bg-gray-500/10">
+      <% if(treeviewPrefixIcon && !isEndpoint) { %>
+        <div class="prefix-icon flex-none mx-1 transition-transform duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        </div>
+      <% } else { %>
+        <div class="prefix-icon flex-none mx-1 w-3.5"></div>
+      <% } %>
+      <% if(treeviewPrefix) { %><div class="prefix flex-none mx-1 text-secondary"><%- treeviewPrefix %></div><% } %>
+      <div class="title flex-auto truncate"><%- treeviewName %></div>
+      <% if(treeviewSuffix) { %><div class="suffix flex-none mx-1 text-secondary"><%- treeviewSuffix %></div><% } %>
+      <% if(treeviewSuffixIcon && !isEndpoint) { %>
+        <div class="suffix-icon flex-none mx-1 transition-transform duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+        </div>
+      <% } %>
+    </div>
+    <% if(!isEndpoint) { %>
+      <div class="treeview-item-content transition-[height,opacity,transform] duration-[250ms] h-0 overflow-hidden ml-3" role="group">
+        <% treeviewChildren.forEach((children, index) => {
+          recurseProcessItem(children);
+        }) %>
+      </div>
+    <% } %>
+  </div>
+<% } %>
+
+<div class="<%- treeviewClasses %> treeview focus:outline-none focus-visible:outline-none" role="tree" aria-label="treeview" tabindex="0">
+  <% treeviewTrees.forEach((tree) => { %>
+    <%- recurseProcessItem(tree) %>
+  <% }) %>
+</div>

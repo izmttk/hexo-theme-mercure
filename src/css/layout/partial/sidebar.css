@@ -1,0 +1,35 @@
+#sidebar {
+  @apply hidden md:block;
+}
+#sidebar,
+.right-drawer .drawer-body {
+  @apply w-[17rem] flex-none;
+  .sidebar-content {
+    @apply top-0;
+    .widget {
+      @apply m-4;
+    }
+  }
+  .sticky {
+    @apply transition-[top] duration-[250ms];
+    .sidebar-tabs {
+      @apply transition-[max-height] duration-[250ms];
+      @apply max-h-screen flex flex-col;
+      .tabs-header {
+        @apply flex-none mx-4 mt-4 mb-2;
+      }
+      .tabs-body {
+        @apply overflow-y-auto scrollbar-none;
+        .widget:first-child {
+          @apply mt-1;
+        }
+      }
+    }
+  }
+  .sticky.headblank {
+    @apply top-[3.75rem];
+    .sidebar-tabs {
+      @apply max-h-[calc(100vh_-_3.75rem)];
+    }
+  }
+}

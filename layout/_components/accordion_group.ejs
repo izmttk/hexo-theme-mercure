@@ -1,0 +1,49 @@
+<%#
+accordion group params:
+  accordions: array of accordion
+    format:[
+      {
+        title: title of accordion,
+        content: accordion panel content,
+        classes: class of accordion
+      },
+      ...
+    ]
+  prefixIcon: prefix icon with animation,
+  suffixIcon: suffix icon with animation,
+  fullwidth: boolean, default false
+  classes: class of accordion group
+%>
+<%
+const accordionGroupAccordions = (typeof accordions !== 'undefined') ? accordions : [];
+const accordionGroupFullWidth = (typeof fullWidth !== 'undefined') ? fullWidth : true;
+const accordionGroupClasses = (typeof classes !== 'undefined') ? classes : null;
+const accordionGroupPrefixIcon = (typeof prefixIcon !== 'undefined') ? prefixIcon : false;
+const accordionGroupSuffixIcon = (typeof suffixIcon !== 'undefined') ? suffixIcon : true;
+%>
+
+<div class="<%- accordionGroupClasses %> accordion-group">
+  <% accordionGroupAccordions.forEach((accordion, index) => { %>
+    <%
+    const accordionTitle = accordion.title ?? null;
+    const accordionContent = accordion.content ?? null;
+    const accordionClasses = accordion.classes ?? null;
+    %>
+    <%- partial('./accordion', {
+      title: accordionTitle,
+      content: accordionContent,
+      prefixIcon: accordionGroupPrefixIcon,
+      suffixIcon: accordionGroupSuffixIcon,
+      fullWidth: accordionGroupFullWidth,
+      classes: `${accordionClasses ?? ''} ${
+        index === 0
+        ? '[&_.accordion-header]:rounded-t-md [&_.accordion-header]:rounded-b-none'
+        : (
+            index === accordionGroupAccordions.length - 1
+            ? '[&_.accordion-header]:rounded-b-md [&_.accordion-header]:rounded-t-none [&.open_.accordion-header]:rounded-none'
+            : '[&_.accordion-header]:rounded-none'
+        )
+      }`
+    }) %>
+  <% }) %>
+</div>

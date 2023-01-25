@@ -1,0 +1,171 @@
+<div class="px-8">
+    <h2>TEST PAGE</h2>
+
+    <h3>Popover</h3>
+    <%- partial('./_components/modal', {
+        templateId: 'test-modal-template',
+        title: `Deactivate account`,
+        content: `<p>Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>`,
+        actions: `
+        <div class="sm:flex sm:justify-end space-y-3 sm:space-y-0 sm:space-x-3">
+            <button type="button" class="inline-flex w-full justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 dark:ring-offset-gray-700 sm:w-auto sm:text-sm" autofocus>Cancel</button>
+            <button type="button" class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:ring-offset-gray-700 sm:w-auto sm:text-sm">Deactivate</button>
+        </div>`
+    }) %>
+    <button id="test-modal-toggle" class="px-3 py-2 rounded-lg bg-primary-600 text-white text-sm shadow-md focus:outline-2 focus:outline-primary-800 focus:outline-offset-2">Toggle Modal</button>
+    <script type="module">
+    import Modal from '/js/components/base/modal.js';
+    const modalTemplate = document.querySelector('#test-modal-template');
+    if(modalTemplate instanceof HTMLTemplateElement) {
+        const modal = modalTemplate.content.querySelector('.modal');
+        const toggle = document.querySelector('#test-modal-toggle');
+        const instance = new Modal(modal);
+        toggle?.addEventListener('click', () => {
+            instance.toggle();
+        });
+    }
+    </script>
+
+    <%- partial('./_components/drawer', {
+        templateId: 'test-drawer-template',
+        anchor: 'right',
+        content: `
+        <div class="w-64">content</div>
+        `
+    }) %>
+    <button id="test-drawer-toggle" class="px-3 py-2 rounded-lg bg-primary-600 text-white text-sm shadow-md focus:outline-2 focus:outline-primary-800 focus:outline-offset-2">Toggle Drawer</button>
+    <script type="module">
+    import Drawer from '/js/components/base/drawer.js';
+    const drawerTemplate = document.querySelector('#test-drawer-template');
+    if(drawerTemplate instanceof HTMLTemplateElement) {
+        const drawer = drawerTemplate.content.querySelector('.drawer');
+        const toggle = document.querySelector('#test-drawer-toggle');
+        const instance = new Drawer(drawer);
+        toggle?.addEventListener('click', () => {
+            instance.toggle();
+        });
+    }
+    </script>
+
+    <%- partial('./_components/dropdown', {
+        templateId: 'test-dropdown-template',
+        items: [
+            { name: 'Profile', link: '#', prefix: '123', suffix: '321' },
+            'divider',
+            {
+                name: 'Settings',
+                link: '#',
+                submenu: [
+                    { name: 'Submenu 1', link: '#' },
+                    { name: 'Submenu 2', link: '#' },
+                    { name: 'Submenu 3', link: '#' },
+                ]
+            },
+            { name: 'Sign out', link: '#' }
+        ]
+    }) %>
+    <button id="test-dropdown-toggle" class="px-3 py-2 rounded-lg bg-primary-600 text-white text-sm shadow-md focus:outline-2 focus:outline-primary-800 focus:outline-offset-2">Toggle Dropdown</button>
+    <script type="module">
+    import {Dropdown, CascadeDropdown} from '/js/components/base/dropdown.js';
+    const dropdownTemplate = document.querySelector('#test-dropdown-template');
+    if(dropdownTemplate instanceof HTMLTemplateElement) {
+        const dropdown = dropdownTemplate.content.cloneNode(true);
+        const toggle = document.querySelector('#test-dropdown-toggle');
+        const instance = new CascadeDropdown(dropdown, toggle, {
+            trigger: 'click',
+        });
+    }
+    </script>
+
+    <h3>Tabs</h3>
+    <div id="test-tabs" class="w-[30rem]">
+        <%- partial('./_components/tabs', {
+            tabs: [
+                {title: 'Tab 1', content: '<div>Tab 1 content</div><div>Tab 1 content</div><div>Tab 1 content</div><div>Tab 1 content</div>'},
+                {title: 'Tab 2', content: '<div>Tab 2 content</div><div>Tab 2 content</div>'},
+                {title: 'Tab 3', content: 'Tab 3 content'},
+            ]
+        }) %>
+    </div>
+    <script type="module">
+    import Tabs from '/js/components/base/tabs.js';
+    {
+        const tabs = document.querySelector('#test-tabs .tabs');
+        const instance = new Tabs(tabs);
+    }
+    </script>
+
+
+    <h3>Accordion</h3>
+    <div id="test-accordion" class="w-[30rem]">
+        <%- partial('./_components/accordion_group', {
+            accordions: [
+            {
+                title: 'Accordion 1',
+                content: '<div>Accordion 1 content</div><div>Accordion 1 content</div><div>Accordion 1 content</div><div>Accordion 1 content</div>'    
+            },
+            {
+                title: 'Accordion 2',
+                content: '<div>Accordion 2 content</div><div>Accordion 2 content</div>'    
+            },
+            {
+                title: 'Accordion 3',
+                content: 'Accordion 3 content'    
+            },
+            ]
+        }) %>
+    </div>
+    <script type="module">
+    import {AccordionGroup} from '/js/components/base/accordion.js';
+    {
+        const accordion = document.querySelector('#test-accordion .accordion-group');
+        const instance = new AccordionGroup(accordion);
+    }
+    </script>
+    
+    <h3>Treeview</h3>
+    <div id="test-treeview" class="w-[30rem]">
+        <%- partial('./_components/treeview', {
+            trees: [
+                {
+                    name: 'Tree 1',
+                    suffix: '123',
+                    children: [
+                        {
+                            name: 'Tree 1.1',
+                            children: [
+                                {
+                                    name: 'Tree 1.1.1',
+                                }
+                            ]
+                        },
+                        {
+                            name: 'Tree 1.2',
+                        }
+                    ]
+                },
+                {
+                    name: 'Tree 2',
+                    children: [
+                        {
+                            name: 'Tree 2.1',
+                        },
+                        {
+                            name: 'Tree 2.2',
+                        }
+                    ]
+                },
+                {
+                    name: 'Tree 3',
+                }
+            ]
+        }) %>
+    </div>
+    <script type="module">
+    import Treeview from '/js/components/base/treeview.js';
+    {
+        const treeview = document.querySelector('#test-treeview .treeview');
+        const instance = new Treeview(treeview);
+    }
+    </script>
+</div>

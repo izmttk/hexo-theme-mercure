@@ -1,0 +1,8 @@
+<%# 文章分类 %>
+<% if(post.categories.length>0) { %>
+  <% const category = post.categories.last() %> 
+  <div class="post-category">
+    <%- remixicon('ri-book-fill', {class: 'mr-1'}) %>
+    <a href="<%= url_for(category.path) %>"><%- category.name %></a>
+  </div>
+<% } %>

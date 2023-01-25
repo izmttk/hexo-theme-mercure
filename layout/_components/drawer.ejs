@@ -1,0 +1,36 @@
+<%# 
+drawer params:
+  content: body content
+  anchor: slide from which side
+  classes: class of drawer
+%>
+<% 
+const drawerTitle = (typeof title !== 'undefined') ? title : null;
+const drawerContent = (typeof content !== 'undefined') ? content : null;
+const drawerAnchor = (typeof anchor !== 'undefined') ? anchor : 'left';
+const drawerClasses = (typeof classes !== 'undefined') ? classes : null;
+const drawerTemplateId = (typeof templateId !== 'undefined') ? templateId : null;
+const drawerTemplateClasses = (typeof templateClasses !== 'undefined') ? templateClasses : null;
+%>
+<template <%- drawerTemplateId ? `id="${drawerTemplateId}" ` : '' %>class="<%- drawerTemplateClasses %> drawer-template">
+  <div class="<%- drawerClasses %> drawer drawer-anchor-<%- drawerAnchor %> fixed inset-0 z-40 " aria-labelledby="modal-label" role="dialog" aria-modal="true">
+    <div class="drawer-backdrop bg-gray-500/75 dark:bg-gray-900/75 absolute inset-0"></div>
+    <div class="drawer-panel absolute inset-y-0 flex max-w-md <%- drawerAnchor === 'right' ? 'right-0' : 'left-0'%>">
+      <div class="absolute top-0 flex pt-4 <%- drawerAnchor === 'right' ? 'left-0 -ml-8 sm:-ml-10 pr-2 sm:pr-4' : 'right-0 -mr-8 sm:-mr-10 pl-2 sm:pl-4'%>">
+        <button type="button" autofocus title="关闭" class="drawer-close-btn plate-bg plate-shadow border-highlight pressable p-1 rounded-md text-gray-600 dark:text-gray-300 focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-primary-400 focus-visible:outline-offset-2">
+          <span class="sr-only">Close Panel</span>
+          <!-- Heroicon name: outline/x-mark -->
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <div class="drawer-body flex h-full w-full flex-col overflow-y-auto plate-bg plate-shadow">
+        <% if(drawerTitle) { %>
+          <div class="drawer-title text-lg leading-7 font-medium text-gray-900 dark:text-gray-100 flex-auto" id="drawer-label">
+            <%- drawerTitle %>
+          </div>
+        <% } %>
+        <%- drawerContent %>
+      </div>
+    </div>
+  </div>
+</template>

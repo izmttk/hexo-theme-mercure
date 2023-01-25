@@ -1,0 +1,35 @@
+<div class="profile">
+  <% if(theme.author.background !== null) { %>
+    <div class="head">
+      <img class="head-img nolazyload" src="<%- url_for(theme.author.background) %>" alt="<%= theme.author.name %>">
+    </div>
+  <% } %>
+  <div class="body">
+    <div class="author-info">
+      <% if(theme.author.avatar !== null) { %>
+        <div class="avatar">
+          <img class="avatar-img nolazyload" src="<%- url_for(theme.author.avatar) %>" alt="<%= theme.author.name %>">
+        </div>
+      <% } %>
+      <% if(theme.author.name !== null) { %>
+        <div class="name">
+          <span><%- theme.author.name %></span>
+        </div>
+      <% } %>
+      <% if(theme.author.signature !== null) { %>
+        <div class="signature">
+          <span><%- theme.author.signature %></span>
+        </div>
+      <% } %>
+    </div>
+    <% if(theme.author.social.length > 0) { %>
+      <div class="social-panel">
+        <% theme.author.social.forEach((item) =>{ %>
+          <a href="<%- item.link %>" title="<%= item.name %>" target="_blank" style="color:<%= item.color %>">
+            <%- item.icon %>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</div>

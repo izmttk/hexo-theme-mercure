@@ -1,0 +1,41 @@
+.fabs {
+    @apply fixed right-2 md:right-4 bottom-4 z-30 hidden md:flex md:flex-col md:items-end space-y-1;
+    .fabs-btn {
+        @apply transition-transform duration-300 ease-out;
+        @apply p-3 w-max h-10 min-w-[2.5rem] rounded-full overflow-hidden;
+        @apply bg-gradient-to-br from-primary-500 to-primary-700 text-gray-100;
+        @apply shadow-md shadow-primary-900/50 dark:shadow-primary-700/50;
+        @apply flex items-center justify-center;
+
+        .icon {
+            @apply flex-none text-lg;
+        }
+        .hint {
+            @apply flex-auto text-sm leading-none whitespace-nowrap overflow-hidden;
+            @apply transition-[width,opacity] duration-200 opacity-0 w-0;
+        }
+        &:hover {
+            @apply shadow-lg shadow-primary-900/50 dark:shadow-primary-700/70;
+            & .hint {
+                @apply opacity-100 w-[5.25rem];
+            }
+        }
+    }
+    .fabs-btn:nth-child(1) {
+        @apply delay-[0ms];
+    }
+    .fabs-btn:nth-child(2) {
+        @apply delay-[100ms];
+    }
+    &.fabs-hidden {
+        .fabs-btn {
+            @apply translate-y-[calc(5rem_+_1.25rem)];
+        }
+        .fabs-btn:nth-child(1) {
+            @apply delay-[100ms];
+        }
+        .fabs-btn:nth-child(2) {
+            @apply delay-[0ms];
+        }
+    }
+}

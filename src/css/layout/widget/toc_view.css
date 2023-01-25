@@ -1,0 +1,38 @@
+.toc-view {
+    @apply text-sm break-words;
+    .toc-link {
+        @apply relative block;
+        @apply pr-2 py-1 rounded;
+        @apply hover:bg-gray-500/10;
+        &::before {
+            content: "";
+            @apply absolute top-0 bottom-0 left-0;
+            @apply w-1.5 rounded-l;
+            /* @apply transition duration-300; */
+        }
+    }
+    .toc-active {
+        /* @apply text-primary-500; */
+        /* @apply bg-primary-400/20; */
+        /* @apply dark:text-primary-300 dark:bg-gray-700; */
+        &::before {
+            @apply bg-primary-600;
+        }
+        @apply plate-bg plate-shadow border-highlight text-primary-600 dark:text-primary-300;
+    }
+    .toc-level-2>.toc-link {
+        @apply pl-4 font-bold;
+    }
+    .toc-level-3>.toc-link {
+        @apply pl-8;
+    }
+    .toc-level-4>.toc-link {
+        @apply pl-12;
+    }
+    .toc-level-5>.toc-link {
+        @apply pl-16;
+    }
+    .toc-level-6>.toc-link {
+        @apply pl-20;
+    }
+}

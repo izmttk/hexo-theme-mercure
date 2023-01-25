@@ -1,0 +1,14 @@
+<% const realcontent = (page.encrypt == true) ? page.origin : page.content; %>
+<% if (realcontent && toc(realcontent).length > 0) { %>
+  <div class="toc-view" <% if (page.encrypt == true) { %>style="display:none"<% } %>>
+    <%- toc(realcontent, {
+      list_number: true,
+      min_depth: 2,
+      max_depth: 6
+    }) %>
+  </div>
+<% } else { %>
+  <div class="toc-view">
+    <div class="flex justify-center items-center py-8 text-gray-400"><i class="ri-information-line text-2xl mr-2"></i><span>本文没有目录</span></div>
+  </div>
+<% } %> 

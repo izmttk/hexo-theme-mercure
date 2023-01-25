@@ -1,0 +1,46 @@
+<%
+const wedgetTemplate = (title, content, cardStyle = true) => `
+  <div class="widget ${cardStyle ? 'plate-bg plate-shadow border-highlight rounded-xl overflow-hidden' : ''}">
+  ${
+      title ? `
+      <div class="relative text-2xl font-bold p-3 ${cardStyle ? 'border-b border-gray-200 dark:border-gray-700' : ''}">
+        <span class="relative after:z-0 after:absolute after:-inset-x-1 after:bottom-0 after:h-3 after:bg-primary-400/25 after:rounded">
+          <span class="relative z-10">${title}</span>
+        </span>
+      </div>
+      <div class="content">
+        ${content}
+      </div>` : `${content}`
+    }
+  </div>
+`;
+let sidebarContent = '';
+if(theme.sidebar.profile.enable) {
+  sidebarContent += wedgetTemplate(null, partial('../_widgets/profile'));
+}
+if(theme.sidebar.stats.enable) {
+  sidebarContent += wedgetTemplate(null, partial('../_widgets/stats'));
+}
+if(theme.sidebar.tag_cloud.enable) {
+  sidebarContent += wedgetTemplate('标签云' ,partial('../_widgets/tag_cloud'), false);
+}
+if(theme.sidebar.category_tree.enable) {
+  sidebarContent += wedgetTemplate('分类', partial('../_widgets/category_tree'));
+}
+%>
+<% if(theme.sidebar.toc.enable && is_post() && page.toc != false) { %>
+  <div class="sidebar-content sticky">
+    <%- partial('../_components/tabs', {
+      classes: 'sidebar-tabs',
+      fullWidth: true,
+      tabs: [
+        {title: '<i class="ri-home-2-line mr-0.5"></i><span>概览</span>', content: sidebarContent},
+        {title: '<i class="ri-file-list-line mr-0.5"></i><span>目录</span>', content: wedgetTemplate(null, partial('../_widgets/toc_view'), false)},
+      ]
+    }) %>
+  </div>
+<% } else { %>
+  <div class="sidebar-content">
+    <%- sidebarContent %>
+  </div>
+<% } %>

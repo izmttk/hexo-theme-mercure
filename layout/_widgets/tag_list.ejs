@@ -1,0 +1,18 @@
+<ul class="tag-list">
+  <% orderTagsByPinyin(site.tags.toArray()).forEach((part)=>{ %>
+    <% if(part.tags.length>0) { %>
+      <li class="group">
+        <h3 class="title"><%= part.key %></h3>
+        <div class="tags">
+        <% part.tags.forEach((tag)=>{ %>
+          <a class="tag" href="<%= url_for(tag.path) %>">
+            <i class="ri-hashtag"></i>
+            <span class="tag-name"><%- tag.name %></span>
+            <span class="tag-count"><%= tag.length %></span>
+          </a>
+        <% }) %>
+        </div>
+      </li>
+    <% } %>
+  <% }) %>
+</ul>

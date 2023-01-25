@@ -1,8 +1,0 @@
-#footer {
-    @apply flex flex-col w-full h-32 justify-center items-center bg-gray-200 mt-8;
-    @apply dark:bg-gray-800 dark:text-gray-200;
-    .copyright,
-    .theme-info {
-        @apply w-full text-center text-sm;
-    }
-}

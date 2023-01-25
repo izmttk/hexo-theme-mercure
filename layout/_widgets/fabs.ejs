@@ -1,0 +1,16 @@
+<div class="fabs fabs-hidden">
+  <% if(theme.fabs.goto_top.enable) { %>
+    <button class="fabs-btn" id="goto-top-btn">
+      <span class="hint">回到顶部</span>
+      <i class="icon ri-arrow-up-line"></i>
+    </button>
+  <% } %>
+  <% if(theme.fabs.goto_comment.enable && theme.comments.enable) { %>
+    <% if(!is_home() && !is_archive() && !is_category() && !is_tag() && page.comments) { %> 
+      <button class="fabs-btn" id="goto-comment-btn">
+        <span class="hint">评论区直达</span>
+        <i class="icon ri-message-2-line"></i>
+      </button>
+    <% } %>
+  <% } %>
+</div>

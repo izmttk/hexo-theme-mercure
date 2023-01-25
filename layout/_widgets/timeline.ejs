@@ -1,0 +1,30 @@
+<%#- list_archives() %>
+<div class="timeline">
+  <% const archives = getArchives() %> 
+  <% archives.forEach((year_archive)=>{ %>
+    <% year_archive.archives.forEach((month_archive)=>{ %>
+      <div class="timestamp">
+        <% 
+        let link = `${config.archive_dir}/${year_archive.year}/`;
+        if(month_archive.month<10)
+        link+='0';
+        link+=`${month_archive.month}/`;
+        %>
+        <a href="<%= url_for(link) %>"><i class="ri-calendar-line mr-1"></i><%= year_archive.year %>年<%= month_archive.month %>月</a>
+      </div>
+      <div class="monthly-archives">
+        <% month_archive.archives.forEach((post)=>{ %>
+          <div class="archive-post">
+            <span class="date"><%= post.date.day() %>日</span>
+            <span class="title">
+              <a href="<%= url_for(post.path) %>">
+                <span><%- post.title || '无标题' %></span>
+                <!-- <span><%= post.excerpt %></span> -->
+              </a>
+            </span>
+          </div>
+        <% }) %>
+      </div>
+    <% }) %>
+  <% }) %>
+</div>

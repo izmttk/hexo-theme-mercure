@@ -1,0 +1,69 @@
+<% 
+// 不同模板的页面有不同的配置
+let layout = 'none';
+if(is_home()) {
+    layout = 'home';
+} else if(is_category() || page.layout === 'category') {
+    layout = 'category';
+} else if(is_tag() || page.layout === 'tag') {
+    layout = 'tag';
+} else if(is_archive() || page.layout === 'archive') {
+    layout = 'archive';
+} else {
+    layout = page.layout;
+}
+const blogConfig = {
+  layout: layout,
+  header:  {...theme.header},
+  navigator: {
+      enable: theme.navigator.enable,
+      toolkit: theme.navigator.toolkit,
+  },
+  sidebar: {
+      enable: theme.sidebar.enable,
+  },
+  footer: {
+      enable: theme.footer.enable,
+  },
+  fabs: theme.fabs,
+  colormode: theme.colormode,
+  search: {
+      enable: theme.search.enable,
+  },
+  katex:  theme.plugins.katex,
+  pjax: theme.plugins.pjax,
+  lazyload: theme.plugins.lazyload,
+  overlay_scrollbar: theme.plugins.overlay_scrollbar,
+  loading: {
+    enable: theme.loading.enable,
+  }
+}
+delete blogConfig.header.height;
+delete blogConfig.header.title;
+delete blogConfig.header.bottom_effect;
+delete blogConfig.header.scroll_indicator;
+if(theme.search.algolia_search.enable) {
+  blogConfig.search = {
+    ...blogConfig.search,
+    ...theme.search.algolia_search,
+    appId: theme.search.algolia_search.appId ?? config.algolia.appId,
+    apiKey: theme.search.algolia_search.apiKey ?? config.algolia.apiKey,
+    indexName: theme.search.algolia_search.indexName ?? config.algolia.indexName,
+    provider: 'algolia'
+  };
+}
+if(theme.search.local_search.enable) {
+  let search_path = config.search.path;
+  if (!search_path) {
+    search_path = 'search.xml';
+  }
+  search_path = url_for(search_path);
+  blogConfig.search = {
+    ...blogConfig.search,
+    ...theme.search.local_search,
+    provider: 'local',
+    path: search_path
+  };
+}
+%>
+<script type="application/json" id="config-data"><%- JSON.stringify(blogConfig) %></script>
